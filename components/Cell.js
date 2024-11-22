@@ -1,39 +1,57 @@
 import React from 'react';
-import { TextInput, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 
-const Cell = ({ value, isEditable, isHighlighted, onValueChange, onSelect }) => {
+const birdImages = {
+  1: { top: 0, left: 0 },
+  2: { top: 0, left: -35 },
+  3: { top: 0, left: -70 },
+  4: { top: -35, left: 0 },
+  5: { top: -35, left: -35 },
+  6: { top: -35, left: -70 },
+  7: { top: -70, left: 0 },
+  8: { top: -70, left: -35 },
+  9: { top: -70, left: -70 },
+};
+
+const Cell = ({ value, isEditable, isHighlighted, style }) => {
+  const birdPosition = birdImages[value];
+
   return (
-      <TextInput
-        style={[
-          styles.cell,
-          isHighlighted ? styles.highlightedCell : {},
-          !isEditable ? styles.disabledCell : {},
-        ]}
-        value={value !== 0 ? String(value) : ''}
-        keyboardType="numeric"
-        maxLength={1}
-        editable={isEditable}
-        onChangeText={onValueChange}
-        onFocus={onSelect}
-      />
+    <View
+      style={[
+        styles.cellContainer,
+        style, // Borders are passed in here
+        isHighlighted && styles.highlightedCell,
+      ]}
+    >
+      {value !== 0 && (
+        <Image
+          source={require('../assets/Winter-Birds.png')}
+          style={[
+            styles.birdImage,
+            birdPosition
+          ]}
+        />
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  cell: {
-    width: 35,
-    height: 35,
-    borderWidth: 1,
-    borderColor: '#000',
-    textAlign: 'center',
-    fontSize: 18,
-    backgroundColor: '#fff',
+  cellContainer: {
+    width: 38, // Cell size
+    height: 38,
+    backgroundColor: '#fff', // Background for consistent borders
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  birdImage: {
+    position: 'absolute',
+    width: 105, // Full sprite sheet width
+    height: 105, // Full sprite sheet height
   },
   highlightedCell: {
-    backgroundColor: '#ffe4b2',
-  },
-  disabledCell: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#ffe4b2', // Highlighting for the selected cell
   },
 });
 

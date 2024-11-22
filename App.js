@@ -5,7 +5,7 @@ import SudokuScreen from './screens/SudokuScreen';
 export default function App() {
   return (
     <View style={styles.container}>
-      <SudokuScreen />;
+      <SudokuScreen />
       <StatusBar style="auto" />
     </View>
   );
