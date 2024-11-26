@@ -1,35 +1,31 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
+import { spriteMap } from '../utils/spriteMap';
 
-const birdImages = {
-  1: { top: 0, left: 0 },
-  2: { top: 0, left: -35 },
-  3: { top: 0, left: -70 },
-  4: { top: -35, left: 0 },
-  5: { top: -35, left: -35 },
-  6: { top: -35, left: -70 },
-  7: { top: -70, left: 0 },
-  8: { top: -70, left: -35 },
-  9: { top: -70, left: -70 },
-};
-
-const Cell = ({ value, isEditable, isHighlighted, style }) => {
-  const birdPosition = birdImages[value];
+const Cell = ({ value, isEditable, isHighlighted, onSelect, style }) => {
+  const spritePosition = spriteMap[value];
 
   return (
     <View
       style={[
         styles.cellContainer,
-        style, // Borders are passed in here
-        isHighlighted && styles.highlightedCell,
+        style, // Border styles passed from the Board
+        isHighlighted && styles.highlightedCell, // Highlight conditionally
       ]}
+      onStartShouldSetResponder={() => {
+        if (isEditable) {
+          onSelect(); // Trigger selection for editable cells
+          return true; // Allow responder system to proceed
+        }
+        return false; // Ignore touches for non-editable cells
+      }}
     >
       {value !== 0 && (
         <Image
           source={require('../assets/Winter-Birds.png')}
           style={[
-            styles.birdImage,
-            birdPosition
+            styles.spriteImage,
+            spritePosition,
           ]}
         />
       )}
@@ -41,17 +37,19 @@ const styles = StyleSheet.create({
   cellContainer: {
     width: 38, // Cell size
     height: 38,
-    backgroundColor: '#fff', // Background for consistent borders
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     overflow: 'hidden',
     position: 'relative',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  birdImage: {
+  spriteImage: {
     position: 'absolute',
-    width: 105, // Full sprite sheet width
-    height: 105, // Full sprite sheet height
+    width: 105,
+    height: 105,
   },
   highlightedCell: {
-    backgroundColor: '#ffe4b2', // Highlighting for the selected cell
+    backgroundColor: 'rgba(255, 223, 186, 0.8)', // Light orange for highlighted cells
   },
 });
 
