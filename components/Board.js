@@ -3,13 +3,13 @@ import { View, StyleSheet } from 'react-native';
 import Cell from './Cell';
 import { getCellBorderStyles } from '../utils/helper';
 
-const Board = ({ board, initialBoard, selectedCell, onCellSelect, highlightedValue }) => {
-  const isCellHighlighted = (value) => value === highlightedValue;
+const Board = ({ board, initialBoard, selectedCell, onCellSelect }) => {
+  const isCellHighlighted = (value) => value === selectedCell;
 
   const getCellHighlight = (rowIndex, colIndex, value) => {
     return (
-      selectedCell?.[0] === rowIndex && selectedCell?.[1] === colIndex // Highlight selected cell
-    ) || isCellHighlighted(value); // Highlight matching values
+      selectedCell?.[0] === rowIndex && selectedCell?.[1] === colIndex
+    ) || isCellHighlighted(value);
   };
 
   return (

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { spriteMapLG } from '../utils/spriteMap';
+import { spriteMapLG, themes } from '../utils/spriteMap';
 
-const InputButtons = ({ onPress, setHighlightedValue }) => {
+const InputButtons = ({ onPress }) => {
     return (
       <View style={styles.birdButtons}>
         {Object.entries(spriteMapLG).map(([value, position]) => (
@@ -10,12 +10,11 @@ const InputButtons = ({ onPress, setHighlightedValue }) => {
             key={value}
             style={styles.cellContainer}
             onPress={() => {
-              setHighlightedValue(parseInt(value, 10)); // Highlight birds of the same type
               onPress(parseInt(value, 10)); // Set value on the board
             }}
           >
             <Image
-              source={require('../assets/Winter-Birds.png')}
+              source={themes['birds'].source}
               style={[styles.spriteImage, position]}
             />
           </TouchableOpacity>

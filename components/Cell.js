@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { spriteMap } from '../utils/spriteMap';
+import { spriteMap, themes } from '../utils/spriteMap';
 
 const Cell = ({ value, isEditable, isHighlighted, onSelect, style }) => {
   const spritePosition = spriteMap[value];
@@ -22,7 +22,7 @@ const Cell = ({ value, isEditable, isHighlighted, onSelect, style }) => {
     >
       {value !== 0 && (
         <Image
-          source={require('../assets/Winter-Birds.png')}
+          source={themes['birds'].source}
           style={[
             styles.spriteImage,
             spritePosition,

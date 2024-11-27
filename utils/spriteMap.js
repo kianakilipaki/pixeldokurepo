@@ -23,3 +23,11 @@ export const spriteMapLG = {
     8: { top: -80, left: -40 },
     9: { top: -80, left: -80 },
   };
+
+// sprite themes
+export const themes = {
+  'birds': {
+    source: require('../assets/Winter-Birds.png'),
+    bgSource: require('../assets/sprite_northWindShrineBG.png')
+  }
+}

@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
-import { View, Button, Alert, StyleSheet, ImageBackground, ActivityIndicator } from 'react-native';
+import { View, Alert, StyleSheet, ImageBackground, ActivityIndicator } from 'react-native';
 import { fetchPuzzleData } from '../api/FetchPuzzle';
+import ActionButtons from '../components/ActionButtons';
+import { themes } from '../utils/spriteMap';
 
 const Board = lazy(() => import('../components/Board'));
-const InputButtons = lazy(() => import('../components/Buttons'));
+const InputButtons = lazy(() => import('../components/InputButtons'));
 
 const SudokuScreen = ({ route }) => {
   const { difficulty } = route.params;
@@ -12,7 +14,6 @@ const SudokuScreen = ({ route }) => {
   const [initialBoard, setInitialBoard] = useState([]);
   const [solutionBoard, setSolutionBoard] = useState([]);
   const [selectedCell, setSelectedCell] = useState(null);
-  const [highlightedValue, setHighlightedValue] = useState(null);
 
   const fetchPuzzle = useCallback(async (level) => {
     try {
@@ -29,34 +30,23 @@ const SudokuScreen = ({ route }) => {
   const resetBoard = useCallback(() => {
     setBoard(JSON.parse(JSON.stringify(initialBoard))); // Deep copy
     setSelectedCell(null);
-    setHighlightedValue(null); // Reset highlights as well
   }, [initialBoard]);
 
   const solvePuzzle = useCallback(() => {
     const isSolved = solutionBoard.flat().every((num, idx) => num === board.flat()[idx]);
-    Alert.alert(
-      isSolved ? 'Congratulations!' : 'Try Again',
-      isSolved
-        ? 'The puzzle is solved correctly.'
-        : 'Some entries are incorrect.',
-      [{ text: 'OK', onPress: () => console.log('Alert dismissed') }]
-    );
+    console.log(isSolved ? 'You solved it!' : 'Try Again.');
   }, [board, solutionBoard]);
 
   const updateBoard = useCallback((value) => {
     if (selectedCell) {
       const [rowIndex, colIndex] = selectedCell;
       setBoard((prevBoard) => {
-        const newBoard = prevBoard.map((row) => [...row]); // Create shallow copy of each row
+        const newBoard = prevBoard.map((row) => [...row]);
         newBoard[rowIndex][colIndex] = value;
         return newBoard;
       });
     }
   }, [selectedCell]);
-
-  const toggleHighlight = (value) => {
-    setHighlightedValue((prev) => (prev === value ? null : value));
-  };
 
   useEffect(() => {
     fetchPuzzle(difficulty);
@@ -64,7 +54,7 @@ const SudokuScreen = ({ route }) => {
 
   return (
     <ImageBackground
-      source={require('../assets/sprite_northWindShrineBG.png')}
+      source={themes['birds'].bgSource}
       resizeMode="cover"
       style={styles.image}
     >
@@ -75,20 +65,14 @@ const SudokuScreen = ({ route }) => {
             initialBoard={initialBoard}
             selectedCell={selectedCell}
             onCellSelect={setSelectedCell}
-            highlightedValue={highlightedValue}
           />
           <InputButtons
             onPress={(value) => {
-              toggleHighlight(value);
               updateBoard(value);
             }}
-            setHighlightedValue={toggleHighlight}
           />
         </Suspense>
-        <View style={styles.buttons}>
-          <Button title="Solve Puzzle" onPress={solvePuzzle} />
-          <Button title="Reset Board" onPress={resetBoard} />
-        </View>
+        <ActionButtons solvePuzzle={solvePuzzle} resetBoard={resetBoard}/>
       </View>
     </ImageBackground>
   );
@@ -106,11 +90,6 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 20,
   },
 });
 

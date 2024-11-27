@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, ImageBackground } from 'react-native';
+import { themes } from '../utils/spriteMap';
 
 const HomeScreen = ({ navigation }) => {
   const navigateToGame = (difficulty) => {
@@ -8,7 +9,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require('../assets/sprite_northWindShrineBG.png')}
+      source={themes['birds'].bgSource}
       resizeMode="cover"
       style={styles.background}
     >
