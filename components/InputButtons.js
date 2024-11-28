@@ -32,21 +32,21 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   cellContainer: {
-    width: 42, // Adjust for your sprite size
-    height: 42,
+    width: 50,
+    height: 50,
     padding: 10,
-    margin: 10,
-    border: '1px solid #000',
+    margin: 5,
+    border: '1px solid var(--forecolor1)',
     borderRadius: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: 'var(--bgcolor1)',
     overflow: 'hidden',
     position: 'relative',
   },
   spriteImage: {
     position: 'absolute',
-    width: 120, // Total width of sprite sheet
-    height: 120, // Total height of sprite sheet
-  },
+    width: 144,
+    height: 144,
+  }
 });
 
 export default InputButtons;

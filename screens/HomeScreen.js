@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 36,
+    fontFamily: 'var(--fontBold)',
     fontWeight: 'bold',
     color: '#ffffff',
     marginBottom: 40,

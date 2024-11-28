@@ -14,14 +14,14 @@ export const spriteMap = {
 // map sprite position to numbers for input buttons
 export const spriteMapLG = {
     1: { top: 0, left: 0 },
-    2: { top: 0, left: -40 },
-    3: { top: 0, left: -80 },
-    4: { top: -40, left: 0 },
-    5: { top: -40, left: -40 },
-    6: { top: -40, left: -80 },
-    7: { top: -80, left: 0 },
-    8: { top: -80, left: -40 },
-    9: { top: -80, left: -80 },
+    2: { top: 0, left: -48 },
+    3: { top: 0, left: -96 },
+    4: { top: -48, left: 0 },
+    5: { top: -48, left: -48 },
+    6: { top: -48, left: -96 },
+    7: { top: -96, left: 0 },
+    8: { top: -96, left: -48 },
+    9: { top: -96, left: -96 },
   };
 
 // sprite themes

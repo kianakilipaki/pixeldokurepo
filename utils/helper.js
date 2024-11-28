@@ -10,7 +10,7 @@ export const getCellBorderStyles = (rowIndex, colIndex) => {
       borderLeftWidth: isThickLeft ? 3 : 1,
       borderBottomWidth: isThickBottom ? 3 : 1,
       borderRightWidth: isThickRight ? 3 : 1,
-      borderColor: '#000',
+      borderColor: 'var(--forecolor1)',
       zIndex: 2,
     };
   };

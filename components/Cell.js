@@ -2,30 +2,32 @@ import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { spriteMap, themes } from '../utils/spriteMap';
 
-const Cell = ({ value, isEditable, isHighlighted, onSelect, style }) => {
-  const spritePosition = spriteMap[value];
+const Cell = ({ value, isEditable, isHinted, isHighlighted, onSelect, style }) => {
+  const setSelected = () => {
+    if (isEditable) {
+      onSelect();
+      return true;
+    }
+    return false;
+  }
 
   return (
     <View
       style={[
         styles.cellContainer,
-        style, // Border styles passed from the Board
-        isHighlighted && styles.highlightedCell, // Highlight conditionally
+        style,
+        isHinted && styles.hintedCell,
+        isHighlighted && styles.selectedCell,
+        !isEditable && styles.notEditable,
       ]}
-      onStartShouldSetResponder={() => {
-        if (isEditable) {
-          onSelect(); // Trigger selection for editable cells
-          return true; // Allow responder system to proceed
-        }
-        return false; // Ignore touches for non-editable cells
-      }}
+      onStartShouldSetResponder={setSelected}
     >
       {value !== 0 && (
         <Image
           source={themes['birds'].source}
           style={[
             styles.spriteImage,
-            spritePosition,
+            spriteMap[value],
           ]}
         />
       )}
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
   cellContainer: {
     width: 38, // Cell size
     height: 38,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: 'var(--bgcolor1)',
     overflow: 'hidden',
     position: 'relative',
     justifyContent: 'center',
@@ -48,9 +50,23 @@ const styles = StyleSheet.create({
     width: 105,
     height: 105,
   },
+  hintedCell: {
+    backgroundColor: 'var(--highlight2)',
+  },
+  selectedCell: {
+    backgroundColor: 'var(--highlight1)',
+  },
   highlightedCell: {
-    backgroundColor: 'rgba(255, 223, 186, 0.8)', // Light orange for highlighted cells
+    borderTopWidth: 3,
+    borderLeftWidth: 3,
+    borderBottomWidth: 3,
+    borderRightWidth: 3,
+    borderColor: 'var(--blue)',
+  },
+  notEditable: {
+    backgroundColor: 'var(--bgcolor2)',
   },
 });
+
 
 export default Cell;
