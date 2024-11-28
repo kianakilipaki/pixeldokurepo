@@ -40,6 +40,9 @@ const SudokuScreen = ({ route }) => {
   const updateBoard = useCallback((value) => {
     if (selectedCell) {
       const [rowIndex, colIndex] = selectedCell;
+
+      if (initialBoard[rowIndex][colIndex] !== 0) return;
+
       setBoard((prevBoard) => {
         const newBoard = prevBoard.map((row) => [...row]);
         newBoard[rowIndex][colIndex] = value;
@@ -66,11 +69,7 @@ const SudokuScreen = ({ route }) => {
             selectedCell={selectedCell}
             onCellSelect={setSelectedCell}
           />
-          <InputButtons
-            onPress={(value) => {
-              updateBoard(value);
-            }}
-          />
+          <InputButtons onPress={updateBoard} />
         </Suspense>
         <ActionButtons solvePuzzle={solvePuzzle} resetBoard={resetBoard}/>
       </View>
