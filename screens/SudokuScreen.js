@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { View, Alert, StyleSheet, ImageBackground, ActivityIndicator } from 'react-native';
-import { fetchPuzzleData } from '../api/FetchPuzzle';
 import ActionButtons from '../components/ActionButtons';
 import { themes } from '../utils/spriteMap';
+import {generateSudoku} from '../components/GeneratePuzzle';
 
 const Board = lazy(() => import('../components/Board'));
 const InputButtons = lazy(() => import('../components/InputButtons'));
@@ -17,10 +17,10 @@ const SudokuScreen = ({ route }) => {
 
   const fetchPuzzle = useCallback(async (level) => {
     try {
-      const data = await fetchPuzzleData(level);
-      setBoard(data.value);
-      setInitialBoard(JSON.parse(JSON.stringify(data.value))); // Deep copy
-      setSolutionBoard(data.solution);
+      const { puzzle, solution } = generateSudoku(level)
+      setBoard(puzzle);
+      setInitialBoard(puzzle);
+      setSolutionBoard(solution);
     } catch (error) {
       console.error('Error fetching puzzle:', error);
       Alert.alert('Error', 'Failed to fetch a new puzzle.');
