@@ -1,8 +1,23 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, ImageBackground } from 'react-native';
 import { themes } from '../utils/spriteMap';
+import AppLoading from 'expo-app-loading';
+import {
+  useFonts,
+  Silkscreen_400Regular,
+  Silkscreen_700Bold,
+} from '@expo-google-fonts/silkscreen';
 
 const HomeScreen = ({ navigation }) => {
+  let [fontsLoaded] = useFonts({
+    Silkscreen_400Regular,
+    Silkscreen_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
   const navigateToGame = (difficulty) => {
     navigation.navigate('SudokuScreen', { difficulty });
   };
@@ -52,8 +67,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 36,
-    fontFamily: 'var(--fontBold)',
-    fontWeight: 'bold',
+    fontFamily: 'Silkscreen_400Regular',
     color: '#ffffff',
     marginBottom: 40,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',
