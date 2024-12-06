@@ -1,7 +1,31 @@
 import React from 'react';
 import { Modal, View, Text, Button, StyleSheet } from 'react-native';
 
-const CompletionModal = ({ visible, onClose, onNextPuzzle }) => {
+const CompletionModal = ({ 
+  visible, 
+  type, 
+  onClose, 
+  onNextPuzzle, 
+  onRetry 
+}) => {
+  // Define messages and buttons based on the modal type
+  const modalContent = {
+    completion: {
+      message: 'Congratulations! You completed the puzzle!',
+      buttons: [{ title: 'Next Puzzle', onPress: onNextPuzzle }],
+    },
+    retry: {
+      message: 'Some cells are incorrect. Would you like to retry?',
+      buttons: [{ title: 'Retry', onPress: onRetry }],
+    },
+    failure: {
+      message: 'You have exceeded the retry limit. Try a new puzzle?',
+      buttons: [{ title: 'Next Puzzle', onPress: onNextPuzzle }],
+    },
+  };
+
+  const { message, buttons } = modalContent[type] || {};
+
   return (
     <Modal
       animationType="slide"
@@ -11,8 +35,17 @@ const CompletionModal = ({ visible, onClose, onNextPuzzle }) => {
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
-          <Text style={styles.modalText}>Congratulations! You completed the puzzle!</Text>
-          <Button title="Next Puzzle" onPress={onNextPuzzle} />
+          <Text style={styles.modalText}>{message}</Text>
+          {buttons.map((button, index) => (
+            <Button
+              key={index}
+              title={button.title}
+              onPress={() => {
+                button.onPress();
+                onClose();
+              }}
+            />
+          ))}
         </View>
       </View>
     </Modal>
@@ -36,6 +69,7 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: 18,
     marginBottom: 20,
+    textAlign: 'center',
   },
 });
 

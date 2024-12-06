@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { View, StyleSheet, ImageBackground, ActivityIndicator } from 'react-native';
 import CompletionModal from '../components/Modal';
 import IconActionButtons from '../components/ActionButtons';
-import Timer from '../components/Timer';
+import TopBar from '../components/TopBar'; // Import TopBar
 import { themes } from '../utils/spriteMap';
 import { generateSudoku } from '../components/GeneratePuzzle';
 import PlayOverlay from '../components/PlayOverlay';
@@ -19,6 +19,9 @@ const SudokuScreen = ({ route }) => {
   const [selectedCell, setSelectedCell] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [retryCounter, setRetryCounter] = useState(3);
+  const [isRetryModalVisible, setIsRetryModalVisible] = useState(false);
+  const [isFailureModalVisible, setIsFailureModalVisible] = useState(false);
 
   const fetchPuzzle = useCallback(async (level) => {
     const { puzzle, solution } = generateSudoku(level);
@@ -31,6 +34,7 @@ const SudokuScreen = ({ route }) => {
     if (isPaused) return;
     setBoard(JSON.parse(JSON.stringify(initialBoard)));
     setSelectedCell(null);
+    setIsRetryModalVisible(false);
   }, [initialBoard]);
 
   const eraseCell = () => {
@@ -67,22 +71,37 @@ const SudokuScreen = ({ route }) => {
     }
   };
 
+  const checkBoardCorrectness = () => {
+    const isIncorrect = board.flat().some((value, idx) => value !== solutionBoard.flat()[idx]);
+    if (isIncorrect) {
+      if (retryCounter > 1) {
+      setRetryCounter((prev) => prev - 1);
+      setIsRetryModalVisible(true);
+    } else {
+      setIsFailureModalVisible(true);
+    }
+    }
+  };
+
   const updateBoard = (value) => {
     if (selectedCell && !isPaused) {
       const [rowIndex, colIndex] = selectedCell;
 
       if (initialBoard[rowIndex][colIndex] !== 0) return;
 
-      // Update the board and check completion
       setBoard((prevBoard) => {
         const newBoard = prevBoard.map((row) => [...row]);
         newBoard[rowIndex][colIndex] = value;
 
-        // Check completion immediately
-        const isSolved = newBoard.every((row, rIdx) =>
-          row.every((cell, cIdx) => cell === solutionBoard[rIdx][cIdx])
+        const isSolved = solutionBoard.flat().every(
+          (num, idx) => num === newBoard.flat()[idx]
         );
-        if (isSolved) setIsModalVisible(true);
+
+        if (isSolved) {
+          setIsModalVisible(true);
+        } else if (newBoard.flat().every((cell) => cell !== 0)) {
+          checkBoardCorrectness();
+        }
 
         return newBoard;
       });
@@ -96,12 +115,8 @@ const SudokuScreen = ({ route }) => {
   return (
     <ImageBackground source={themes['birds'].bgSource} resizeMode="cover" style={styles.image}>
       <View style={styles.container}>
-        {/* Timer */}
-        <Timer isPaused={isPaused} />
-
-        {/* Pause Overlay */}
+        <TopBar retryCounter={retryCounter} isPaused={isPaused || isModalVisible || isRetryModalVisible || isFailureModalVisible} />
         {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} /> }
-
         <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
           <Board
             board={board}
@@ -115,17 +130,21 @@ const SudokuScreen = ({ route }) => {
             onHint={fillHint}
             onPause={() => setIsPaused((prev) => !prev)}
           />
-
           <InputButtons onPress={updateBoard} />
         </Suspense>
-
         <CompletionModal
-          visible={isModalVisible}
-          onClose={() => setIsModalVisible(false)}
-          onNextPuzzle={() => {
+          visible={isModalVisible || isRetryModalVisible || isFailureModalVisible}
+          type={isModalVisible ? 'completion' : isRetryModalVisible ? 'retry' : 'failure'}
+          onClose={() => {
             setIsModalVisible(false);
+            setIsRetryModalVisible(false);
+            setIsFailureModalVisible(false);
+          }}
+          onNextPuzzle={() => {
+            setRetryCounter(3);
             fetchPuzzle(difficulty);
           }}
+          onRetry={resetBoard}
         />
       </View>
     </ImageBackground>
