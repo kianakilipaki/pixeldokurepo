@@ -2,7 +2,39 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const ActionButtons = ({ onReset, onErase, onHint, onPause }) => {
+const ActionButtons = ({ board, setBoard, solutionBoard, initialBoard, selectedCell, onReset, onPause }) => {
+  const onErase = () => {
+    if (selectedCell) {
+      const [rowIndex, colIndex] = selectedCell;
+      if (initialBoard[rowIndex][colIndex] === 0) {
+        setBoard((prevBoard) => {
+          const newBoard = prevBoard.map((row) => [...row]);
+          newBoard[rowIndex][colIndex] = 0;
+          return newBoard;
+        });
+      }
+    }
+  };
+
+  const onHint = () => {
+    const emptyCells = [];
+    board.forEach((row, rowIndex) => {
+      row.forEach((value, colIndex) => {
+        if (value === 0) emptyCells.push([rowIndex, colIndex]);
+      });
+    });
+
+    if (emptyCells.length > 0) {
+      const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+      const [rowIndex, colIndex] = randomCell;
+      setBoard((prevBoard) => {
+        const newBoard = prevBoard.map((row) => [...row]);
+        newBoard[rowIndex][colIndex] = solutionBoard[rowIndex][colIndex];
+        return newBoard;
+      });
+    }
+  };
+  
   return (
     <View style={styles.buttonContainer}>
       {/* Reset Button */}

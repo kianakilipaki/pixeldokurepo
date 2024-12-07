@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 
-const Timer = ({ isPaused }) => {
-  const [seconds, setSeconds] = useState(0);
-
+const Timer = ({ isPaused, timer, setTimer }) => {
   useEffect(() => {
-    let timer;
     if (!isPaused) {
       timer = setInterval(() => {
-        setSeconds((prev) => prev + 1);
+        setTimer((prev) => prev + 1);
       }, 1000);
     } else if (isPaused && timer) {
       clearInterval(timer);
@@ -24,7 +21,7 @@ const Timer = ({ isPaused }) => {
 
   return (
     <View style={styles.timerContainer}>
-      <Text style={styles.timerText}>{formatTime(seconds)}</Text>
+      <Text style={styles.timerText}>{formatTime(timer)}</Text>
     </View>
   );
 };

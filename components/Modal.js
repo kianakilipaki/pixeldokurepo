@@ -1,21 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, Button, StyleSheet } from 'react-native';
 
 const CompletionModal = ({ 
-  visible, 
-  type, 
-  onClose, 
+  board, 
+  timer,
+  solutionBoard, 
+  retryCounter, 
+  setRetryCounter, 
   onNextPuzzle, 
-  onRetry 
+  onRetry,
+  setIsModalVisible,
+  isModalVisible, 
 }) => {
-  // Define messages and buttons based on the modal type
+  const [modalType, setModalType] = useState(null);
+
   const modalContent = {
-    completion: {
-      message: 'Congratulations! You completed the puzzle!',
+    success: {
+      message: `Congratulations! You completed the puzzle in ${timer} seconds!`,
       buttons: [{ title: 'Next Puzzle', onPress: onNextPuzzle }],
     },
     retry: {
-      message: 'Some cells are incorrect. Would you like to retry?',
+      message: `Some cells are incorrect. Would you like to retry? You have ${retryCounter} tries left.`,
       buttons: [{ title: 'Retry', onPress: onRetry }],
     },
     failure: {
@@ -24,28 +29,49 @@ const CompletionModal = ({
     },
   };
 
-  const { message, buttons } = modalContent[type] || {};
+  useEffect(() => {
+    if (!board || board.length === 0 || !solutionBoard) return;
+  
+    const isComplete = board.flat().every((cell) => cell !== 0);
+    if (!isComplete) return; // Only check for completion if board is full
+  
+    const isCorrect = board.flat().every((num, idx) => num === solutionBoard.flat()[idx]);
+  
+    if (isCorrect) {
+      setModalType('success');
+    } else if (retryCounter > 1) {
+      setRetryCounter((prev) => Math.max(prev - 1, 0));
+      setModalType('retry');
+    } else if (retryCounter === 1) {
+      setModalType('failure');
+    }
+  
+    setIsModalVisible(true);
+  }, [board]);
+
+  const { message, buttons } = modalContent[modalType] || {};
 
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={visible}
-      onRequestClose={onClose}
+      visible={isModalVisible}
+      onRequestClose={() => setIsModalVisible(false)}
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalText}>{message}</Text>
-          {buttons.map((button, index) => (
-            <Button
-              key={index}
-              title={button.title}
-              onPress={() => {
-                button.onPress();
-                onClose();
-              }}
-            />
-          ))}
+          {buttons &&
+            buttons.map((button, index) => (
+              <Button
+                key={index}
+                title={button.title}
+                onPress={() => {
+                  button.onPress();
+                  setIsModalVisible(false);
+                }}
+              />
+            ))}
         </View>
       </View>
     </Modal>

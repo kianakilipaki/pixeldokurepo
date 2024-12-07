@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Timer from './Timer'; // Assuming you already have this component
 
-const TopBar = ({ retryCounter, isPaused }) => {
+const TopBar = ({ retryCounter, isPaused, timer, setTimer }) => {
   return (
     <View style={styles.topBar}>
       {/* Retry Counter */}
@@ -14,7 +14,7 @@ const TopBar = ({ retryCounter, isPaused }) => {
       </View>
       {/* Timer */}
       <View style={styles.timerContainer}>
-        <Timer isPaused={isPaused}/>
+        <Timer isPaused={isPaused} timer={timer} setTimer={setTimer}/>
       </View>
     </View>
   );

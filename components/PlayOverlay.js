@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     },
     playButton: {
         backgroundColor: '#3498db',
+        paddingLeft: 8,
         width: 80,       // Explicit width
         height: 80,      // Explicit height
         borderRadius: 40, // Half of width/height for a perfect circle
