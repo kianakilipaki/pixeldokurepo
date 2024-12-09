@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 36,
-    fontFamily: 'Silkscreen_400Regular',
+    fontFamily: 'var(--fontFamily)',
     color: '#ffffff',
     marginBottom: 40,
     textShadowColor: 'rgba(0, 0, 0, 0.75)',

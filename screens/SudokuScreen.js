@@ -97,18 +97,16 @@ const SudokuScreen = ({ route }) => {
           board={board}
           solutionBoard={solutionBoard}
           retryCounter={retryCounter}
-          setRetryCounter={setRetryCounter} // Make sure this prop is passed correctly
+          setRetryCounter={setRetryCounter}
           timer={timer}
           setIsModalVisible={setIsModalVisible}
           isModalVisible={isModalVisible}
           onNextPuzzle={() => {
             setRetryCounter(3);
             fetchPuzzle(difficulty);
-            setIsPaused(false);  // Ensure the game isn't paused when moving to the next puzzle
           }}
           onRetry={() => {
             resetBoard();
-            setIsPaused(false); // Make sure the game isn't paused when retrying
           }}
         />
 

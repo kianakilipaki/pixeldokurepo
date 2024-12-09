@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   timerText: {
+    fontFamily: 'var(--fontFamily)',
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333',
