@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { spriteMapLG, themes } from '../utils/spriteMap';
 
-const InputButtons = ({ onPress }) => {
+const InputButtons = ({ theme, onPress }) => {
     return (
       <View style={styles.birdButtons}>
         {Object.entries(spriteMapLG).map(([value, position]) => (
@@ -14,7 +14,7 @@ const InputButtons = ({ onPress }) => {
             }}
           >
             <Image
-              source={themes['birds'].source}
+              source={theme.source}
               style={[styles.spriteImage, position]}
             />
           </TouchableOpacity>

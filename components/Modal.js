@@ -108,6 +108,8 @@ const styles = StyleSheet.create({
   modalContainer: {
     width: '80%',
     backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: 'var(--forecolor1)',
     borderRadius: 10,
     overflow: 'hidden',
   },
@@ -139,33 +141,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 5,
   },
-  // modalContainer: {
-  //   width: '80%',
-  //   backgroundColor: 'white',
-  //   borderWidth: 1,
-  //   borderColor: 'var(--forecolor1)',
-  //   padding: 20,
-  //   borderRadius: 10,
-  //   alignItems: 'center',
-  // },
-  // title: {
-  //   fontFamily: 'var(--fontFamily)',
-  //   borderBottomWidth: 1,
-  //   borderColor: 'var(--forecolor1)',
-  // },
-  // modalText: {
-  //   fontSize: 18,
-  //   marginBottom: 20,
-  //   textAlign: 'center',
-  // },
-  // modalButtons: {
-  //   flex: 1,
-  //   gap: 10,
-  //   flexDirection: 'row',
-  // },
-  // modalButton: {
-  //   width: '100%'
-  // }
 });
 
 export default CompletionModal;

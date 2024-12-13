@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
-import { spriteMap, themes } from '../utils/spriteMap';
+import { spriteMap } from '../utils/spriteMap';
 
-const Cell = ({ currentCell, selectedCell, isEditable, onSelect, style }) => {
+const Cell = ({ theme, currentCell, selectedCell, isEditable, onSelect, style }) => {
   const isCellSelected = () => {
     if (!selectedCell) return false;
     return currentCell[0] === selectedCell[0] && currentCell[1] === selectedCell[1];
@@ -48,7 +48,7 @@ const Cell = ({ currentCell, selectedCell, isEditable, onSelect, style }) => {
     >
       {currentCell[2] !== 0 && (
         <Image
-          source={themes['birds'].source}
+          source={theme.source}
           style={[styles.spriteImage, spriteMap[currentCell[2]]]}
         />
       )}

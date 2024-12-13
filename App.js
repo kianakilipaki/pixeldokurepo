@@ -20,7 +20,16 @@ const App = () => {
           name="SudokuScreen"
           component={SudokuScreen}
           options={({ route }) => ({
-            title: `PixelDoku - ${route.params?.difficulty.toUpperCase()}`
+            title: `${route.params?.theme.title} - ${route.params?.difficulty.toUpperCase()}`,
+            headerStyle: {
+              backgroundColor: 'var(--blue)',
+              borderBottomColor: 'var(--forecolor1)',
+              borderBottomWidth: 2,
+            },
+            headerTintColor: 'var(--forecolor1)',
+            headerTitleStyle: {
+              fontFamily: 'var(--fontFamily)',
+            },
           })}
         />
       </Stack.Navigator>

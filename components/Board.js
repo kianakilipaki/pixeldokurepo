@@ -3,13 +3,14 @@ import { View, StyleSheet } from 'react-native';
 import Cell from './Cell';
 import { getCellBorderStyles } from '../utils/helper';
 
-const Board = ({ board, initialBoard, selectedCell, onCellSelect }) => {
+const Board = ({ theme, board, initialBoard, selectedCell, onCellSelect }) => {
   return (
     <View style={styles.board}>
       {board.map((row, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
           {row.map((value, colIndex) => (
             <Cell
+              theme={theme}
               key={`${rowIndex}-${colIndex}`}
               currentCell={[rowIndex, colIndex, value]}
               selectedCell={selectedCell}

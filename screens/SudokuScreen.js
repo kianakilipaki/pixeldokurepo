@@ -3,7 +3,6 @@ import { View, StyleSheet, ImageBackground, ActivityIndicator } from 'react-nati
 import CompletionModal from '../components/Modal';
 import IconActionButtons from '../components/ActionButtons';
 import TopBar from '../components/TopBar';
-import { themes } from '../utils/spriteMap';
 import { generateSudoku } from '../components/GeneratePuzzle';
 import PlayOverlay from '../components/PlayOverlay';
 
@@ -11,7 +10,7 @@ const Board = lazy(() => import('../components/Board'));
 const InputButtons = lazy(() => import('../components/InputButtons'));
 
 const SudokuScreen = ({ route }) => {
-  const { difficulty } = route.params;
+  const { theme, difficulty } = route.params; 
 
   const [board, setBoard] = useState([]);
   const [initialBoard, setInitialBoard] = useState([]);
@@ -65,7 +64,7 @@ const SudokuScreen = ({ route }) => {
   }, [difficulty, fetchPuzzle]);
 
   return (
-    <ImageBackground source={themes['birds'].bgSource} resizeMode="cover" style={styles.image}>
+    <ImageBackground source={theme.bgSource} resizeMode="cover" style={styles.image}>
       <View style={styles.container}>
         <TopBar retryCounter={retryCounter} isPaused={isPaused || isModalVisible} timer={timer} setTimer={setTimer} />
         {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} /> }
@@ -75,6 +74,7 @@ const SudokuScreen = ({ route }) => {
         ) : (
           <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
             <Board
+              theme={theme}
               board={board}
               initialBoard={initialBoard}
               selectedCell={selectedCell}
@@ -89,7 +89,7 @@ const SudokuScreen = ({ route }) => {
               onReset={resetBoard}
               onPause={() => setIsPaused(true)}
             />
-            <InputButtons onPress={updateBoard} />
+            <InputButtons theme={theme} onPress={updateBoard} />
           </Suspense>
         )}
 

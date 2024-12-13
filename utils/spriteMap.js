@@ -27,7 +27,43 @@ export const spriteMapLG = {
 // sprite themes
 export const themes = {
   'birds': {
+    title: 'BirdDoku',
     source: require('../assets/Winter-Birds.png'),
-    bgSource: require('../assets/sprite_northWindShrineBG.png')
-  }
+    bgSource: require('../assets/sprite_northWindShrineBG.png'),
+    difficulty: {
+      easy: {loses: 3, wins: 4 },
+      medium: {loses: 2, wins: 1 },
+      hard: {loses: 3, wins: 3 }
+    }
+  },
+  'fish': {
+    title: 'FishDoku',
+    source: require('../assets/coral-fish.png'),
+    bgSource: require('../assets/ocean-bg.png'),
+    difficulty: {
+      easy: {loses: 3, wins: 4 },
+      medium: {loses: 2, wins: 1 },
+      hard: {loses: 3, wins: 3 }
+    }
+  },
+  'unknown1': {
+    title: 'Coming Soon',
+    bgSource: require('../assets/gradient.png'),
+  },
+  'unknown2': {
+    title: 'Coming Soon',
+    bgSource: require('../assets/gradient.png'),
+  },
+  'unknown3': {
+    title: 'Coming Soon',
+    bgSource: require('../assets/gradient.png'),
+  },
+  'unknown4': {
+    title: 'Coming Soon',
+    bgSource: require('../assets/gradient.png'),
+  },
+  'unknown5': {
+    title: 'Coming Soon',
+    bgSource: require('../assets/gradient.png'),
+  },
 }
