@@ -5,6 +5,7 @@ import IconActionButtons from '../components/ActionButtons';
 import TopBar from '../components/TopBar';
 import { generateSudoku } from '../components/GeneratePuzzle';
 import PlayOverlay from '../components/PlayOverlay';
+import Coins from '../components/Coins';
 
 const Board = lazy(() => import('../components/Board'));
 const InputButtons = lazy(() => import('../components/InputButtons'));
@@ -64,7 +65,9 @@ const SudokuScreen = ({ route }) => {
   }, [difficulty, fetchPuzzle]);
 
   return (
+    <View><Coins />
     <ImageBackground source={theme.bgSource} resizeMode="cover" style={styles.image}>
+      
       <View style={styles.container}>
         <TopBar retryCounter={retryCounter} isPaused={isPaused || isModalVisible} timer={timer} setTimer={setTimer} />
         {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} /> }
@@ -94,6 +97,7 @@ const SudokuScreen = ({ route }) => {
         )}
 
         <CompletionModal
+          difficulty={difficulty}
           board={board}
           solutionBoard={solutionBoard}
           retryCounter={retryCounter}
@@ -112,6 +116,7 @@ const SudokuScreen = ({ route }) => {
 
       </View>
     </ImageBackground>
+    </View>
   );
 };
 

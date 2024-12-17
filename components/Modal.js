@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, Button, StyleSheet, ImageBackground } from 'react-native';
+import { useCoins } from '../utils/coinContext';
 
 const CompletionModal = ({ 
+  difficulty,
   board, 
   timer,
   solutionBoard, 
@@ -12,6 +14,7 @@ const CompletionModal = ({
   setIsModalVisible,
   isModalVisible, 
 }) => {
+  const { addCoins } = useCoins();
   const [modalType, setModalType] = useState(null);
 
   const modalContent = {
@@ -42,6 +45,14 @@ const CompletionModal = ({
   
     if (isCorrect) {
       setModalType('success');
+
+      const coinReward = {
+        easy: 10,
+        medium: 20,
+        hard: 30,
+      }[difficulty] || 0;
+  
+      addCoins(coinReward); // Add coins based on difficulty
     } else if (retryCounter > 1) {
       setRetryCounter((prev) => Math.max(prev - 1, 0));
       setModalType('retry');

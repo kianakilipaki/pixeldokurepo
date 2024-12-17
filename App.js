@@ -4,36 +4,39 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/HomeScreen';
 import SudokuScreen from './screens/SudokuScreen';
 import './styles/styles.scss';
+import { CoinProvider } from './utils/coinContext';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="SudokuScreen"
-          component={SudokuScreen}
-          options={({ route }) => ({
-            title: `${route.params?.theme.title} - ${route.params?.difficulty.toUpperCase()}`,
-            headerStyle: {
-              backgroundColor: 'var(--blue)',
-              borderBottomColor: 'var(--forecolor1)',
-              borderBottomWidth: 2,
-            },
-            headerTintColor: 'var(--forecolor1)',
-            headerTitleStyle: {
-              fontFamily: 'var(--fontFamily)',
-            },
-          })}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <CoinProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SudokuScreen"
+            component={SudokuScreen}
+            options={({ route }) => ({
+              title: `${route.params?.theme.title} - ${route.params?.difficulty.toUpperCase()}`,
+              headerStyle: {
+                backgroundColor: 'var(--blue)',
+                borderBottomColor: 'var(--forecolor1)',
+                borderBottomWidth: 2,
+              },
+              headerTintColor: 'var(--forecolor1)',
+              headerTitleStyle: {
+                fontFamily: 'var(--fontFamily)',
+              },
+            })}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </CoinProvider>
   );
 };
 
