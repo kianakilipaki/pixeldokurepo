@@ -28,8 +28,8 @@ export const spriteMapLG = {
 export const themes = {
   'birds': {
     title: 'BirdDoku',
-    source: require('../assets/Winter-Birds.png'),
-    bgSource: require('../assets/sprite_northWindShrineBG.png'),
+    source: require('../assets/themes/Winter-Birds.png'),
+    bgSource: require('../assets/themes/sprite_northWindShrineBG.png'),
     difficulty: {
       easy: {loses: 3, wins: 4 },
       medium: {loses: 2, wins: 1 },
@@ -38,8 +38,8 @@ export const themes = {
   },
   'fish': {
     title: 'FishDoku',
-    source: require('../assets/coral-fish.png'),
-    bgSource: require('../assets/ocean-bg.png'),
+    source: require('../assets/themes/coral-fish.png'),
+    bgSource: require('../assets/themes/ocean-bg.png'),
     difficulty: {
       easy: {loses: 3, wins: 4 },
       medium: {loses: 2, wins: 1 },

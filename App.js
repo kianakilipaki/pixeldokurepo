@@ -1,41 +1,29 @@
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, { useState } from 'react';
 import HomeScreen from './screens/HomeScreen';
 import SudokuScreen from './screens/SudokuScreen';
 import './styles/styles.scss';
 import { CoinProvider } from './utils/coinContext';
 
-const Stack = createStackNavigator();
-
 const App = () => {
+  const [currentScreen, setCurrentScreen] = useState({
+    name: 'Home',
+    params: null,
+  });
+
+  const navigate = (screenName, params = null) => {
+    setCurrentScreen({ name: screenName, params });
+  };
+
   return (
     <CoinProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="SudokuScreen"
-            component={SudokuScreen}
-            options={({ route }) => ({
-              title: `${route.params?.theme.title} - ${route.params?.difficulty.toUpperCase()}`,
-              headerStyle: {
-                backgroundColor: 'var(--blue)',
-                borderBottomColor: 'var(--forecolor1)',
-                borderBottomWidth: 2,
-              },
-              headerTintColor: 'var(--forecolor1)',
-              headerTitleStyle: {
-                fontFamily: 'var(--fontFamily)',
-              },
-            })}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      {/* Conditional Screen Rendering */}
+      {currentScreen.name === 'Home' && <HomeScreen navigation={{ navigate }} />}
+      {currentScreen.name === 'SudokuScreen' && (
+        <SudokuScreen
+          route={{ params: currentScreen.params }}
+          navigation={{ navigate }}
+        />
+      )}
     </CoinProvider>
   );
 };

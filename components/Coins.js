@@ -18,8 +18,8 @@ const Coins = () => {
 const styles = StyleSheet.create({
     coinContainer: {
         position: 'absolute',
-        top: 1,
-        right: 1,
+        top: 10,
+        right: 10,
         backgroundColor: 'var(--bgcolor3)',
         padding: 3,
         borderRadius: 8,

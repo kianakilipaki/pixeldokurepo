@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Timer from './Timer'; // Assuming you already have this component
 
-const TopBar = ({ retryCounter, isPaused, timer, setTimer }) => {
+const TopBar = ({ difficulty, retryCounter, isPaused, timer, setTimer }) => {
   return (
     <View style={styles.topBar}>
       {/* Retry Counter */}
@@ -12,6 +12,11 @@ const TopBar = ({ retryCounter, isPaused, timer, setTimer }) => {
           <Icon key={i} name="heart" size={24} color="red" style={styles.heartIcon} />
         ))}
       </View>
+      {difficulty && (
+        <Text style={styles.difficultyText}>
+          {difficulty.toUpperCase()}
+        </Text>
+      )}
       {/* Timer */}
       <View style={styles.timerContainer}>
         <Timer isPaused={isPaused} timer={timer} setTimer={setTimer}/>
@@ -37,6 +42,12 @@ const styles = StyleSheet.create({
   timerContainer: {
     marginLeft: 20,
     alignItems: 'flex-end',
+  },
+  difficultyText: {
+    fontSize: 14,
+    color: 'var(--forecolor1)',
+    marginTop: 3,
+    fontFamily: 'var(--fontFamily)',
   },
 });
 
