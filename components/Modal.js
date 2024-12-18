@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, Button, StyleSheet, ImageBackground } from 'react-native';
 import { useCoins } from '../utils/coinContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CompletionModal = ({ 
   difficulty,
@@ -35,6 +36,10 @@ const CompletionModal = ({
     },
   };
 
+  const handleComplete = async () => {
+    await AsyncStorage.removeItem('SAVED_GAME'); // Clear saved progress
+  };
+
   useEffect(() => {
     if (!board || board.length === 0 || !solutionBoard) return;
   
@@ -51,7 +56,7 @@ const CompletionModal = ({
         medium: 20,
         hard: 30,
       }[difficulty] || 0;
-  
+      handleComplete();
       addCoins(coinReward); // Add coins based on difficulty
     } else if (retryCounter > 1) {
       setRetryCounter((prev) => Math.max(prev - 1, 0));

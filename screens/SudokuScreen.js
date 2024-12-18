@@ -6,12 +6,13 @@ import TopBar from '../components/TopBar';
 import { generateSudoku } from '../components/GeneratePuzzle';
 import PlayOverlay from '../components/PlayOverlay';
 import Header from '../components/Header';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Board = lazy(() => import('../components/Board'));
 const InputButtons = lazy(() => import('../components/InputButtons'));
 
-const SudokuScreen = ({ route }) => {
-  const { theme, difficulty } = route.params; 
+const SudokuScreen = ({ route, navigation }) => {
+  const { savedGame, theme, difficulty } = route.params;
 
   const [board, setBoard] = useState([]);
   const [initialBoard, setInitialBoard] = useState([]);
@@ -30,7 +31,6 @@ const SudokuScreen = ({ route }) => {
       setBoard(puzzle);
       setInitialBoard(puzzle);
       setSolutionBoard(solution);
-      setIsPaused(false);
       setTimer(0);
     } catch (error) {
       console.error("Error fetching puzzle:", error);
@@ -39,46 +39,83 @@ const SudokuScreen = ({ route }) => {
     }
   }, []);
 
-  const resetBoard = useCallback(() => {
-    setBoard((initialBoard));
-    setSelectedCell(null);
-    setIsPaused(false)
-    setTimer(0);
-  }, [initialBoard]);
+  const saveProgress = useCallback(async (updatedBoard) => {
+    try {
+      const gameData = {
+        theme,
+        difficulty,
+        board: updatedBoard || board, // Use updatedBoard if provided
+        initialBoard,
+        solutionBoard,
+        timer,
+      };
+      await AsyncStorage.setItem('SAVED_GAME', JSON.stringify(gameData));
+    } catch (error) {
+      console.error("Error saving game progress:", error);
+    }
+  }, [theme, difficulty, initialBoard, solutionBoard, timer]);
+
+  const loadSavedGame = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      if (savedGame) {
+        setBoard(savedGame.board);
+        setInitialBoard(savedGame.initialBoard);
+        setSolutionBoard(savedGame.solutionBoard);
+        setTimer(savedGame.timer || 0);
+        console.log("Loaded saved game:", savedGame);
+      } else {
+        await fetchPuzzle(difficulty);
+      }
+    } catch (error) {
+      console.error("Error loading saved game:", error);
+      await fetchPuzzle(difficulty);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [difficulty, fetchPuzzle]);
 
   const updateBoard = (value) => {
     if (selectedCell) {
       const [rowIndex, colIndex] = selectedCell;
-
+  
       if (initialBoard[rowIndex][colIndex] !== 0) return;
-
+  
       setBoard((prevBoard) => {
         const newBoard = prevBoard.map((row) => [...row]);
         newBoard[rowIndex][colIndex] = value;
+  
+        // Save progress with the updated board
+        saveProgress(newBoard);
+  
         return newBoard;
       });
     }
   };
 
   useEffect(() => {
-    fetchPuzzle(difficulty);
-  }, [difficulty, fetchPuzzle]);
+    const initializeGame = async () => {
+      await loadSavedGame();
+    };
+    initializeGame();
+  }, [loadSavedGame]);
 
   return (
     <ImageBackground source={theme.bgSource} resizeMode="cover" style={styles.image}>
-      {/* Header */}
-      <Header
-        title={theme.title}
-        onBackPress={() => navigation.navigate('Home')}
-      />
+      <Header title={theme.title} onBackPress={() => navigation.navigate('Home')} />
       <View style={styles.container}>
-        <TopBar difficulty={difficulty} retryCounter={retryCounter} isPaused={isPaused || isModalVisible} timer={timer} setTimer={setTimer} />
-        {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} /> }
-
         {isLoading ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
           <Suspense fallback={<ActivityIndicator size="large" color="#0000ff" />}>
+            <TopBar
+              difficulty={difficulty}
+              retryCounter={retryCounter}
+              isPaused={isPaused || isModalVisible}
+              timer={timer}
+              setTimer={setTimer}
+            />
+            {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} />}
             <Board
               theme={theme}
               board={board}
@@ -92,7 +129,7 @@ const SudokuScreen = ({ route }) => {
               solutionBoard={solutionBoard}
               selectedCell={selectedCell}
               setBoard={setBoard}
-              onReset={resetBoard}
+              onReset={() => setBoard(initialBoard)}
               onPause={() => setIsPaused(true)}
             />
             <InputButtons theme={theme} onPress={updateBoard} />
@@ -112,11 +149,8 @@ const SudokuScreen = ({ route }) => {
             setRetryCounter(3);
             fetchPuzzle(difficulty);
           }}
-          onRetry={() => {
-            resetBoard();
-          }}
+          onRetry={() => setBoard(initialBoard)}
         />
-
       </View>
     </ImageBackground>
   );
