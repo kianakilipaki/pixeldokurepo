@@ -1,17 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
 
 const Timer = ({ isPaused, timer, setTimer }) => {
+  const intervalRef = useRef(null); // To store the interval ID
+
   useEffect(() => {
     if (!isPaused) {
-      timer = setInterval(() => {
+      // Start the timer
+      intervalRef.current = setInterval(() => {
         setTimer((prev) => prev + 1);
       }, 1000);
-    } else if (isPaused && timer) {
-      clearInterval(timer);
+    } else {
+      // Clear the timer when paused
+      clearInterval(intervalRef.current);
     }
-    return () => clearInterval(timer);
-  }, [isPaused]);
+
+    // Cleanup on component unmount or dependency change
+    return () => clearInterval(intervalRef.current);
+  }, [isPaused, setTimer]);
 
   const formatTime = (secs) => {
     const minutes = Math.floor(secs / 60);
@@ -31,7 +37,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   timerText: {
-    fontFamily: 'var(--fontFamily)',
     fontSize: 20,
     fontWeight: 'bold',
     color: '#333',

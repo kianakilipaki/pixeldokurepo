@@ -1,3 +1,5 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 // Create sudoku grid lines
 export const getCellBorderStyles = (rowIndex, colIndex) => {
     const isThickTop = rowIndex % 3 === 0;
@@ -14,3 +16,21 @@ export const getCellBorderStyles = (rowIndex, colIndex) => {
       zIndex: 2,
     };
   };
+
+export const saveGameProgress = async (data) => {
+  try {
+      await AsyncStorage.setItem('SAVED_GAME', JSON.stringify(data));
+  } catch (error) {
+      console.error("Error saving game progress:", error);
+  }
+};
+
+export const fetchSudokuPuzzle = async (level, generateSudoku) => {
+  try {
+      const { puzzle, solution } = generateSudoku(level);
+      return { puzzle, solution };
+  } catch (error) {
+      console.error("Error generating puzzle:", error);
+      throw error;
+  }
+};
