@@ -1,14 +1,14 @@
 // map sprite position to numbers
 export const spriteMap = {
     1: { top: 0, left: 0 },
-    2: { top: 0, left: -35 },
-    3: { top: 0, left: -70 },
-    4: { top: -35, left: 0 },
-    5: { top: -35, left: -35 },
-    6: { top: -35, left: -70 },
-    7: { top: -70, left: 0 },
-    8: { top: -70, left: -35 },
-    9: { top: -70, left: -70 },
+    2: { top: 0, left: '-10vw' },
+    3: { top: 0, left: '-20vw' },
+    4: { top: '-10vw', left: 0 },
+    5: { top: '-10vw', left: '-10vw' },
+    6: { top: '-10vw', left: '-20vw' },
+    7: { top: '-20vw', left: 0 },
+    8: { top: '-20vw', left: '-10vw' },
+    9: { top: '-20vw', left: '-20vw' },
   };
 
 // map sprite position to numbers for input buttons

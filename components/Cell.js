@@ -58,8 +58,8 @@ const Cell = ({ theme, currentCell, selectedCell, isEditable, onSelect, style })
 
 const styles = StyleSheet.create({
   cellContainer: {
-    width: 38, // Cell size
-    height: 38,
+    width: '10vw', // Cell size
+    height: '10vw',
     backgroundColor: 'var(--bgcolor1)',
     overflow: 'hidden',
     position: 'relative',
@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
   },
   spriteImage: {
     position: 'absolute',
-    width: 105,
-    height: 105,
+    width: '30vw',
+    height: '30vw',
   },
   hintedCell: {
     backgroundColor: 'var(--highlight2)',

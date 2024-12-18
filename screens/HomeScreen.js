@@ -5,7 +5,7 @@ import {
   FlatList,
   StyleSheet,
   Animated,
-  Button,
+  TouchableOpacity ,
   View,
 } from 'react-native';
 import { themes } from '../utils/spriteMap';
@@ -52,24 +52,41 @@ const HomeScreen = ({ navigation }) => {
 
   // expand themes
   const [isExpanded, setIsExpanded] = useState(false);
-  const animationValue = useRef(new Animated.Value(0)).current;
+
+  const slideAnimation = useRef(new Animated.Value(0)).current; // Controls slide-up
+  const fadeAnimation = useRef(new Animated.Value(1)).current;  // Controls fade-out for title/buttons
 
   const toggleExpansion = () => {
-    const toValue = isExpanded ? 0 : 1;
-    Animated.timing(animationValue, {
-      toValue,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
+    if (!isExpanded) {
+      // Expand Theme List
+      Animated.parallel([
+        Animated.timing(slideAnimation, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(fadeAnimation, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    } else {
+      // Collapse Theme List
+      Animated.parallel([
+        Animated.timing(slideAnimation, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(fadeAnimation, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
     setIsExpanded(!isExpanded);
-  };
-
-  const animatedContainerStyle = {
-    height: animationValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, '100vh'],
-    }),
-    opacity: animationValue,
   };
 
   if (!fontsLoaded) {
@@ -83,20 +100,37 @@ const HomeScreen = ({ navigation }) => {
       resizeMode="cover"
     >
       <Coins />
-      {/* Header Section */}
-      <View style={styles.headerContainer}>
-        <Text style={styles.header}>Welcome to PixelDoku</Text>
-      </View>
 
-      {/* Continue Button if Game Progress Exists */}
-      {savedGame && (
-        <Button title="Continue Last Game" onPress={handleContinue} color="green" />
-      )}
+      {/* Title and Buttons (Fade Out) */}
+      <Animated.View style={[styles.centerContainer, { opacity: fadeAnimation }]}>
+        <Text style={styles.header}>Welcome to <Text style={styles.title}>PixelDoku</Text></Text>
+        {savedGame && (
+          <TouchableOpacity style={[styles.button, {backgroundColor: 'var(--forecolor1)'}]} onPress={handleContinue}>
+            <Text style={styles.buttonText}>Continue Last Game</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity style={[styles.button, {backgroundColor: 'var(--blue)'}]} onPress={toggleExpansion}>
+          <Text style={styles.buttonText}>Start New Game</Text>
+        </TouchableOpacity>
+      </Animated.View>
 
-      {/* Expandable Theme List */}
-      <Button style={styles.subHeader} title={isExpanded ? 'Choose a Theme' : 'Start New Game'} onPress={toggleExpansion} color="red"/>
-
-      <Animated.View style={[styles.themeContainer, animatedContainerStyle]}>
+      {/* Theme List (Slide Up) */}
+      <Animated.View
+        style={[
+          styles.themeContainer,
+          {
+            transform: [
+              {
+                translateY: slideAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['100%', '0%'], // Slides up from the bottom
+                }),
+              },
+            ],
+          },
+        ]}
+      >
+        <Text style={styles.header}>Choose a Theme</Text>
         <FlatList
           data={Object.keys(themes).map((key) => ({ themeKey: key, ...themes[key] }))}
           renderItem={({ item }) => (
@@ -108,26 +142,52 @@ const HomeScreen = ({ navigation }) => {
     </ImageBackground>
   );
 };
+
 const styles = StyleSheet.create({
   background: {
     position: 'absolute',
     overflow: 'hidden',
     top: 1,
     height: '100vh',
-    color: 'var(--forecolor1)',
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   header: {
-    width: '100vw',
     fontFamily: 'var(--fontFamily)',
-    color: 'var(--forecolor1)',
-    fontSize: 28,
+    fontSize: 36,
     textAlign: 'center',
-    marginTop: 20,
-    zIndex: 1,  
+    marginBottom: 20,
+    color: 'var(--forecolor1)',
   },
-  subHeader: {
-    textAlign: 'center', 
-    fontWeight: 'bold'
+  title: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    color: 'var(--red)',
+  },
+  button: {
+    width: '60%',
+    paddingVertical: 10,
+    borderRadius: 10,
+    marginVertical: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontFamily: 'var(--fontFamily)',
+    fontSize: 16,
+  },
+  themeContainer: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: '90%',
+    backgroundColor: 'var(--forecolor3)',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 10,
   },
 });
 
