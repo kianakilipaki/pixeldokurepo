@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 const PlayOverlay = ({ onPress }) => {
     return (
@@ -9,7 +8,10 @@ const PlayOverlay = ({ onPress }) => {
             style={styles.playButton}
             onPress={onPress}
           >
-            <Icon name="play" size={40} color="white" />
+            <Image
+              source={require('../assets/play.png')}
+              style={{ width: 45, height: 45 }}
+              />
           </TouchableOpacity>
         </View> 
     );

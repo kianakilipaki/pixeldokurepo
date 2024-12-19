@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
   },
   timerText: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
+    fontFamily: 'var(--fontFamily)',
+    color: 'var(--forecolor1)',
   },
 });
 

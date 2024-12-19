@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
         top: 10,
         right: 10,
         backgroundColor: 'var(--bgcolor3)',
-        padding: 3,
+        paddingVertical: 3,
+        paddingHorizontal: 5,
         borderRadius: 8,
         flex: 1,
         flexDirection: 'row',
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
       },
       coinText: {
         fontSize: 16,
-        color: 'gold',
+        color: 'var(--gold)',
         fontFamily: 'var(--fontFamily)',
       },
 });

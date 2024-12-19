@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
         padding: 15,
       },
       thumbnail: {
-        width: 38, // Cell size
-        height: 38,
+        width: '10vw', // Cell size
+        height: '10vw',
         overflow: 'hidden',
         position: 'relative',
         justifyContent: 'center',
@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
       },
       spriteImage: {
         position: 'absolute',
-        width: 105,
-        height: 105,
+        width: '30vw',
+        height: '30vw',
       },
       themeTitle: {
         fontFamily: 'var(--fontFamily)',

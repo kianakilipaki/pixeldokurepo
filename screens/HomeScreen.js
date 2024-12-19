@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     overflow: 'hidden',
     top: 1,
+    width: '100vw',
     height: '100vh',
   },
 });

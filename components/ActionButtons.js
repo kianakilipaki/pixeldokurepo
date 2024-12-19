@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ActionButtons = ({ board, setBoard, solutionBoard, initialBoard, selectedCell, onReset, onPause }) => {
@@ -39,22 +39,38 @@ const ActionButtons = ({ board, setBoard, solutionBoard, initialBoard, selectedC
     <View style={styles.buttonContainer}>
       {/* Reset Button */}
       <TouchableOpacity style={styles.button} onPress={onReset}>
-        <Icon name="restart" size={20} color="#fff" />
+        <Image
+          source={require('../assets/reset.png')}
+          style={{ width: 20, height: 20 }}
+          />
+        {/* <Icon name="restart" size={20} color="#fff" /> */}
       </TouchableOpacity>
 
       {/* Erase Button */}
       <TouchableOpacity style={styles.button} onPress={onErase}>
-        <Icon name="eraser" size={20} color="#fff" />
+        {/* <Icon name="eraser" size={20} color="#fff" /> */}
+        <Image
+          source={require('../assets/erase.png')}
+          style={{ width: 20, height: 20 }}
+          />
       </TouchableOpacity>
 
       {/* Hint Button */}
       <TouchableOpacity style={styles.button} onPress={onHint}>
-        <Icon name="lightbulb-outline" size={20} color="#fff" />
+        {/* <Icon name="lightbulb-outline" size={20} color="#fff" /> */}
+        <Image
+          source={require('../assets/hint.png')}
+          style={{ width: 20, height: 20 }}
+          />
       </TouchableOpacity>
 
       {/* Pause Button */}
       <TouchableOpacity style={styles.button} onPress={onPause}>
-        <Icon name="pause" size={20} color="#fff" />
+        {/* <Icon name="pause" size={20} color="#fff" /> */}
+        <Image
+          source={require('../assets/pause.png')}
+          style={{ width: 20, height: 20 }}
+          />
       </TouchableOpacity>
     </View>
   );
