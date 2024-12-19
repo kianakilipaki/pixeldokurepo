@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   difficultyText: {
-    fontSize: 14,
+    fontSize: 18,
     color: 'var(--forecolor1)',
     marginTop: 3,
     fontFamily: 'var(--fontFamily)',

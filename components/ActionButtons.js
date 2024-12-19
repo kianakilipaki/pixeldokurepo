@@ -1,8 +1,9 @@
-import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, StyleSheet, Image, Text } from 'react-native';
 
 const ActionButtons = ({ board, setBoard, solutionBoard, initialBoard, selectedCell, onReset, onPause }) => {
+  const [hints, setHints] = useState(3);
+
   const onErase = () => {
     if (selectedCell) {
       const [rowIndex, colIndex] = selectedCell;
@@ -17,6 +18,7 @@ const ActionButtons = ({ board, setBoard, solutionBoard, initialBoard, selectedC
   };
 
   const onHint = () => {
+    if (hints <= 0) return; // Prevent using hints if there are none left
     const emptyCells = [];
     board.forEach((row, rowIndex) => {
       row.forEach((value, colIndex) => {
@@ -32,45 +34,34 @@ const ActionButtons = ({ board, setBoard, solutionBoard, initialBoard, selectedC
         newBoard[rowIndex][colIndex] = solutionBoard[rowIndex][colIndex];
         return newBoard;
       });
+      setHints((prevHints) => prevHints - 1); // Reduce hints count
     }
   };
-  
+
   return (
     <View style={styles.buttonContainer}>
       {/* Reset Button */}
       <TouchableOpacity style={styles.button} onPress={onReset}>
-        <Image
-          source={require('../assets/reset.png')}
-          style={{ width: 20, height: 20 }}
-          />
-        {/* <Icon name="restart" size={20} color="#fff" /> */}
+        <Image source={require('../assets/reset.png')} style={{ width: 20, height: 20 }} />
       </TouchableOpacity>
 
       {/* Erase Button */}
       <TouchableOpacity style={styles.button} onPress={onErase}>
-        {/* <Icon name="eraser" size={20} color="#fff" /> */}
-        <Image
-          source={require('../assets/erase.png')}
-          style={{ width: 20, height: 20 }}
-          />
+        <Image source={require('../assets/erase.png')} style={{ width: 20, height: 20 }} />
       </TouchableOpacity>
 
       {/* Hint Button */}
       <TouchableOpacity style={styles.button} onPress={onHint}>
-        {/* <Icon name="lightbulb-outline" size={20} color="#fff" /> */}
-        <Image
-          source={require('../assets/hint.png')}
-          style={{ width: 20, height: 20 }}
-          />
+        <View style={styles.hintIndicator}>
+          {hints > 0 && (<Text style={styles.hintText}>{hints}</Text>)}
+          {hints == 0 && (<Image source={require('../assets/ad.png')} style={{ width: 12, height: 12 }} />)}
+        </View>
+        <Image source={require('../assets/hint.png')} style={{ width: 20, height: 20 }} />
       </TouchableOpacity>
 
       {/* Pause Button */}
       <TouchableOpacity style={styles.button} onPress={onPause}>
-        {/* <Icon name="pause" size={20} color="#fff" /> */}
-        <Image
-          source={require('../assets/pause.png')}
-          style={{ width: 20, height: 20 }}
-          />
+        <Image source={require('../assets/pause.png')} style={{ width: 20, height: 20 }} />
       </TouchableOpacity>
     </View>
   );
@@ -93,6 +84,24 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 8,
   },
+  hintIndicator: {
+    position: 'absolute',
+    top: -6,
+    right: -5,
+    paddingHorizontal: 3,
+    paddingVertical: 2,
+    backgroundColor: 'var(--gold)',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  hintText: {
+    fontSize: 10,
+    fontFamily: 'var(--fontFamily)'
+  }
 });
 
 export default ActionButtons;
