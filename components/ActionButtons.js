@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, Image, Text } from 'react-native';
+import React, { useState } from "react";
+import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 
-const ActionButtons = ({ board, setBoard, solutionBoard, initialBoard, selectedCell, onReset, onPause }) => {
-  const [hints, setHints] = useState(3);
-
+const ActionButtons = ({
+  board,
+  setBoard,
+  solutionBoard,
+  initialBoard,
+  selectedCell,
+  onReset,
+  onPause,
+  hints,
+  setHints,
+}) => {
   const onErase = () => {
     if (selectedCell) {
       const [rowIndex, colIndex] = selectedCell;
@@ -18,7 +26,7 @@ const ActionButtons = ({ board, setBoard, solutionBoard, initialBoard, selectedC
   };
 
   const onHint = () => {
-    if (hints <= 0) return; // Prevent using hints if there are none left
+    //if (hints <= 0) return; // Prevent using hints if there are none left
     const emptyCells = [];
     board.forEach((row, rowIndex) => {
       row.forEach((value, colIndex) => {
@@ -27,7 +35,8 @@ const ActionButtons = ({ board, setBoard, solutionBoard, initialBoard, selectedC
     });
 
     if (emptyCells.length > 0) {
-      const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+      const randomCell =
+        emptyCells[Math.floor(Math.random() * emptyCells.length)];
       const [rowIndex, colIndex] = randomCell;
       setBoard((prevBoard) => {
         const newBoard = prevBoard.map((row) => [...row]);
@@ -42,26 +51,43 @@ const ActionButtons = ({ board, setBoard, solutionBoard, initialBoard, selectedC
     <View style={styles.buttonContainer}>
       {/* Reset Button */}
       <TouchableOpacity style={styles.button} onPress={onReset}>
-        <Image source={require('../assets/reset.png')} style={{ width: 20, height: 20 }} />
+        <Image
+          source={require("../assets/reset.png")}
+          style={{ width: 20, height: 20 }}
+        />
       </TouchableOpacity>
 
       {/* Erase Button */}
       <TouchableOpacity style={styles.button} onPress={onErase}>
-        <Image source={require('../assets/erase.png')} style={{ width: 20, height: 20 }} />
+        <Image
+          source={require("../assets/erase.png")}
+          style={{ width: 20, height: 20 }}
+        />
       </TouchableOpacity>
 
       {/* Hint Button */}
       <TouchableOpacity style={styles.button} onPress={onHint}>
         <View style={styles.hintIndicator}>
-          {hints > 0 && (<Text style={styles.hintText}>{hints}</Text>)}
-          {hints == 0 && (<Image source={require('../assets/ad.png')} style={{ width: 12, height: 12 }} />)}
+          {hints > 0 && <Text style={styles.hintText}>{hints}</Text>}
+          {hints == 0 && (
+            <Image
+              source={require("../assets/ad.png")}
+              style={{ width: 12, height: 12 }}
+            />
+          )}
         </View>
-        <Image source={require('../assets/hint.png')} style={{ width: 20, height: 20 }} />
+        <Image
+          source={require("../assets/hint.png")}
+          style={{ width: 20, height: 20 }}
+        />
       </TouchableOpacity>
 
       {/* Pause Button */}
       <TouchableOpacity style={styles.button} onPress={onPause}>
-        <Image source={require('../assets/pause.png')} style={{ width: 20, height: 20 }} />
+        <Image
+          source={require("../assets/pause.png")}
+          style={{ width: 20, height: 20 }}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -69,39 +95,39 @@ const ActionButtons = ({ board, setBoard, solutionBoard, initialBoard, selectedC
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginTop: 20,
-    width: '100%',
+    width: "100%",
   },
   button: {
     padding: 10,
-    backgroundColor: 'var(--blue)',
+    backgroundColor: "var(--blue)",
     borderRadius: 50,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
   },
   hintIndicator: {
-    position: 'absolute',
+    position: "absolute",
     top: -6,
     right: -5,
     paddingHorizontal: 3,
     paddingVertical: 2,
-    backgroundColor: 'var(--gold)',
+    backgroundColor: "var(--gold)",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   hintText: {
     fontSize: 10,
-    fontFamily: 'var(--fontFamily)'
-  }
+    fontFamily: "var(--fontFamily)",
+  },
 });
 
 export default ActionButtons;

@@ -1,126 +1,145 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, StyleSheet, ImageBackground } from 'react-native';
-import CompletionModal from '../components/Modal';
-import GameBoard from '../components/GameBoard';
-import LoadingIndicator from '../components/loadingIcon';
-import TopBar from '../components/TopBar';
-import Header from '../components/Header';
-import { saveGameProgress } from '../utils/helper';
-import { generateSudoku } from '../utils/GeneratePuzzle';
-import PlayOverlay from '../components/PlayOverlay';
+import React, { useEffect, useCallback, useState } from "react";
+import { View, StyleSheet, ImageBackground } from "react-native";
+import CompletionModal from "../components/Modal";
+import GameBoard from "../components/GameBoard";
+import LoadingIndicator from "../components/loadingIcon";
+import TopBar from "../components/TopBar";
+import Header from "../components/Header";
+import { useGame } from "../utils/gameContext";
+import PlayOverlay from "../components/PlayOverlay";
+import { generateSudoku } from "../utils/GeneratePuzzle";
 
 const SudokuScreen = ({ route, navigation }) => {
-   const { savedGame, theme, difficulty } = route.params;
+  const {
+    theme,
+    setTheme,
+    difficulty,
+    setDifficulty,
+    board,
+    setBoard,
+    initialBoard,
+    solutionBoard,
+    setInitialBoard,
+    setSolutionBoard,
+    timer,
+    setTimer,
+    retryCounter,
+    setRetryCounter,
+    saveProgress,
+    hints,
+    setHints,
+  } = useGame();
 
-   const [board, setBoard] = useState([]);
-   const [initialBoard, setInitialBoard] = useState([]);
-   const [solutionBoard, setSolutionBoard] = useState([]);
-   const [selectedCell, setSelectedCell] = useState(null);
-   const [isPaused, setIsPaused] = useState(false);
-   const [isModalVisible, setIsModalVisible] = useState(false);
-   const [isLoading, setIsLoading] = useState(true);
-   const [retryCounter, setRetryCounter] = useState(3);
-   const [timer, setTimer] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedCell, setSelectedCell] = useState(null);
+  const [isPaused, setIsPaused] = useState(false);
 
-   const loadGame = useCallback(async () => {
-       setIsLoading(true);
-       try {
-           if (savedGame) {
-               setBoard(savedGame.board);
-               setInitialBoard(savedGame.initialBoard);
-               setSolutionBoard(savedGame.solutionBoard);
-               setTimer(savedGame.timer || 0);
-           } else {
-               const { puzzle, solution } = generateSudoku(difficulty);
-               setBoard(puzzle);
-               setInitialBoard(puzzle);
-               setSolutionBoard(solution);
-               saveGameProgress({ theme, difficulty, board: puzzle, initialBoard: puzzle, solutionBoard: solution, timer });
-           }
-       } catch (error) {
-           console.error("Error loading game:", error);
-       } finally {
-           setIsLoading(false);
-       }
-   }, [difficulty]);
+  const resetGame = useCallback(() => {
+    try {
+      const { puzzle, solution } = generateSudoku(difficulty);
+      setBoard(puzzle);
+      setInitialBoard(puzzle);
+      setSolutionBoard(solution);
+      setTimer(0);
+      setRetryCounter(3);
+      setHints(3);
+    } catch (error) {
+      console.error("Error loading game:", error);
+    } finally {
+      saveProgress();
+      setIsLoading(false);
+    }
+  }, [difficulty]);
 
-   const updateBoard = (value) => {
+  const updateBoard = (value) => {
     const [row, col] = selectedCell || [];
-      if (row != null && col != null && initialBoard[row][col] === 0) {
-          const newBoard = board.map((r, i) => (i === row ? [...r] : r));
-          newBoard[row][col] = value;
-          setBoard(newBoard);
-          saveGameProgress({ theme, difficulty, board: newBoard, initialBoard, solutionBoard, timer });
-      }
-    };
+    if (row != null && col != null && initialBoard[row][col] === 0) {
+      const newBoard = board.map((r, i) => (i === row ? [...r] : r));
+      newBoard[row][col] = value;
+      setBoard(newBoard);
+      saveProgress(newBoard);
+    }
+  };
 
-   useEffect(() => {
-       loadGame();
-   }, [loadGame]);
+  useEffect(() => {
+    if (!theme) {
+      const { theme, difficulty } = route.params;
+      setTheme(theme);
+      setDifficulty(difficulty);
+      resetGame();
+    } else {
+      setIsLoading(false);
+    }
+  }, [route.params]);
 
-   return (
-       <ImageBackground source={theme.bgSource} resizeMode="cover" style={styles.image}>
-           <Header title={theme.title} onBackPress={() => navigation.navigate('Home')} />
-           <View style={styles.container}>
-               {isLoading ? (
-                   <LoadingIndicator />
-               ) : (
-                   <>
-                       <TopBar
-                           difficulty={difficulty}
-                           retryCounter={retryCounter}
-                           isPaused={isPaused || isModalVisible}
-                           timer={timer}
-                           setTimer={setTimer}
-                       />
-                       {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} />}
-                       <GameBoard
-                           theme={theme}
-                           board={board}
-                           initialBoard={initialBoard}
-                           solutionBoard={solutionBoard}
-                           selectedCell={selectedCell}
-                           setBoard={setBoard}
-                           onCellSelect={setSelectedCell}
-                           updateBoard={updateBoard}
-                           onReset={() => setBoard(initialBoard)}
-                           onPause={() => setIsPaused(true)}
-                       />
-                   </>
-               )}
-               <CompletionModal
-                   difficulty={difficulty}
-                   board={board}
-                   solutionBoard={solutionBoard}
-                   retryCounter={retryCounter}
-                   setRetryCounter={setRetryCounter}
-                   timer={timer}
-                   setIsModalVisible={setIsModalVisible}
-                   isModalVisible={isModalVisible}
-                   onNextPuzzle={async () => {
-                       setRetryCounter(3);
-                       await loadGame();
-                   }}
-                   onRetry={() => setBoard(initialBoard)}
-               />
-           </View>
-       </ImageBackground>
-   );
+  if (isLoading || !theme) {
+    return <LoadingIndicator />;
+  }
+
+  return (
+    <ImageBackground
+      source={theme.bgSource}
+      resizeMode="cover"
+      style={styles.image}
+    >
+      <Header
+        title={theme.title}
+        onBackPress={() => navigation.navigate("Home")}
+      />
+      <View style={styles.container}>
+        <TopBar
+          difficulty={difficulty}
+          retryCounter={retryCounter}
+          isPaused={isPaused || isModalVisible}
+          timer={timer}
+          setTimer={setTimer}
+        />
+        {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} />}
+        <GameBoard
+          theme={theme}
+          board={board}
+          initialBoard={initialBoard}
+          solutionBoard={solutionBoard}
+          selectedCell={selectedCell}
+          setBoard={setBoard}
+          hints={hints}
+          setHints={setHints}
+          onCellSelect={setSelectedCell}
+          updateBoard={updateBoard}
+          onReset={() => setBoard(initialBoard)}
+          onPause={() => setIsPaused(true)}
+        />
+        <CompletionModal
+          difficulty={difficulty}
+          board={board}
+          solutionBoard={solutionBoard}
+          retryCounter={retryCounter}
+          setRetryCounter={setRetryCounter}
+          timer={timer}
+          setIsModalVisible={setIsModalVisible}
+          isModalVisible={isModalVisible}
+          onNextPuzzle={() => resetGame()}
+          onRetry={() => setBoard(initialBoard)}
+        />
+      </View>
+    </ImageBackground>
+  );
 };
 
 const styles = StyleSheet.create({
-   image: {
-       flex: 1,
-       width: '100%',
-       height: '100%',
-       justifyContent: 'center',
-   },
-   container: {
-       flex: 1,
-       padding: '5vw',
-       justifyContent: 'center',
-       alignItems: 'center',
-   },
+  image: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+  },
+  container: {
+    flex: 1,
+    padding: "5vw",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
 
 export default SudokuScreen;
