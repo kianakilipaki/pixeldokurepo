@@ -5,8 +5,8 @@ import GameBoard from '../components/GameBoard';
 import LoadingIndicator from '../components/loadingIcon';
 import TopBar from '../components/TopBar';
 import Header from '../components/Header';
-import { saveGameProgress, fetchSudokuPuzzle } from '../utils/helper';
-import { generateSudoku } from '../components/GeneratePuzzle';
+import { saveGameProgress } from '../utils/helper';
+import { generateSudoku } from '../utils/GeneratePuzzle';
 import PlayOverlay from '../components/PlayOverlay';
 
 const SudokuScreen = ({ route, navigation }) => {
@@ -31,7 +31,7 @@ const SudokuScreen = ({ route, navigation }) => {
                setSolutionBoard(savedGame.solutionBoard);
                setTimer(savedGame.timer || 0);
            } else {
-               const { puzzle, solution } = await fetchSudokuPuzzle(difficulty, generateSudoku);
+               const { puzzle, solution } = generateSudoku(difficulty);
                setBoard(puzzle);
                setInitialBoard(puzzle);
                setSolutionBoard(solution);

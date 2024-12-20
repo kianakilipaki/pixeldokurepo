@@ -25,16 +25,6 @@ export const saveGameProgress = async (data) => {
   }
 };
 
-export const fetchSudokuPuzzle = async (level, generateSudoku) => {
-  try {
-      const { puzzle, solution } = generateSudoku(level);
-      return { puzzle, solution };
-  } catch (error) {
-      console.error("Error generating puzzle:", error);
-      throw error;
-  }
-};
-
 export const saveGameStat = async (theme, difficulty) => {
   try {
     // Fetch existing stats
