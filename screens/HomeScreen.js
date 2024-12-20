@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ImageBackground, StyleSheet } from 'react-native';
-import AppLoading from 'expo-app-loading';
+import { ImageBackground, StyleSheet, Text } from 'react-native';
 import {
   useFonts,
   Silkscreen_400Regular,
@@ -44,7 +43,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return <Text>Loading...</Text>;
   }
 
   return (

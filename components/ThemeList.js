@@ -61,7 +61,7 @@ const ThemeList = ({ item, themeKey, navigation }) => {
                     {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
                   </Text>
                   <Text style={styles.statsText}>
-                    Completed ({stats.wins} / {stats.wins + stats.loses})
+                    Completed {stats}
                   </Text>
                 </TouchableOpacity>
                 {difficulty !== 'hard' && <View style={styles.divider} />}
