@@ -1,9 +1,12 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import Cell from './Cell';
-import { getCellBorderStyles } from '../utils/helper';
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import Cell from "./Cell";
+import { getCellBorderStyles } from "../utils/helper";
+import { useGame } from "../utils/gameContext";
 
-const Board = ({ theme, board, initialBoard, selectedCell, onCellSelect }) => {
+const Board = ({ selectedCell, onCellSelect }) => {
+  const { theme, board, initialBoard } = useGame();
+
   return (
     <View style={styles.board}>
       {board.map((row, rowIndex) => (
@@ -27,12 +30,12 @@ const Board = ({ theme, board, initialBoard, selectedCell, onCellSelect }) => {
 
 const styles = StyleSheet.create({
   board: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
 });
 

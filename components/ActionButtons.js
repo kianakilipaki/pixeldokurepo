@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
+import { useGame } from "../utils/gameContext";
 
-const ActionButtons = ({
-  board,
-  setBoard,
-  solutionBoard,
-  initialBoard,
-  selectedCell,
-  onReset,
-  onPause,
-  hints,
-  setHints,
-}) => {
+const ActionButtons = ({ selectedCell, onReset, onPause }) => {
+  const { board, setBoard, initialBoard, solutionBoard, hints, setHints } =
+    useGame();
+
   const onErase = () => {
     if (selectedCell) {
       const [rowIndex, colIndex] = selectedCell;

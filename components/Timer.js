@@ -1,7 +1,10 @@
-import React, { useEffect, useRef } from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import React, { useEffect, useRef } from "react";
+import { Text, StyleSheet, View } from "react-native";
+import { useGame } from "../utils/gameContext";
 
-const Timer = ({ isPaused, timer, setTimer }) => {
+const Timer = ({ isPaused }) => {
+  const { timer, setTimer } = useGame();
+
   const intervalRef = useRef(null); // To store the interval ID
 
   useEffect(() => {
@@ -22,7 +25,9 @@ const Timer = ({ isPaused, timer, setTimer }) => {
   const formatTime = (secs) => {
     const minutes = Math.floor(secs / 60);
     const remainingSeconds = secs % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+    return `${String(minutes).padStart(2, "0")}:${String(
+      remainingSeconds
+    ).padStart(2, "0")}`;
   };
 
   return (
@@ -34,12 +39,12 @@ const Timer = ({ isPaused, timer, setTimer }) => {
 
 const styles = StyleSheet.create({
   timerContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   timerText: {
     fontSize: 20,
-    fontFamily: 'var(--fontFamily)',
-    color: 'var(--forecolor1)',
+    fontFamily: "var(--fontFamily)",
+    color: "var(--forecolor1)",
   },
 });
 

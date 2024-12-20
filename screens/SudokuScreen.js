@@ -88,23 +88,10 @@ const SudokuScreen = ({ route, navigation }) => {
         onBackPress={() => navigation.navigate("Home")}
       />
       <View style={styles.container}>
-        <TopBar
-          difficulty={difficulty}
-          retryCounter={retryCounter}
-          isPaused={isPaused || isModalVisible}
-          timer={timer}
-          setTimer={setTimer}
-        />
+        <TopBar isPaused={isPaused || isModalVisible} />
         {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} />}
         <GameBoard
-          theme={theme}
-          board={board}
-          initialBoard={initialBoard}
-          solutionBoard={solutionBoard}
           selectedCell={selectedCell}
-          setBoard={setBoard}
-          hints={hints}
-          setHints={setHints}
           onCellSelect={setSelectedCell}
           updateBoard={updateBoard}
           onReset={() => setBoard(initialBoard)}
