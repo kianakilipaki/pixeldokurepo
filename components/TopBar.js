@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Timer from './Timer'; // Assuming you already have this component
 
 const TopBar = ({ difficulty, retryCounter, isPaused, timer, setTimer }) => {
@@ -14,7 +13,6 @@ const TopBar = ({ difficulty, retryCounter, isPaused, timer, setTimer }) => {
             source={require('../assets/heart.png')}
             style={styles.heartIcon}
           />
-          //<Icon key={i} name="heart" size={24} color="red" style={styles.heartIcon} />
         ))}
       </View>
       {difficulty && (
@@ -42,7 +40,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   heartIcon: {
-    marginHorizontal: 4,
+    margin: 4,
     width: 24, 
     height: 24
   },

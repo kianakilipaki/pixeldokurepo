@@ -35,13 +35,14 @@ const SudokuScreen = ({ route, navigation }) => {
                setBoard(puzzle);
                setInitialBoard(puzzle);
                setSolutionBoard(solution);
+               saveGameProgress({ theme, difficulty, board: puzzle, initialBoard: puzzle, solutionBoard: solution, timer });
            }
        } catch (error) {
            console.error("Error loading game:", error);
        } finally {
            setIsLoading(false);
        }
-   }, [savedGame, difficulty]);
+   }, [difficulty]);
 
    const updateBoard = (value) => {
     const [row, col] = selectedCell || [];

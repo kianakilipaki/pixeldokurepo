@@ -29,22 +29,24 @@ export const themes = {
   'birds': {
     title: 'BirdDoku',
     source: require('../assets/themes/Winter-Birds.png'),
-    bgSource: require('../assets/themes/sprite_northWindShrineBG.png'),
+    bgSource: require('../assets/themes/MntForest-bg.png'),
     difficulty: {
-      easy: {loses: 3, wins: 4 },
-      medium: {loses: 2, wins: 1 },
-      hard: {loses: 3, wins: 3 }
-    }
+      easy: 4,
+      medium: 1,
+      hard: 3
+    },
+    locked: false
   },
   'fish': {
     title: 'FishDoku',
     source: require('../assets/themes/coral-fish.png'),
     bgSource: require('../assets/themes/ocean-bg.png'),
     difficulty: {
-      easy: {loses: 3, wins: 4 },
-      medium: {loses: 2, wins: 1 },
-      hard: {loses: 3, wins: 3 }
-    }
+      easy: 4,
+      medium: 1,
+      hard: 3
+    },
+    locked: false
   },
   'unknown1': {
     title: 'Coming Soon',

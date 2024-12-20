@@ -34,3 +34,22 @@ export const fetchSudokuPuzzle = async (level, generateSudoku) => {
       throw error;
   }
 };
+
+export const saveGameStat = async (theme, difficulty) => {
+  try {
+    // Fetch existing stats
+    const statsJSON = await AsyncStorage.getItem('gameStats');
+    const stats = statsJSON ? JSON.parse(statsJSON) : {};
+
+    // Update the specific theme and difficulty
+    if (!stats[theme]) {
+      stats[theme] = { Easy: 0, Medium: 0, Hard: 0 };
+    }
+    stats[theme][difficulty] += 1;
+
+    // Save updated stats
+    await AsyncStorage.setItem('gameStats', JSON.stringify(stats));
+  } catch (error) {
+    console.error('Error saving game stats:', error);
+  }
+};
