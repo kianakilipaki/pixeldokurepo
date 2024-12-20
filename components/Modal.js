@@ -9,22 +9,22 @@ import {
   Image,
 } from "react-native";
 import { useCoins } from "../utils/coinContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useGame } from "../utils/gameContext";
 
 const CompletionModal = ({
-  difficulty,
-  board,
-  timer,
-  solutionBoard,
-  retryCounter,
-  setRetryCounter,
   onNextPuzzle,
   onRetry,
   setIsModalVisible,
   isModalVisible,
 }) => {
-  const { resetPuzzle } = useGame();
+  const {
+    difficulty,
+    board,
+    solutionBoard,
+    timer,
+    retryCounter,
+    setRetryCounter,
+  } = useGame();
 
   const { addCoins } = useCoins();
   const [modalType, setModalType] = useState(null);

@@ -1,11 +1,20 @@
-import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
-import { spriteMap } from '../utils/spriteMap';
+import React from "react";
+import { View, Image, StyleSheet } from "react-native";
+import { spriteMap } from "../utils/spriteMap";
 
-const Cell = ({ theme, currentCell, selectedCell, isEditable, onSelect, style }) => {
+const Cell = ({
+  theme,
+  currentCell,
+  selectedCell,
+  isEditable,
+  onSelect,
+  style,
+}) => {
   const isCellSelected = () => {
     if (!selectedCell) return false;
-    return currentCell[0] === selectedCell[0] && currentCell[1] === selectedCell[1];
+    return (
+      currentCell[0] === selectedCell[0] && currentCell[1] === selectedCell[1]
+    );
   };
 
   const isCellSame = () => {
@@ -58,36 +67,35 @@ const Cell = ({ theme, currentCell, selectedCell, isEditable, onSelect, style })
 
 const styles = StyleSheet.create({
   cellContainer: {
-    width: '10vw', // Cell size
-    height: '10vw',
-    backgroundColor: 'var(--bgcolor1)',
-    overflow: 'hidden',
-    position: 'relative',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "10vw", // Cell size
+    height: "10vw",
+    backgroundColor: "var(--bgcolor1)",
+    overflow: "hidden",
+    position: "relative",
+    justifyContent: "center",
+    alignItems: "center",
   },
   spriteImage: {
-    position: 'absolute',
-    width: '30vw',
-    height: '30vw',
+    position: "absolute",
+    width: "30vw",
+    height: "30vw",
   },
   hintedCell: {
-    backgroundColor: 'var(--highlight2)',
+    backgroundColor: "var(--highlight2)",
   },
   selectedCell: {
-    backgroundColor: 'var(--highlight1)',
+    backgroundColor: "var(--highlight1)",
   },
   highlightedCell: {
     borderTopWidth: 3,
     borderLeftWidth: 3,
     borderBottomWidth: 3,
     borderRightWidth: 3,
-    borderColor: 'var(--blue)',
+    borderColor: "var(--blue)",
   },
   notEditable: {
-    backgroundColor: 'var(--bgcolor2)',
+    backgroundColor: "var(--bgcolor2)",
   },
 });
-
 
 export default Cell;

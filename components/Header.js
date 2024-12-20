@@ -8,7 +8,7 @@ const Header = ({ title, onBackPress }) => {
       {/* Back Arrow */}
       <TouchableOpacity onPress={onBackPress} style={styles.backArrow}>
         <Image
-          source={require("../assets/backArrow.png")} // Add a back-arrow image in assets
+          source={require("../assets/backArrow.png")}
           style={{ width: 20, height: 20 }}
         />
       </TouchableOpacity>

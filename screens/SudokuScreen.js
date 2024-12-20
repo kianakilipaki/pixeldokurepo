@@ -18,15 +18,11 @@ const SudokuScreen = ({ route, navigation }) => {
     board,
     setBoard,
     initialBoard,
-    solutionBoard,
     setInitialBoard,
     setSolutionBoard,
-    timer,
     setTimer,
-    retryCounter,
     setRetryCounter,
     saveProgress,
-    hints,
     setHints,
   } = useGame();
 
@@ -98,12 +94,6 @@ const SudokuScreen = ({ route, navigation }) => {
           onPause={() => setIsPaused(true)}
         />
         <CompletionModal
-          difficulty={difficulty}
-          board={board}
-          solutionBoard={solutionBoard}
-          retryCounter={retryCounter}
-          setRetryCounter={setRetryCounter}
-          timer={timer}
           setIsModalVisible={setIsModalVisible}
           isModalVisible={isModalVisible}
           onNextPuzzle={() => resetGame()}

@@ -1,6 +1,6 @@
 // useThemeAnimation.js
-import { useState, useRef } from 'react';
-import { Animated } from 'react-native';
+import { useState, useRef } from "react";
+import { Animated } from "react-native";
 
 const useThemeAnimation = () => {
   const [isExpanded, setIsExpanded] = useState(false);
