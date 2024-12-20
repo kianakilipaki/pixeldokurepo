@@ -4,6 +4,7 @@ import SudokuScreen from "./screens/SudokuScreen";
 import "./styles/styles.scss";
 import { CoinProvider } from "./utils/coinContext";
 import { GameProvider } from "./utils/gameContext";
+import { GameStatProvider } from "./utils/gameStatContext";
 
 const App = () => {
   const [currentScreen, setCurrentScreen] = useState({
@@ -17,18 +18,20 @@ const App = () => {
 
   return (
     <GameProvider>
-      <CoinProvider>
-        {/* Conditional Screen Rendering */}
-        {currentScreen.name === "Home" && (
-          <HomeScreen navigation={{ navigate }} />
-        )}
-        {currentScreen.name === "SudokuScreen" && (
-          <SudokuScreen
-            route={{ params: currentScreen.params }}
-            navigation={{ navigate }}
-          />
-        )}
-      </CoinProvider>
+      <GameStatProvider>
+        <CoinProvider>
+          {/* Conditional Screen Rendering */}
+          {currentScreen.name === "Home" && (
+            <HomeScreen navigation={{ navigate }} />
+          )}
+          {currentScreen.name === "SudokuScreen" && (
+            <SudokuScreen
+              route={{ params: currentScreen.params }}
+              navigation={{ navigate }}
+            />
+          )}
+        </CoinProvider>
+      </GameStatProvider>
     </GameProvider>
   );
 };

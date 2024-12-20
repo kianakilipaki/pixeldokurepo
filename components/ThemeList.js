@@ -8,16 +8,19 @@ import {
   StyleSheet,
   Animated,
 } from "react-native";
-import { spriteMap } from "../utils/spriteMap";
+import { useGameStat } from "../utils/gameStatContext";
+import { spriteMap } from "../utils/helper";
 
 const ThemeList = ({ item, themeKey, navigation }) => {
   const [expandedTheme, setExpandedTheme] = useState(null);
+  const { gameStats } = useGameStat();
 
   const toggleTheme = (key) => {
     setExpandedTheme(expandedTheme === key ? null : key);
   };
 
   const isExpanded = expandedTheme === themeKey;
+  const stats = gameStats[themeKey] || { Easy: 0, Medium: 0, Hard: 0 };
 
   return (
     <View style={styles.themeContainer}>
@@ -44,9 +47,9 @@ const ThemeList = ({ item, themeKey, navigation }) => {
             />
           </View>
         </TouchableOpacity>
-        {item.difficulty && isExpanded && (
+        {!item.locked && isExpanded && (
           <Animated.View style={styles.difficultyContainer}>
-            {Object.entries(item.difficulty).map(([difficulty, stats]) => (
+            {Object.entries(stats).map(([difficulty, completed]) => (
               <View key={difficulty}>
                 <TouchableOpacity
                   style={styles.difficultyButton}
@@ -60,9 +63,9 @@ const ThemeList = ({ item, themeKey, navigation }) => {
                   <Text style={styles.difficultyText}>
                     {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
                   </Text>
-                  <Text style={styles.statsText}>Completed {stats}</Text>
+                  <Text style={styles.statsText}>Completed {completed}</Text>
                 </TouchableOpacity>
-                {difficulty !== "hard" && <View style={styles.divider} />}
+                {difficulty !== "Hard" && <View style={styles.divider} />}
               </View>
             ))}
           </Animated.View>
@@ -80,6 +83,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     elevation: 5,
     borderWidth: 1,
+    borderRadius: 10,
     borderColor: "var(--forecolor1)",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
@@ -100,7 +104,7 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   thumbnail: {
-    width: "10vw", // Cell size
+    width: "10vw",
     height: "10vw",
     overflow: "hidden",
     position: "relative",
@@ -118,6 +122,7 @@ const styles = StyleSheet.create({
     color: "var(--forecolor1)",
   },
   difficultyContainer: {
+    borderRadius: 10,
     width: "80vw",
     paddingVertical: 10,
     paddingHorizontal: 15,

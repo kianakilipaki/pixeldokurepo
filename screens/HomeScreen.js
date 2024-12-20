@@ -10,12 +10,12 @@ import TitleAndButtons from "../components/Title";
 import ThemeListContainer from "../components/ThemesContainer";
 import useThemeAnimation from "../utils/animationHook";
 import { useGame } from "../utils/gameContext";
-import { themes } from "../utils/spriteMap";
+import { themes } from "../utils/helper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingIndicator from "../components/loadingIcon";
 
 const HomeScreen = ({ navigation }) => {
-  const { setTheme, loadProgress } = useGame();
+  const { loadProgress } = useGame();
 
   const [fontsLoaded] = useFonts({
     Silkscreen_400Regular,

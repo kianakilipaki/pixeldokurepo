@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { spriteMapLG } from "../utils/spriteMap";
+import { spriteMapLG } from "../utils/helper";
 import { useGame } from "../utils/gameContext";
 
 const InputButtons = ({ onPress }) => {

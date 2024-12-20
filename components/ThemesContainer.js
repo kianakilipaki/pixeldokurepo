@@ -1,7 +1,7 @@
 // ThemeListContainer.js
 import React from "react";
 import { Animated, FlatList, StyleSheet, Text } from "react-native";
-import { themes } from "../utils/spriteMap";
+import { themes } from "../utils/helper";
 import ThemeList from "./ThemeList";
 
 const ThemeListContainer = ({ slideAnimation, isExpanded, navigation }) => {

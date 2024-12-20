@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
-import { spriteMap } from "../utils/spriteMap";
+import { spriteMap } from "../utils/helper";
 
 const Cell = ({
   theme,

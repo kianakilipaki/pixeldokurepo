@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { useCoins } from "../utils/coinContext";
 import { useGame } from "../utils/gameContext";
+import { useGameStat } from "../utils/gameStatContext";
 
 const CompletionModal = ({
   onNextPuzzle,
@@ -18,6 +19,7 @@ const CompletionModal = ({
   isModalVisible,
 }) => {
   const {
+    theme,
     difficulty,
     board,
     solutionBoard,
@@ -25,6 +27,7 @@ const CompletionModal = ({
     retryCounter,
     setRetryCounter,
   } = useGame();
+  const { saveGameStat } = useGameStat();
 
   const { addCoins } = useCoins();
   const [modalType, setModalType] = useState(null);
@@ -64,6 +67,7 @@ const CompletionModal = ({
     const totalCoins = coinReward + retryCounter * 2;
     setCoinsAwarded(totalCoins);
     addCoins(totalCoins);
+    saveGameStat(theme.themeKey, difficulty);
   };
 
   useEffect(() => {
