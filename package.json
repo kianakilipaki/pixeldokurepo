@@ -3,11 +3,15 @@
   "license": "0BSD",
   "version": "1.0.0",
   "main": "index.js",
+  "homepage": "https://kianakilipaki.github.io/pixeldokurepo/",
   "scripts": {
-    "start": "expo start",
-    "android": "expo run:android",
-    "ios": "expo run:ios",
-    "web": "expo start --web"
+    "start": "npx expo start",
+    "android": "npx expo run:android",
+    "ios": "npx expo run:ios",
+    "web": "npx expo start --web",
+    "build": "npx expo export",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d web-build"
   },
   "dependencies": {
     "@expo-google-fonts/silkscreen": "^0.2.3",
@@ -37,7 +41,8 @@
     "sass": "^1.83.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "gh-pages": "^6.2.0"
   },
   "private": true,
   "expo": {
