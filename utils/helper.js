@@ -1,5 +1,3 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
 // Create sudoku grid lines
 export const getCellBorderStyles = (rowIndex, colIndex) => {
   const isThickTop = rowIndex % 3 === 0;
@@ -55,7 +53,7 @@ export const themes = {
     title: "FishDoku",
     source: require("../assets/themes/coral-fish.png"),
     bgSource: require("../assets/themes/ocean-bg.png"),
-    locked: false,
+    locked: true,
   },
   unknown1: {
     title: "Coming Soon",

@@ -63,7 +63,7 @@ const CompletionModal = ({
         easy: 10,
         medium: 20,
         hard: 30,
-      }[difficulty] || 0;
+      }[difficulty.toLowerCase()] || 0;
     const totalCoins = coinReward + retryCounter * 2;
     setCoinsAwarded(totalCoins);
     addCoins(totalCoins);
@@ -253,7 +253,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    width: 77,
     border: "1px solid gray",
     boxShadow: "inset 0 0 5px var(--bgcolor3)",
   },

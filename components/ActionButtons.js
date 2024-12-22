@@ -3,8 +3,15 @@ import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 import { useGame } from "../utils/gameContext";
 
 const ActionButtons = ({ selectedCell, onReset, onPause }) => {
-  const { board, setBoard, initialBoard, solutionBoard, hints, setHints } =
-    useGame();
+  const {
+    board,
+    setBoard,
+    initialBoard,
+    solutionBoard,
+    hints,
+    setHints,
+    saveProgress,
+  } = useGame();
 
   const onErase = () => {
     if (selectedCell) {
@@ -29,15 +36,17 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
     });
 
     if (emptyCells.length > 0) {
+      setHints((prevHints) => prevHints - 1); // Reduce hints count
+
       const randomCell =
         emptyCells[Math.floor(Math.random() * emptyCells.length)];
       const [rowIndex, colIndex] = randomCell;
       setBoard((prevBoard) => {
         const newBoard = prevBoard.map((row) => [...row]);
         newBoard[rowIndex][colIndex] = solutionBoard[rowIndex][colIndex];
+        saveProgress(newBoard);
         return newBoard;
       });
-      setHints((prevHints) => prevHints - 1); // Reduce hints count
     }
   };
 

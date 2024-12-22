@@ -10,10 +10,13 @@ import {
 } from "react-native";
 import { useGameStat } from "../utils/gameStatContext";
 import { spriteMap } from "../utils/helper";
+import LockOverlay from "./LockOverlay";
+import PurchaseModal from "./PurchaseModal";
 
 const ThemeList = ({ item, themeKey, navigation }) => {
   const [expandedTheme, setExpandedTheme] = useState(null);
   const { gameStats } = useGameStat();
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const toggleTheme = (key) => {
     setExpandedTheme(expandedTheme === key ? null : key);
@@ -22,6 +25,10 @@ const ThemeList = ({ item, themeKey, navigation }) => {
   const isExpanded = expandedTheme === themeKey;
   const stats = gameStats[themeKey] || { Easy: 0, Medium: 0, Hard: 0 };
 
+  const openModal = () => {
+    setIsModalVisible(true);
+  };
+
   return (
     <View style={styles.themeContainer}>
       <ImageBackground
@@ -29,6 +36,7 @@ const ThemeList = ({ item, themeKey, navigation }) => {
         style={styles.themeBackground}
         resizeMode="cover"
       >
+        {item.locked && <LockOverlay onPress={openModal} />}
         <TouchableOpacity
           onPress={() => toggleTheme(themeKey)}
           style={styles.themeHeader}
@@ -47,6 +55,7 @@ const ThemeList = ({ item, themeKey, navigation }) => {
             />
           </View>
         </TouchableOpacity>
+
         {!item.locked && isExpanded && (
           <Animated.View style={styles.difficultyContainer}>
             {Object.entries(stats).map(([difficulty, completed]) => (
@@ -70,6 +79,12 @@ const ThemeList = ({ item, themeKey, navigation }) => {
             ))}
           </Animated.View>
         )}
+
+        <PurchaseModal
+          theme={item}
+          setIsModalVisible={setIsModalVisible}
+          isModalVisible={isModalVisible}
+        />
       </ImageBackground>
     </View>
   );
@@ -129,7 +144,7 @@ const styles = StyleSheet.create({
     backgroundColor: "var(--bgcolor1)",
   },
   difficultyButton: {
-    paddingVertical: 10,
+    padding: 10,
     marginVertical: 5,
     flexDirection: "row",
     justifyContent: "space-between",

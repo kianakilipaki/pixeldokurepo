@@ -16,19 +16,25 @@ export const CoinProvider = ({ children }) => {
     });
   };
 
+  const removeCoins = async (amount) => {
+    setCoins((prevCoins) => {
+      const newCoins = prevCoins - amount;
+      AsyncStorage.setItem("COINS", newCoins.toString()); // Store as string
+      return newCoins;
+    });
+  };
+
   useEffect(() => {
     const loadCoins = async () => {
       const currentCoins = await AsyncStorage.getItem("COINS");
-      if (currentCoins !== null) {
-        setCoins(Number(currentCoins)); // Ensure it's a number
-      }
+      setCoins(Number(currentCoins) || 0); // Ensure it's a number
     };
 
     loadCoins();
   }, []);
 
   return (
-    <CoinContext.Provider value={{ coins, addCoins }}>
+    <CoinContext.Provider value={{ coins, addCoins, removeCoins }}>
       {children}
     </CoinContext.Provider>
   );

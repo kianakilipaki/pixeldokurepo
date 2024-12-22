@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { View, StyleSheet, ImageBackground } from "react-native";
-import CompletionModal from "../components/Modal";
+import CompletionModal from "../components/CompletionModal";
 import GameBoard from "../components/GameBoard";
 import LoadingIndicator from "../components/loadingIcon";
 import TopBar from "../components/TopBar";
