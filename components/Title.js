@@ -39,13 +39,14 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "Silkscreen-Regular",
     fontSize: 48,
-    // fontWeight: "bold",
-    // marginBottom: 20,
+    marginBottom: 20,
     color: theme.colors.red,
-    // transform: [{ skewX: "-10deg" }, { scaleY: 2 }],
-    // textShadowColor: "rgba(0, 0, 0, 0.75)",
-    // textShadowOffset: { width: -1, height: 1 },
-    // textShadowRadius: 5,
+    transform: [{ scaleY: 2 }],
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4.65,
+    elevation: 5,
   },
   button: {
     width: "60%",
@@ -57,6 +58,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
+    elevation: 5,
     borderCollapse: "collapsed",
   },
   continueButton: {

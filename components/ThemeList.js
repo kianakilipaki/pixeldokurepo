@@ -13,6 +13,9 @@ import { spriteMap } from "../utils/helper";
 import LockOverlay from "./LockOverlay";
 import PurchaseModal from "./PurchaseModal";
 import theme from "../styles/theme";
+import { Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const ThemeList = ({ item, themeKey, navigation }) => {
   const [expandedTheme, setExpandedTheme] = useState(null);
@@ -93,7 +96,7 @@ const ThemeList = ({ item, themeKey, navigation }) => {
 
 const styles = StyleSheet.create({
   themeContainer: {
-    width: "100%",
+    width: width,
     alignSelf: "center",
     marginVertical: 10,
     overflow: "hidden",
@@ -105,10 +108,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 4.65,
+    elevation: 5,
   },
   themeBackground: {
-    width: "100%",
-    height: "100%",
+    width: width,
+    height: "fit-content",
     resizeMode: "cover",
     justifyContent: "center",
     alignItems: "center",
@@ -120,8 +124,8 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   thumbnail: {
-    width: "10vw",
-    height: "10vw",
+    width: width * 0.1,
+    height: width * 0.1,
     overflow: "hidden",
     position: "relative",
     justifyContent: "center",
@@ -129,8 +133,8 @@ const styles = StyleSheet.create({
   },
   spriteImage: {
     position: "absolute",
-    width: "30vw",
-    height: "30vw",
+    width: width * 0.3,
+    height: width * 0.3,
   },
   themeTitle: {
     fontFamily: theme.fonts.fontFamily,
@@ -139,7 +143,7 @@ const styles = StyleSheet.create({
   },
   difficultyContainer: {
     borderRadius: 10,
-    width: "80vw",
+    width: width * 0.8,
     paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: theme.colors.bgcolor1,
