@@ -25,6 +25,7 @@
       "favicon": "./assets/favicon.png",
       "output": "web-build",
       "publicPath": "./"
-    }
+    },
+    "assetBundlePatterns": ["**/*"]
   }
 }

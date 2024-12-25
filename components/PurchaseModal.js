@@ -12,6 +12,7 @@ import {
 import { useCoins } from "../utils/coinContext";
 import { spriteMap } from "../utils/helper";
 import CoinShop from "./CoinShop";
+import theme from "../styles/theme";
 
 const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
   const { coins, removeCoins } = useCoins();
@@ -75,7 +76,7 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
             </View>
             {isWarningVisible && (
               <>
-                <Text style={{ color: "var(--red)", marginBottom: 5 }}>
+                <Text style={{ color: theme.colors.red, marginBottom: 5 }}>
                   Insufficent Funds
                 </Text>
                 <TouchableOpacity
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     width: "80vw",
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: "var(--forecolor1)",
+    borderColor: theme.colors.forecolor1,
     borderRadius: 10,
   },
   modalHeader: {
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   modalHeaderText: {
-    fontFamily: "var(--fontFamily)",
+    fontFamily: theme.fonts.fontFamily,
     fontSize: 20,
     color: "white",
   },
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   coinContainer: {
-    backgroundColor: "var(--bgcolor1)",
+    backgroundColor: theme.colors.bgcolor1,
     padding: 5,
     marginLeft: 20,
     borderRadius: 8,
@@ -183,15 +184,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     border: "1px solid gray",
-    boxShadow: "inset 0 0 5px var(--bgcolor3)",
+    boxShadow: "inset 0 0 5px theme.colors.bgcolor3",
   },
   coinText: {
     fontSize: 16,
-    fontFamily: "var(--fontFamily)",
+    fontFamily: theme.fonts.fontFamily,
   },
   warningButton: {
-    backgroundColor: "var(--gold)",
-    fontFamily: "var(--fontFamily)",
+    backgroundColor: theme.colors.gold,
+    fontFamily: theme.fonts.fontFamily,
     borderRadius: 10,
     paddingVertical: 5,
     paddingHorizontal: 10,

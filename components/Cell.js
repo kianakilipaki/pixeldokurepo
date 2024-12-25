@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
 import { spriteMap } from "../utils/helper";
+import theme from "../styles/theme";
 
 const Cell = ({
   theme,
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
   cellContainer: {
     width: "10vw", // Cell size
     height: "10vw",
-    backgroundColor: "var(--bgcolor1)",
+    backgroundColor: theme.colors.bgcolor1,
     overflow: "hidden",
     position: "relative",
     justifyContent: "center",
@@ -81,20 +82,20 @@ const styles = StyleSheet.create({
     height: "30vw",
   },
   hintedCell: {
-    backgroundColor: "var(--highlight2)",
+    backgroundColor: theme.colors.highlight2,
   },
   selectedCell: {
-    backgroundColor: "var(--highlight1)",
+    backgroundColor: theme.colors.highlight1,
   },
   highlightedCell: {
     borderTopWidth: 3,
     borderLeftWidth: 3,
     borderBottomWidth: 3,
     borderRightWidth: 3,
-    borderColor: "var(--blue)",
+    borderColor: theme.colors.blue,
   },
   notEditable: {
-    backgroundColor: "var(--bgcolor2)",
+    backgroundColor: theme.colors.bgcolor2,
   },
 });
 

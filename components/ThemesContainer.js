@@ -3,6 +3,7 @@ import React from "react";
 import { Animated, FlatList, StyleSheet, Text } from "react-native";
 import { themes } from "../utils/helper";
 import ThemeList from "./ThemeList";
+import theme from "../styles/theme";
 
 const ThemeListContainer = ({ slideAnimation, isExpanded, navigation }) => {
   return (
@@ -46,16 +47,16 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     height: "90%",
-    backgroundColor: "var(--forecolor3)",
+    backgroundColor: theme.colors.forecolor3,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 10,
   },
   header: {
-    fontFamily: "var(--fontFamily)",
+    fontFamily: theme.fonts.fontFamily,
     fontSize: 24,
     textAlign: "center",
-    color: "var(--forecolor1)",
+    color: theme.colors.forecolor1,
     marginBottom: 10,
   },
 });

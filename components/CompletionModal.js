@@ -11,6 +11,7 @@ import {
 import { useCoins } from "../utils/coinContext";
 import { useGame } from "../utils/gameContext";
 import { useGameStat } from "../utils/gameStatContext";
+import theme from "../styles/theme";
 
 const CompletionModal = ({
   onNextPuzzle,
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
     width: "80vw",
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: "var(--forecolor1)",
+    borderColor: theme.colors.forecolor1,
     borderRadius: 10,
   },
   modalHeader: {
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   modalHeaderText: {
-    fontFamily: "var(--fontFamily)",
+    fontFamily: theme.fonts.fontFamily,
     fontSize: 24,
     color: "white",
   },
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
     transform: [{ rotate: "15deg" }, { translateY: -40 }],
   },
   coinContainer: {
-    backgroundColor: "var(--bgcolor1)",
+    backgroundColor: theme.colors.bgcolor1,
     padding: 5,
     marginTop: 15,
     borderRadius: 8,
@@ -254,11 +255,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     border: "1px solid gray",
-    boxShadow: "inset 0 0 5px var(--bgcolor3)",
+    boxShadow: "inset 0 0 5px theme.colors.bgcolor3",
   },
   coinText: {
     fontSize: 16,
-    fontFamily: "var(--fontFamily)",
+    fontFamily: theme.fonts.fontFamily,
   },
 });
 

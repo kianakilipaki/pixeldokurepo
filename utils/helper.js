@@ -1,3 +1,5 @@
+import theme from "../styles/theme";
+
 // Create sudoku grid lines
 export const getCellBorderStyles = (rowIndex, colIndex) => {
   const isThickTop = rowIndex % 3 === 0;
@@ -10,7 +12,7 @@ export const getCellBorderStyles = (rowIndex, colIndex) => {
     borderLeftWidth: isThickLeft ? 3 : 1,
     borderBottomWidth: isThickBottom ? 3 : 1,
     borderRightWidth: isThickRight ? 3 : 1,
-    borderColor: "var(--forecolor1)",
+    borderColor: theme.colors.forecolor1,
     zIndex: 2,
   };
 };

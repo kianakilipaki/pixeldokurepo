@@ -1,6 +1,7 @@
 // TitleAndButtons.js
 import React from "react";
 import { Animated, Text, TouchableOpacity, StyleSheet } from "react-native";
+import theme from "../styles/theme";
 
 const Title = ({ fadeAnimation, savedGame, onContinue, onToggleExpansion }) => (
   <Animated.View style={[styles.centerContainer, { opacity: fadeAnimation }]}>
@@ -30,21 +31,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header: {
-    fontFamily: "var(--fontFamily)",
+    fontFamily: theme.fonts.fontFamily,
     fontSize: 36,
     textAlign: "center",
-    color: "var(--forecolor1)",
+    color: theme.colors.forecolor1,
   },
   title: {
-    fontFamily: "var(--fontFamily)",
+    fontFamily: "Silkscreen-Regular",
     fontSize: 48,
-    fontWeight: "bold",
-    marginBottom: 20,
-    color: "var(--red)",
-    transform: [{ skewX: "-10deg" }, { scaleY: 2 }],
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 5,
+    // fontWeight: "bold",
+    // marginBottom: 20,
+    color: theme.colors.red,
+    // transform: [{ skewX: "-10deg" }, { scaleY: 2 }],
+    // textShadowColor: "rgba(0, 0, 0, 0.75)",
+    // textShadowOffset: { width: -1, height: 1 },
+    // textShadowRadius: 5,
   },
   button: {
     width: "60%",
@@ -59,14 +60,14 @@ const styles = StyleSheet.create({
     borderCollapse: "collapsed",
   },
   continueButton: {
-    backgroundColor: "var(--forecolor1)",
+    backgroundColor: theme.colors.forecolor1,
   },
   newGameButton: {
-    backgroundColor: "var(--blue)",
+    backgroundColor: theme.colors.blue,
   },
   buttonText: {
     color: "white",
-    fontFamily: "var(--fontFamily)",
+    fontFamily: "Silkscreen-Regular",
     fontSize: 23,
   },
 });

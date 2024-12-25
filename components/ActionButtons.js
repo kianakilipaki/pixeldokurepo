@@ -1,6 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 import { useGame } from "../utils/gameContext";
+import theme from "../styles/theme";
 
 const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   const {
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 10,
-    backgroundColor: "var(--blue)",
+    backgroundColor: theme.colors.blue,
     borderRadius: 50,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     right: -5,
     paddingHorizontal: 3,
     paddingVertical: 2,
-    backgroundColor: "var(--gold)",
+    backgroundColor: theme.colors.gold,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderBottomLeftRadius: 0,
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
   },
   hintText: {
     fontSize: 10,
-    fontFamily: "var(--fontFamily)",
+    fontFamily: theme.fonts.fontFamily,
   },
 });
 

@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import Timer from "./Timer";
 import { useGame } from "../utils/gameContext";
+import theme from "../styles/theme";
 
 const TopBar = ({ isPaused }) => {
   const { difficulty, retryCounter } = useGame();
@@ -51,9 +52,9 @@ const styles = StyleSheet.create({
   },
   difficultyText: {
     fontSize: 18,
-    color: "var(--forecolor1)",
+    color: theme.colors.forecolor1,
     marginTop: 3,
-    fontFamily: "var(--fontFamily)",
+    fontFamily: theme.colors.fontFamily,
   },
 });
 

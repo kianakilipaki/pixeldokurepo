@@ -1,16 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HomeScreen from "./screens/HomeScreen";
 import SudokuScreen from "./screens/SudokuScreen";
-import "./styles/styles.scss";
 import { CoinProvider } from "./utils/coinContext";
 import { GameProvider } from "./utils/gameContext";
 import { GameStatProvider } from "./utils/gameStatContext";
+import * as Font from "expo-font";
+import LoadingIndicator from "./components/loadingIcon";
 
 const App = () => {
   const [currentScreen, setCurrentScreen] = useState({
     name: "Home",
     params: null,
   });
+
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  const loadFonts = async () => {
+    await Font.loadAsync({
+      "Silkscreen-Regular": require("./assets/fonts/Silkscreen-Regular.ttf"),
+      "Silkscreen-Bold": require("./assets/fonts/Silkscreen-Bold.ttf"),
+    });
+  };
+
+  useEffect(() => {
+    loadFonts()
+      .then(() => {
+        console.log("Fonts loaded successfully");
+        setFontsLoaded(true);
+      })
+      .catch((error) => console.error("Error loading fonts:", error));
+  }, []);
+
+  if (!fontsLoaded) {
+    return <LoadingIndicator />;
+  }
 
   const navigate = (screenName, params = null) => {
     setCurrentScreen({ name: screenName, params });

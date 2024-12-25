@@ -12,15 +12,9 @@ import useThemeAnimation from "../utils/animationHook";
 import { useGame } from "../utils/gameContext";
 import { themes } from "../utils/helper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import LoadingIndicator from "../components/loadingIcon";
 
 const HomeScreen = ({ navigation }) => {
   const { loadProgress } = useGame();
-
-  const [fontsLoaded] = useFonts({
-    Silkscreen_400Regular,
-    Silkscreen_700Bold,
-  });
 
   const [savedGame, setSavedGame] = useState(false);
   const { slideAnimation, fadeAnimation, toggleExpansion } =
@@ -49,10 +43,6 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  if (!fontsLoaded) {
-    return <LoadingIndicator />;
-  }
-
   return (
     <ImageBackground
       source={themes["birds"].bgSource}
@@ -79,8 +69,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     overflow: "hidden",
     top: 1,
-    width: "100vw",
-    height: "100vh",
+    width: "100%",
+    height: "100%",
   },
 });
 

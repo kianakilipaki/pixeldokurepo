@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useCoins } from "../utils/coinContext";
+import theme from "../styles/theme";
 
 const Coins = () => {
   const { coins } = useCoins();
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
-    backgroundColor: "var(--bgcolor3)",
+    backgroundColor: theme.colors.bgcolor3,
     paddingVertical: 3,
     paddingHorizontal: 5,
     borderRadius: 8,
@@ -32,8 +33,8 @@ const styles = StyleSheet.create({
   },
   coinText: {
     fontSize: 16,
-    color: "var(--gold)",
-    fontFamily: "var(--fontFamily)",
+    color: theme.colors.gold,
+    fontFamily: theme.fonts.fontFamily,
   },
 });
 

@@ -12,6 +12,7 @@ import { useGameStat } from "../utils/gameStatContext";
 import { spriteMap } from "../utils/helper";
 import LockOverlay from "./LockOverlay";
 import PurchaseModal from "./PurchaseModal";
+import theme from "../styles/theme";
 
 const ThemeList = ({ item, themeKey, navigation }) => {
   const [expandedTheme, setExpandedTheme] = useState(null);
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: "var(--forecolor1)",
+    borderColor: theme.colors.forecolor1,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
@@ -132,16 +133,16 @@ const styles = StyleSheet.create({
     height: "30vw",
   },
   themeTitle: {
-    fontFamily: "var(--fontFamily)",
+    fontFamily: theme.fonts.fontFamily,
     fontSize: 20,
-    color: "var(--forecolor1)",
+    color: theme.colors.forecolor1,
   },
   difficultyContainer: {
     borderRadius: 10,
     width: "80vw",
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: "var(--bgcolor1)",
+    backgroundColor: theme.colors.bgcolor1,
   },
   difficultyButton: {
     padding: 10,
