@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     color: theme.colors.forecolor1,
   },
   title: {
-    fontFamily: "Silkscreen-Regular",
+    fontFamily: theme.fonts.fontFamily,
     fontSize: 48,
     marginBottom: 20,
     color: theme.colors.red,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontFamily: "Silkscreen-Regular",
+    fontFamily: theme.fonts.fontFamily,
     fontSize: 23,
   },
 });

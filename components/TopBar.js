@@ -19,9 +19,7 @@ const TopBar = ({ isPaused }) => {
           />
         ))}
       </View>
-      {difficulty && (
-        <Text style={styles.difficultyText}>{difficulty.toUpperCase()}</Text>
-      )}
+      {difficulty && <Text style={styles.difficultyText}>{difficulty}</Text>}
       {/* Timer */}
       <View style={styles.timerContainer}>
         <Timer isPaused={isPaused} />
@@ -51,10 +49,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   difficultyText: {
+    fontFamily: "Silkscreen-Regular",
     fontSize: 18,
     color: theme.colors.forecolor1,
     marginTop: 3,
-    fontFamily: theme.colors.fontFamily,
   },
 });
 

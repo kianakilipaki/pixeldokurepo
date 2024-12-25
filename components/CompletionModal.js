@@ -12,6 +12,9 @@ import { useCoins } from "../utils/coinContext";
 import { useGame } from "../utils/gameContext";
 import { useGameStat } from "../utils/gameStatContext";
 import theme from "../styles/theme";
+import { Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const CompletionModal = ({
   onNextPuzzle,
@@ -182,14 +185,14 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContainer: {
-    width: "80vw",
+    width: width * 0.8,
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: theme.colors.forecolor1,
     borderRadius: 10,
   },
   modalHeader: {
-    width: "80vw",
+    width: width * 0.8,
     padding: 20,
     justifyContent: "center",
     alignItems: "center",
@@ -223,7 +226,7 @@ const styles = StyleSheet.create({
   starContainer: {
     position: "absolute",
     top: 10,
-    left: "calc(50vw - 141px)",
+    left: width * 0.13,
     flex: 1,
     flexDirection: "row",
     zIndex: 10,
@@ -246,20 +249,24 @@ const styles = StyleSheet.create({
     transform: [{ rotate: "15deg" }, { translateY: -40 }],
   },
   coinContainer: {
-    backgroundColor: theme.colors.bgcolor1,
-    padding: 5,
-    marginTop: 15,
-    borderRadius: 8,
-    flex: 1,
     flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
-    border: "1px solid gray",
-    boxShadow: "inset 0 0 5px theme.colors.bgcolor3",
+    backgroundColor: theme.colors.bgcolor1,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "gray",
+    shadowColor: theme.colors.bgcolor3,
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    marginTop: 10,
   },
   coinText: {
     fontSize: 16,
     fontFamily: theme.fonts.fontFamily,
+    marginRight: 5,
   },
 });
 

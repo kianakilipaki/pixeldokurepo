@@ -3,6 +3,10 @@ import { View, Image, StyleSheet } from "react-native";
 import { spriteMap } from "../utils/helper";
 import theme from "../styles/theme";
 
+import { Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
+
 const Cell = ({
   theme,
   currentCell,
@@ -68,8 +72,8 @@ const Cell = ({
 
 const styles = StyleSheet.create({
   cellContainer: {
-    width: "10vw", // Cell size
-    height: "10vw",
+    width: width * 0.1,
+    height: width * 0.1,
     backgroundColor: theme.colors.bgcolor1,
     overflow: "hidden",
     position: "relative",
@@ -78,8 +82,8 @@ const styles = StyleSheet.create({
   },
   spriteImage: {
     position: "absolute",
-    width: "30vw",
-    height: "30vw",
+    width: width * 0.3,
+    height: width * 0.3,
   },
   hintedCell: {
     backgroundColor: theme.colors.highlight2,

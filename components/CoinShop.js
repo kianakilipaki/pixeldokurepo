@@ -10,16 +10,19 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useCoins } from "../utils/coinContext";
+import { Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
 
   const coinOptions = [
-    { coins: 150, cost: "AD" },
-    { coins: 250, cost: "$1.99" },
-    { coins: 450, cost: "$2.99" },
-    { coins: 1200, cost: "$3.99" },
-    { coins: 2000, cost: "$4.99" },
+    { coins: 100, cost: "AD" },
+    { coins: 500, cost: "$1.99" },
+    { coins: 1000, cost: "$2.99" },
+    { coins: 2000, cost: "$3.99" },
+    { coins: 4000, cost: "$4.99" },
   ];
 
   const closeModal = () => {
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContainer: {
-    width: "90%",
+    width: width * 0.9,
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: "#ccc",
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   modalHeader: {
-    width: "100%",
+    width: width * 0.9,
     padding: 20,
     justifyContent: "center",
     alignItems: "center",

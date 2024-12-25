@@ -1,4 +1,7 @@
 import theme from "../styles/theme";
+import { Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 // Create sudoku grid lines
 export const getCellBorderStyles = (rowIndex, colIndex) => {
@@ -20,14 +23,14 @@ export const getCellBorderStyles = (rowIndex, colIndex) => {
 // map sprite position to numbers
 export const spriteMap = {
   1: { top: 0, left: 0 },
-  2: { top: 0, left: "-10vw" },
-  3: { top: 0, left: "-20vw" },
-  4: { top: "-10vw", left: 0 },
-  5: { top: "-10vw", left: "-10vw" },
-  6: { top: "-10vw", left: "-20vw" },
-  7: { top: "-20vw", left: 0 },
-  8: { top: "-20vw", left: "-10vw" },
-  9: { top: "-20vw", left: "-20vw" },
+  2: { top: 0, left: -width * 0.1 },
+  3: { top: 0, left: -width * 0.2 },
+  4: { top: -width * 0.1, left: 0 },
+  5: { top: -width * 0.1, left: -width * 0.1 },
+  6: { top: -width * 0.1, left: -width * 0.2 },
+  7: { top: -width * 0.2, left: 0 },
+  8: { top: -width * 0.2, left: -width * 0.1 },
+  9: { top: -width * 0.2, left: -width * 0.2 },
 };
 
 // map sprite position to numbers for input buttons

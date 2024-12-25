@@ -12,7 +12,10 @@ import {
 import { useCoins } from "../utils/coinContext";
 import { spriteMap } from "../utils/helper";
 import CoinShop from "./CoinShop";
-import theme from "../styles/theme";
+import themeStyle from "../styles/theme";
+import { Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
   const { coins, removeCoins } = useCoins();
@@ -76,14 +79,14 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
             </View>
             {isWarningVisible && (
               <>
-                <Text style={{ color: theme.colors.red, marginBottom: 5 }}>
+                <Text style={{ color: themeStyle.colors.red, marginBottom: 5 }}>
                   Insufficent Funds
                 </Text>
                 <TouchableOpacity
                   style={styles.warningButton}
                   onPress={openShop}
                 >
-                  Buy Coins
+                  <Text style={styles.buyButtonText}>Buy Coins</Text>
                 </TouchableOpacity>
               </>
             )}
@@ -115,14 +118,14 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContainer: {
-    width: "80vw",
+    width: width * 0.8,
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: theme.colors.forecolor1,
+    borderColor: themeStyle.colors.forecolor1,
     borderRadius: 10,
   },
   modalHeader: {
-    width: "80vw",
+    width: width * 0.8,
     padding: 20,
     justifyContent: "center",
     alignItems: "center",
@@ -131,37 +134,63 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   modalHeaderText: {
-    fontFamily: theme.fonts.fontFamily,
+    fontFamily: themeStyle.fonts.fontFamily,
     fontSize: 20,
     color: "white",
   },
   modalBody: {
-    padding: 5,
+    padding: 15,
     justifyContent: "center",
     alignItems: "center",
   },
   wrapper: {
-    flex: 1,
     flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
+    marginVertical: 10,
   },
   thumbnail: {
-    width: "20vw",
-    height: "20vw",
-    overflow: "hidden",
-    position: "relative",
+    width: width * 0.2,
+    height: width * 0.2,
     justifyContent: "center",
     alignItems: "center",
+    marginRight: 5, // Add spacing between the thumbnail and text
+    marginLeft: 30,
   },
   spriteImage: {
-    position: "absolute",
-    width: "40vw",
-    height: "60vw",
+    width: width * 0.2,
+    height: width * 0.2,
+    resizeMode: "contain",
   },
   modalText: {
     fontSize: 18,
     textAlign: "center",
+    marginBottom: 10,
+  },
+  coinContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: themeStyle.colors.bgcolor1,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "gray",
+    marginLeft: "auto", // Push coinContainer to the right
+    shadowColor: themeStyle.colors.bgcolor3,
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+  },
+  coinText: {
+    fontSize: 16,
+    fontFamily: themeStyle.fonts.fontFamily,
+    marginLeft: 5,
+  },
+  warningButton: {
+    backgroundColor: themeStyle.colors.gold,
+    borderRadius: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -170,32 +199,10 @@ const styles = StyleSheet.create({
   },
   buttonWrapper: {
     flex: 1,
-    padding: 10,
-    width: "30%",
-    marginHorizontal: 5,
+    paddingHorizontal: 5,
   },
-  coinContainer: {
-    backgroundColor: theme.colors.bgcolor1,
-    padding: 5,
-    marginLeft: 20,
-    borderRadius: 8,
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    border: "1px solid gray",
-    boxShadow: "inset 0 0 5px theme.colors.bgcolor3",
-  },
-  coinText: {
-    fontSize: 16,
-    fontFamily: theme.fonts.fontFamily,
-  },
-  warningButton: {
-    backgroundColor: theme.colors.gold,
-    fontFamily: theme.fonts.fontFamily,
-    borderRadius: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+  buyButtonText: {
+    fontFamily: themeStyle.fonts.fontFamily,
   },
 });
 
