@@ -14,11 +14,13 @@ import { spriteMap } from "../utils/helper";
 import CoinShop from "./CoinShop";
 import themeStyle from "../styles/theme";
 import { Dimensions } from "react-native";
+import { useThemes } from "../utils/themeContext";
 
 const { width } = Dimensions.get("window");
 
 const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
   const { coins, removeCoins } = useCoins();
+  const { unlockTheme } = useThemes();
 
   const [isWarningVisible, setIsWarningVisible] = useState(false);
   const [isCoinShopVisible, setIsCoinShopVisible] = useState(false);
@@ -27,12 +29,13 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
     setIsModalVisible(false);
   };
   const purchaseTheme = () => {
-    if (coins < 1000) {
+    if (coins < 500) {
       setIsWarningVisible(true);
       return;
     } else {
       setIsWarningVisible(false);
-      removeCoins(1000);
+      removeCoins(500);
+      unlockTheme(theme.themeKey);
       closeModal();
     }
   };

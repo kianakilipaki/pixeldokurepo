@@ -8,6 +8,9 @@ import Header from "../components/Header";
 import { useGame } from "../utils/gameContext";
 import PlayOverlay from "../components/PlayOverlay";
 import { generateSudoku } from "../utils/GeneratePuzzle";
+import { Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const SudokuScreen = ({ route, navigation }) => {
   const {
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 5,
+    padding: width * 0.05,
     justifyContent: "center",
     alignItems: "center",
   },

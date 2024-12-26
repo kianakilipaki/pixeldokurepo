@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { useGame } from "../utils/gameContext";
-import theme from "../styles/theme";
+import themeStyles from "../styles/theme";
 
 const Timer = ({ isPaused }) => {
   const { timer, setTimer } = useGame();
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
   },
   timerText: {
     fontSize: 20,
-    fontFamily: theme.fonts.fontFamily,
-    color: theme.colors.forecolor1,
+    fontFamily: themeStyles.fonts.fontFamily,
+    color: themeStyles.colors.forecolor1,
   },
 });
 

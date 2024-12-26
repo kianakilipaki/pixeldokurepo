@@ -12,7 +12,7 @@ import { useGameStat } from "../utils/gameStatContext";
 import { spriteMap } from "../utils/helper";
 import LockOverlay from "./LockOverlay";
 import PurchaseModal from "./PurchaseModal";
-import theme from "../styles/theme";
+import themeStyles from "../styles/theme";
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: theme.colors.forecolor1,
+    borderColor: themeStyles.colors.forecolor1,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
@@ -137,16 +137,16 @@ const styles = StyleSheet.create({
     height: width * 0.3,
   },
   themeTitle: {
-    fontFamily: theme.fonts.fontFamily,
+    fontFamily: themeStyles.fonts.fontFamily,
     fontSize: 20,
-    color: theme.colors.forecolor1,
+    color: themeStyles.colors.forecolor1,
   },
   difficultyContainer: {
     borderRadius: 10,
     width: width * 0.8,
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: theme.colors.bgcolor1,
+    backgroundColor: themeStyles.colors.bgcolor1,
   },
   difficultyButton: {
     padding: 10,

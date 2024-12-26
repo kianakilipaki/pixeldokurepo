@@ -1,11 +1,17 @@
 import React from "react";
 import { Animated, FlatList, StyleSheet, Text, Dimensions } from "react-native";
-import { themes } from "../utils/helper";
 import ThemeList from "./ThemeList";
-import theme from "../styles/theme";
+import themeStyles from "../styles/theme";
+import LoadingIndicator from "./loadingIcon";
+import { useThemes } from "../utils/themeContext";
 
-const ThemeListContainer = ({ slideAnimation, isExpanded, navigation }) => {
+const ThemeListContainer = ({ slideAnimation, navigation }) => {
   const screenHeight = Dimensions.get("window").height;
+  const { themes } = useThemes();
+
+  if (!themes) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <Animated.View
@@ -54,7 +60,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     height: "90%",
-    backgroundColor: theme.colors.forecolor3,
+    backgroundColor: themeStyles.colors.forecolor3,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 10,
@@ -62,10 +68,10 @@ const styles = StyleSheet.create({
     elevation: 10, // Android-specific visibility
   },
   header: {
-    fontFamily: theme.fonts.fontFamily,
+    fontFamily: themeStyles.fonts.fontFamily,
     fontSize: 24,
     textAlign: "center",
-    color: theme.colors.forecolor1,
+    color: themeStyles.colors.forecolor1,
     marginBottom: 10,
   },
 });

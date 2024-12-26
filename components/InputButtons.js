@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { spriteMapLG } from "../utils/helper";
 import { useGame } from "../utils/gameContext";
-import theme from "../styles/theme";
+import themeStyles from "../styles/theme";
 
 const InputButtons = ({ onPress }) => {
   const { theme } = useGame();
@@ -35,16 +35,15 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     margin: 5,
-    border: "1px solid theme.colors.forecolor1",
+    border: "1px solid themeStyles.colors.forecolor1",
     borderRadius: 10,
-    backgroundColor: theme.colors.bgcolor1,
+    backgroundColor: themeStyles.colors.bgcolor1,
     overflow: "hidden",
     position: "relative",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
-    elevation: 8,
   },
   spriteImage: {
     position: "absolute",

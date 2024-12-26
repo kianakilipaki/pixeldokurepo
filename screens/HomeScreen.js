@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { ImageBackground, StyleSheet } from "react-native";
-import {
-  useFonts,
-  Silkscreen_400Regular,
-  Silkscreen_700Bold,
-} from "@expo-google-fonts/silkscreen";
 import Coins from "../components/Coins";
 import TitleAndButtons from "../components/Title";
 import ThemeListContainer from "../components/ThemesContainer";
 import useThemeAnimation from "../utils/animationHook";
 import { useGame } from "../utils/gameContext";
-import { themes } from "../utils/helper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import LoadingIndicator from "../components/loadingIcon";
+import { useThemes } from "../utils/themeContext";
 
 const HomeScreen = ({ navigation }) => {
   const { loadProgress } = useGame();
-
+  const { themes } = useThemes();
   const [savedGame, setSavedGame] = useState(false);
   const { slideAnimation, fadeAnimation, toggleExpansion } =
     useThemeAnimation();
@@ -42,6 +38,10 @@ const HomeScreen = ({ navigation }) => {
       navigation.navigate("SudokuScreen");
     }
   };
+
+  if (!themes) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <ImageBackground

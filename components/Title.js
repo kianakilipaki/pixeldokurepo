@@ -1,7 +1,7 @@
 // TitleAndButtons.js
 import React from "react";
 import { Animated, Text, TouchableOpacity, StyleSheet } from "react-native";
-import theme from "../styles/theme";
+import themeStyles from "../styles/theme";
 
 const Title = ({ fadeAnimation, savedGame, onContinue, onToggleExpansion }) => (
   <Animated.View style={[styles.centerContainer, { opacity: fadeAnimation }]}>
@@ -31,22 +31,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header: {
-    fontFamily: theme.fonts.fontFamily,
+    fontFamily: themeStyles.fonts.fontFamily,
     fontSize: 36,
     textAlign: "center",
-    color: theme.colors.forecolor1,
+    color: themeStyles.colors.forecolor1,
   },
   title: {
-    fontFamily: theme.fonts.fontFamily,
+    fontFamily: themeStyles.fonts.fontFamily,
     fontSize: 48,
     marginBottom: 20,
-    color: theme.colors.red,
+    color: themeStyles.colors.red,
     transform: [{ scaleY: 2 }],
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4.65,
-    elevation: 5,
   },
   button: {
     width: "60%",
@@ -62,14 +57,14 @@ const styles = StyleSheet.create({
     borderCollapse: "collapsed",
   },
   continueButton: {
-    backgroundColor: theme.colors.forecolor1,
+    backgroundColor: themeStyles.colors.forecolor1,
   },
   newGameButton: {
-    backgroundColor: theme.colors.blue,
+    backgroundColor: themeStyles.colors.blue,
   },
   buttonText: {
     color: "white",
-    fontFamily: theme.fonts.fontFamily,
+    fontFamily: themeStyles.fonts.fontFamily,
     fontSize: 23,
   },
 });

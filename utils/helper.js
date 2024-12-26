@@ -1,5 +1,6 @@
-import theme from "../styles/theme";
+import themeStyles from "../styles/theme";
 import { Dimensions } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width } = Dimensions.get("window");
 
@@ -15,7 +16,7 @@ export const getCellBorderStyles = (rowIndex, colIndex) => {
     borderLeftWidth: isThickLeft ? 3 : 1,
     borderBottomWidth: isThickBottom ? 3 : 1,
     borderRightWidth: isThickRight ? 3 : 1,
-    borderColor: theme.colors.forecolor1,
+    borderColor: themeStyles.colors.forecolor1,
     zIndex: 2,
   };
 };
@@ -47,7 +48,7 @@ export const spriteMapLG = {
 };
 
 // sprite themes
-export const themes = {
+export const defaultThemes = {
   birds: {
     title: "BirdDoku",
     source: require("../assets/themes/Winter-Birds.png"),

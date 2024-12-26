@@ -11,7 +11,7 @@ import {
 import { useCoins } from "../utils/coinContext";
 import { useGame } from "../utils/gameContext";
 import { useGameStat } from "../utils/gameStatContext";
-import theme from "../styles/theme";
+import themeStyles from "../styles/theme";
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     width: width * 0.8,
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: theme.colors.forecolor1,
+    borderColor: themeStyles.colors.forecolor1,
     borderRadius: 10,
   },
   modalHeader: {
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   modalHeaderText: {
-    fontFamily: theme.fonts.fontFamily,
+    fontFamily: themeStyles.fonts.fontFamily,
     fontSize: 24,
     color: "white",
   },
@@ -251,13 +251,13 @@ const styles = StyleSheet.create({
   coinContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: theme.colors.bgcolor1,
+    backgroundColor: themeStyles.colors.bgcolor1,
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "gray",
-    shadowColor: theme.colors.bgcolor3,
+    shadowColor: themeStyles.colors.bgcolor3,
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
   },
   coinText: {
     fontSize: 16,
-    fontFamily: theme.fonts.fontFamily,
+    fontFamily: themeStyles.fonts.fontFamily,
     marginRight: 5,
   },
 });

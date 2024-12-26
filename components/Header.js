@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Coins from "./Coins";
-import theme from "../styles/theme";
+import themeStyles from "../styles/theme";
 
 const Header = ({ title, onBackPress }) => {
   return (
@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     paddingTop: 30,
-    backgroundColor: theme.colors.blue1,
-    borderBottomColor: theme.colors.forecolor1,
+    backgroundColor: themeStyles.colors.blue1,
+    borderBottomColor: themeStyles.colors.forecolor1,
     borderBottomWidth: 2,
   },
   backArrow: {
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 20,
-    color: theme.colors.forecolor1,
-    fontFamily: theme.fonts.fontFamily,
+    color: themeStyles.colors.forecolor1,
+    fontFamily: themeStyles.fonts.fontFamily,
   },
 });
 

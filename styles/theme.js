@@ -1,5 +1,5 @@
 // theme.js
-const theme = {
+const themeStyle = {
   colors: {
     forecolor1: "#212625",
     forecolor2: "#1a1e1dab",
@@ -19,4 +19,4 @@ const theme = {
   },
 };
 
-export default theme;
+export default themeStyle;

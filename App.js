@@ -6,6 +6,7 @@ import { GameProvider } from "./utils/gameContext";
 import { GameStatProvider } from "./utils/gameStatContext";
 import * as Font from "expo-font";
 import LoadingIndicator from "./components/loadingIcon";
+import { ThemeProvider } from "./utils/themeContext";
 
 const App = () => {
   const [currentScreen, setCurrentScreen] = useState({
@@ -40,22 +41,24 @@ const App = () => {
   };
 
   return (
-    <GameProvider>
-      <GameStatProvider>
-        <CoinProvider>
-          {/* Conditional Screen Rendering */}
-          {currentScreen.name === "Home" && (
-            <HomeScreen navigation={{ navigate }} />
-          )}
-          {currentScreen.name === "SudokuScreen" && (
-            <SudokuScreen
-              route={{ params: currentScreen.params }}
-              navigation={{ navigate }}
-            />
-          )}
-        </CoinProvider>
-      </GameStatProvider>
-    </GameProvider>
+    <ThemeProvider>
+      <GameProvider>
+        <GameStatProvider>
+          <CoinProvider>
+            {/* Conditional Screen Rendering */}
+            {currentScreen.name === "Home" && (
+              <HomeScreen navigation={{ navigate }} />
+            )}
+            {currentScreen.name === "SudokuScreen" && (
+              <SudokuScreen
+                route={{ params: currentScreen.params }}
+                navigation={{ navigate }}
+              />
+            )}
+          </CoinProvider>
+        </GameStatProvider>
+      </GameProvider>
+    </ThemeProvider>
   );
 };
 

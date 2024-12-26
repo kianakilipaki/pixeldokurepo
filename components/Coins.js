@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useCoins } from "../utils/coinContext";
-import theme from "../styles/theme";
+import themeStyles from "../styles/theme";
 import CoinShop from "./CoinShop";
 
 const Coins = () => {
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 30,
     right: 10,
-    backgroundColor: theme.colors.bgcolor3,
+    backgroundColor: themeStyles.colors.bgcolor3,
     paddingVertical: 3,
     paddingHorizontal: 5,
     borderRadius: 8,
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
   },
   coinText: {
     fontSize: 16,
-    color: theme.colors.gold,
-    fontFamily: theme.fonts.fontFamily,
+    color: themeStyles.colors.gold,
+    fontFamily: themeStyles.fonts.fontFamily,
   },
 });
 

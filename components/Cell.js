@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
 import { spriteMap } from "../utils/helper";
-import theme from "../styles/theme";
+import themeStyles from "../styles/theme";
 
 import { Dimensions } from "react-native";
 
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   cellContainer: {
     width: width * 0.1,
     height: width * 0.1,
-    backgroundColor: theme.colors.bgcolor1,
+    backgroundColor: themeStyles.colors.bgcolor1,
     overflow: "hidden",
     position: "relative",
     justifyContent: "center",
@@ -86,20 +86,20 @@ const styles = StyleSheet.create({
     height: width * 0.3,
   },
   hintedCell: {
-    backgroundColor: theme.colors.highlight2,
+    backgroundColor: themeStyles.colors.highlight2,
   },
   selectedCell: {
-    backgroundColor: theme.colors.highlight1,
+    backgroundColor: themeStyles.colors.highlight1,
   },
   highlightedCell: {
     borderTopWidth: 3,
     borderLeftWidth: 3,
     borderBottomWidth: 3,
     borderRightWidth: 3,
-    borderColor: theme.colors.blue,
+    borderColor: themeStyles.colors.blue,
   },
   notEditable: {
-    backgroundColor: theme.colors.bgcolor2,
+    backgroundColor: themeStyles.colors.bgcolor2,
   },
 });
 

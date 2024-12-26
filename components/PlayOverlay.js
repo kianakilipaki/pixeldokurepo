@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import themeStyles from "../styles/theme";
 
 const PlayOverlay = ({ onPress }) => {
   return (
@@ -24,14 +25,14 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.6)",
     justifyContent: "center",
     alignItems: "center",
-    zIndex: 10,
+    zIndex: 100,
   },
   playButton: {
-    backgroundColor: "#3498db",
+    backgroundColor: themeStyles.colors.blue,
     paddingLeft: 8,
-    width: 80, // Explicit width
-    height: 80, // Explicit height
-    borderRadius: 40, // Half of width/height for a perfect circle
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     justifyContent: "center",
     alignItems: "center",
   },
