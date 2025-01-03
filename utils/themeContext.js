@@ -19,27 +19,6 @@ const getThemes = async () => {
   }
 };
 
-// Function to unlock a theme
-const unlockTheme = async (themeKey, setThemes) => {
-  try {
-    const themes = await getThemes();
-    const theme = themes[themeKey];
-
-    if (theme && theme.locked) {
-      theme.locked = false; // Unlock the theme
-      await AsyncStorage.setItem("themesStatus", JSON.stringify(themes));
-      console.log(`${themeKey} unlocked!`);
-      setThemes(themes); // Update the state after unlocking the theme
-    } else if (theme && !theme.locked) {
-      console.log(`${themeKey} is already unlocked.`);
-    } else {
-      console.log("Theme not found.");
-    }
-  } catch (error) {
-    console.error("Error unlocking theme:", error);
-  }
-};
-
 // ThemeProvider component to manage theme state
 export const ThemeProvider = ({ children }) => {
   const [themes, setThemes] = useState(null);
@@ -53,8 +32,32 @@ export const ThemeProvider = ({ children }) => {
     fetchThemes();
   }, []);
 
+  // Function to unlock a theme
+  const unlockTheme = async (themeKey) => {
+    try {
+      const updatedThemes = { ...themes };
+      const theme = updatedThemes[themeKey];
+
+      if (theme && theme.locked) {
+        theme.locked = false; // Unlock the theme
+        await AsyncStorage.setItem(
+          "themesStatus",
+          JSON.stringify(updatedThemes)
+        );
+        console.log(`${themeKey} unlocked!`);
+        setThemes(updatedThemes); // Update the state after unlocking the theme
+      } else if (theme && !theme.locked) {
+        console.log(`${themeKey} is already unlocked.`);
+      } else {
+        console.log("Theme not found.");
+      }
+    } catch (error) {
+      console.error("Error unlocking theme:", error);
+    }
+  };
+
   return (
-    <ThemeContext.Provider value={{ themes, setThemes, unlockTheme }}>
+    <ThemeContext.Provider value={{ themes, unlockTheme }}>
       {children}
     </ThemeContext.Provider>
   );

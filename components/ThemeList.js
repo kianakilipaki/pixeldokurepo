@@ -96,6 +96,7 @@ const ThemeList = ({ item, themeKey, navigation }) => {
 
 const styles = StyleSheet.create({
   themeContainer: {
+    width: "100vw",
     width: width,
     alignSelf: "center",
     marginVertical: 10,
@@ -111,6 +112,8 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   themeBackground: {
+    width: "100vw",
+    height: 78,
     width: width,
     height: "fit-content",
     resizeMode: "cover",

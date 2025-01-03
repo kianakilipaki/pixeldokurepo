@@ -8,11 +8,11 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { useCoins } from "../utils/coinContext";
-import { Dimensions } from "react-native";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
@@ -56,7 +56,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
               <View style={styles.coinContainer} key={index}>
                 <Image
                   source={require("../assets/coin.png")}
-                  style={{ width: 24, height: 24, marginRight: 10 }}
+                  style={styles.coinImage}
                 />
                 <Text style={styles.coinText}>{option.coins} Coins</Text>
                 <Text style={styles.costText}>{option.cost}</Text>
@@ -69,8 +69,9 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
               </View>
             ))}
           </View>
+
           <View style={styles.buttonContainer}>
-            <Button title="Close" onPress={closeModal} />
+            <Button title="Close" onPress={closeModal} color="#007BFF" />
           </View>
         </View>
       </View>
@@ -86,27 +87,30 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContainer: {
-    width: width * 0.9,
+    width: width * 0.85,
+    maxHeight: height * 0.8,
     backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "#ccc",
     borderRadius: 10,
     overflow: "hidden",
+    elevation: 5,
   },
   modalHeader: {
-    width: width * 0.9,
-    padding: 20,
+    width: "100%",
+    paddingVertical: 15,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f8f8f8",
   },
   modalHeaderText: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
-    color: "#fff",
+    color: "#ffffff",
+    textShadowColor: "rgba(0, 0, 0, 0.2)",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   modalBody: {
-    padding: 20,
+    padding: 15,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -117,33 +121,43 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#eee",
+    borderBottomColor: "#ddd",
+  },
+  coinImage: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
   },
   coinText: {
     fontSize: 16,
     fontWeight: "bold",
     flex: 1,
+    textAlign: "left",
+    color: "#333",
   },
   costText: {
     fontSize: 16,
     color: "#555",
     marginHorizontal: 10,
+    textAlign: "center",
   },
   buyButton: {
     backgroundColor: "#007BFF",
-    paddingVertical: 5,
-    paddingHorizontal: 15,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
     borderRadius: 5,
   },
   buyButtonText: {
     color: "#fff",
     fontSize: 14,
     fontWeight: "bold",
+    textAlign: "center",
   },
   buttonContainer: {
     padding: 10,
     borderTopWidth: 1,
     borderTopColor: "#ccc",
+    alignItems: "center",
   },
 });
 

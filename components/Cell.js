@@ -72,8 +72,8 @@ const Cell = ({
 
 const styles = StyleSheet.create({
   cellContainer: {
-    width: width * 0.1,
-    height: width * 0.1,
+    width: width * 0.105,
+    height: width * 0.105,
     backgroundColor: themeStyles.colors.bgcolor1,
     overflow: "hidden",
     position: "relative",
