@@ -33,6 +33,13 @@ const ThemeList = ({ item, themeKey, navigation }) => {
     setIsModalVisible(true);
   };
 
+  const navigateToSudoku = (difficulty) => {
+    navigation.navigate("SudokuScreen", {
+      theme: item,
+      difficulty,
+    });
+  };
+
   return (
     <View style={styles.themeContainer}>
       <ImageBackground
@@ -66,12 +73,7 @@ const ThemeList = ({ item, themeKey, navigation }) => {
               <View key={difficulty}>
                 <TouchableOpacity
                   style={styles.difficultyButton}
-                  onPress={() =>
-                    navigation.navigate("SudokuScreen", {
-                      theme: item,
-                      difficulty,
-                    })
-                  }
+                  onPress={() => navigateToSudoku(difficulty)}
                 >
                   <Text style={styles.difficultyText}>
                     {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}

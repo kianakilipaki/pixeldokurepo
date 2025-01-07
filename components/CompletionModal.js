@@ -13,6 +13,8 @@ import { useGame } from "../utils/gameContext";
 import { useGameStat } from "../utils/gameStatContext";
 import themeStyles from "../styles/theme";
 import { Dimensions } from "react-native";
+import Star from "../assets/icons/star.svg";
+import GrayStar from "../assets/icons/gray-star.svg";
 
 const { width } = Dimensions.get("window");
 
@@ -100,8 +102,6 @@ const CompletionModal = ({
   }, [board]);
 
   const { title, message, buttons } = modalContent[modalType] || {};
-  const star = require("../assets/star.png");
-  const grayStar = require("../assets/gray-star.png");
 
   return (
     <Modal
@@ -114,18 +114,21 @@ const CompletionModal = ({
         <View style={styles.modalContainer}>
           {/* Header Section */}
           <View style={styles.starContainer}>
-            <Image
-              source={retryCounter >= 1 ? star : grayStar}
-              style={styles.star1}
-            />
-            <Image
-              source={retryCounter >= 2 ? star : grayStar}
-              style={styles.star2}
-            />
-            <Image
-              source={retryCounter == 3 ? star : grayStar}
-              style={styles.star3}
-            />
+            {retryCounter >= 1 ? (
+              <Star style={styles.star1} />
+            ) : (
+              <GrayStar style={styles.star1} />
+            )}
+            {retryCounter >= 2 ? (
+              <Star style={styles.star2} />
+            ) : (
+              <GrayStar style={styles.star2} />
+            )}
+            {retryCounter >= 3 ? (
+              <Star style={styles.star3} />
+            ) : (
+              <GrayStar style={styles.star3} />
+            )}
           </View>
 
           <ImageBackground
@@ -186,6 +189,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: width * 0.8,
+    maxWidth: "400px",
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: themeStyles.colors.forecolor1,
@@ -193,6 +197,7 @@ const styles = StyleSheet.create({
   },
   modalHeader: {
     width: width * 0.8,
+    maxWidth: "400px",
     padding: 20,
     justifyContent: "center",
     alignItems: "center",
@@ -225,28 +230,23 @@ const styles = StyleSheet.create({
   },
   starContainer: {
     position: "absolute",
-    top: 10,
-    left: width * 0.13,
-    flex: 1,
+    top: -30, // Move the stars above the modal
+    width: "100%", // Make the container span the modal's width
     flexDirection: "row",
+    justifyContent: "center", // Center items horizontally
+    alignItems: "center", // Center items vertically within their container
     zIndex: 10,
   },
   star1: {
-    width: 50,
-    height: 50,
-    marginRight: 20,
-    transform: [{ rotate: "-15deg" }, { translateY: -40 }],
+    marginRight: 10, // Space between stars
+    transform: [{ rotate: "-15deg" }, { translateY: -10 }], // Angle outward and slightly adjust vertically
   },
   star2: {
-    width: 60,
-    height: 60,
-    marginRight: 20,
-    transform: [{ translateY: -50 }],
+    transform: [{ translateY: -20 }], // Center star moves slightly higher
   },
   star3: {
-    width: 50,
-    height: 50,
-    transform: [{ rotate: "15deg" }, { translateY: -40 }],
+    marginLeft: 10, // Space between stars
+    transform: [{ rotate: "15deg" }, { translateY: -10 }], // Angle outward and slightly adjust vertically
   },
   coinContainer: {
     flexDirection: "row",

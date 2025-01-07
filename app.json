@@ -26,6 +26,7 @@
       "output": "web-build",
       "publicPath": "./"
     },
-    "assetBundlePatterns": ["**/*"]
+    "assetBundlePatterns": ["**/*"],
+    "plugins": ["expo-asset"]
   }
 }

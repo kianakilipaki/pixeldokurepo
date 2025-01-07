@@ -1,15 +1,16 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import themeStyles from "../styles/theme";
+import Play from "../assets/icons/play.svg";
+import { Dimensions } from "react-native";
+
+const { width } = Dimensions.get("window");
 
 const PlayOverlay = ({ onPress }) => {
   return (
     <View style={styles.overlay}>
       <TouchableOpacity style={styles.playButton} onPress={onPress}>
-        <Image
-          source={require("../assets/play.png")}
-          style={{ width: 45, height: 45 }}
-        />
+        <Play width={width * 0.3} height={width * 0.3} />
       </TouchableOpacity>
     </View>
   );
@@ -28,11 +29,6 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   playButton: {
-    backgroundColor: themeStyles.colors.blue,
-    paddingLeft: 8,
-    width: 80,
-    height: 80,
-    borderRadius: 40,
     justifyContent: "center",
     alignItems: "center",
   },
