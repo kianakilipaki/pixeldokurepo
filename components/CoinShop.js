@@ -6,11 +6,11 @@ import {
   Button,
   StyleSheet,
   ImageBackground,
-  Image,
   TouchableOpacity,
   Dimensions,
 } from "react-native";
 import { useCoins } from "../utils/coinContext";
+import Coin from "../assets/icons/coin.svg";
 
 const { width, height } = Dimensions.get("window");
 
@@ -54,17 +54,18 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
           <View style={styles.modalBody}>
             {coinOptions.map((option, index) => (
               <View style={styles.coinContainer} key={index}>
-                <Image
-                  source={require("../assets/coin.png")}
-                  style={styles.coinImage}
-                />
+                <Coin width="30px" height="30px" />
                 <Text style={styles.coinText}>{option.coins} Coins</Text>
                 <Text style={styles.costText}>{option.cost}</Text>
                 <TouchableOpacity
                   onPress={() => buyCoins(option.coins, option.cost)}
                   style={styles.buyButton}
                 >
-                  <Text style={styles.buyButtonText}>Buy</Text>
+                  {option.cost == "AD" ? (
+                    <Text style={styles.buyButtonText}>Free</Text>
+                  ) : (
+                    <Text style={styles.buyButtonText}>Buy</Text>
+                  )}
                 </TouchableOpacity>
               </View>
             ))}
@@ -123,12 +124,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
   },
-  coinImage: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
-  },
   coinText: {
+    marginLeft: 10,
     fontSize: 16,
     fontWeight: "bold",
     flex: 1,
@@ -143,6 +140,7 @@ const styles = StyleSheet.create({
   },
   buyButton: {
     backgroundColor: "#007BFF",
+    width: 70,
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 5,

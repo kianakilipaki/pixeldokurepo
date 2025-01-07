@@ -6,7 +6,6 @@ import {
   Button,
   StyleSheet,
   ImageBackground,
-  Image,
 } from "react-native";
 import { useCoins } from "../utils/coinContext";
 import { useGame } from "../utils/gameContext";
@@ -15,6 +14,7 @@ import themeStyles from "../styles/theme";
 import { Dimensions } from "react-native";
 import Star from "../assets/icons/star.svg";
 import GrayStar from "../assets/icons/gray-star.svg";
+import Coin from "../assets/icons/coin.svg";
 
 const { width } = Dimensions.get("window");
 
@@ -147,14 +147,7 @@ const CompletionModal = ({
             {coinsAwarded && (
               <View style={styles.coinContainer}>
                 <Text style={styles.coinText}> +{coinsAwarded}</Text>
-                <Image
-                  source={require("../assets/coin.png")}
-                  style={{
-                    width: 16,
-                    height: 16,
-                    marginLeft: 5,
-                  }}
-                />
+                <Coin width="16px" height="16px" />
               </View>
             )}
           </View>
@@ -230,23 +223,23 @@ const styles = StyleSheet.create({
   },
   starContainer: {
     position: "absolute",
-    top: -30, // Move the stars above the modal
-    width: "100%", // Make the container span the modal's width
+    top: -30,
+    width: "100%",
     flexDirection: "row",
-    justifyContent: "center", // Center items horizontally
-    alignItems: "center", // Center items vertically within their container
+    justifyContent: "center",
+    alignItems: "center",
     zIndex: 10,
   },
   star1: {
-    marginRight: 10, // Space between stars
-    transform: [{ rotate: "-15deg" }, { translateY: -10 }], // Angle outward and slightly adjust vertically
+    marginRight: 10,
+    transform: [{ rotate: "-15deg" }, { translateY: -10 }],
   },
   star2: {
-    transform: [{ translateY: -20 }], // Center star moves slightly higher
+    transform: [{ translateY: -20 }],
   },
   star3: {
-    marginLeft: 10, // Space between stars
-    transform: [{ rotate: "15deg" }, { translateY: -10 }], // Angle outward and slightly adjust vertically
+    marginLeft: 10,
+    transform: [{ rotate: "15deg" }, { translateY: -10 }],
   },
   coinContainer: {
     flexDirection: "row",

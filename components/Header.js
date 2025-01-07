@@ -2,16 +2,14 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Coins from "./Coins";
 import themeStyles from "../styles/theme";
+import BackArrow from "../assets/icons/backArrow.svg";
 
 const Header = ({ title, onBackPress }) => {
   return (
     <View style={styles.headerContainer}>
       {/* Back Arrow */}
       <TouchableOpacity onPress={onBackPress} style={styles.backArrow}>
-        <Image
-          source={require("../assets/backArrow.png")}
-          style={{ width: 20, height: 20 }}
-        />
+        <BackArrow width="20px" />
       </TouchableOpacity>
 
       {/* Title */}

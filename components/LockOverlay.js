@@ -1,14 +1,12 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import Lock from "../assets/icons/lock.svg";
 
 const LockOverlay = ({ onPress }) => {
   return (
     <View style={styles.overlay}>
-      <TouchableOpacity style={styles.playButton} onPress={onPress}>
-        <Image
-          source={require("../assets/lock.png")}
-          style={{ width: 30, height: 30 }}
-        />
+      <TouchableOpacity onPress={onPress}>
+        <Lock style={styles.lockIcon} />
       </TouchableOpacity>
     </View>
   );
@@ -26,7 +24,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     zIndex: 10,
   },
-  playButton: {
+  lockIcon: {
     justifyContent: "center",
     alignItems: "center",
   },

@@ -3,6 +3,7 @@ import { View, StyleSheet, Image, Text } from "react-native";
 import { useCoins } from "../utils/coinContext";
 import themeStyles from "../styles/theme";
 import CoinShop from "./CoinShop";
+import Coin from "../assets/icons/coin.svg";
 
 const Coins = () => {
   const { coins } = useCoins();
@@ -12,10 +13,7 @@ const Coins = () => {
   };
   return (
     <View style={styles.coinContainer}>
-      <Image
-        source={require("../assets/coin.png")}
-        style={{ width: 16, height: 16, marginRight: 5 }}
-      />
+      <Coin width="16px" height="16px" />
       <Text style={styles.coinText} onPress={openShop}>
         {coins}
       </Text>
@@ -30,7 +28,7 @@ const Coins = () => {
 const styles = StyleSheet.create({
   coinContainer: {
     position: "absolute",
-    top: 30,
+    top: 40,
     right: 10,
     backgroundColor: themeStyles.colors.bgcolor3,
     paddingVertical: 3,
@@ -43,6 +41,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   coinText: {
+    marginLeft: 4,
     fontSize: 16,
     color: themeStyles.colors.gold,
     fontFamily: themeStyles.fonts.fontFamily,

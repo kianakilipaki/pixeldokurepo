@@ -2,6 +2,11 @@ import React from "react";
 import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 import { useGame } from "../utils/gameContext";
 import themeStyles from "../styles/theme";
+import Ad from "../assets/icons/ad.svg";
+import Hint from "../assets/icons/hint.svg";
+import Reset from "../assets/icons/reset.svg";
+import Pause from "../assets/icons/pause.svg";
+import Erase from "../assets/icons/erase.svg";
 
 const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   const {
@@ -55,43 +60,26 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
     <View style={styles.buttonContainer}>
       {/* Reset Button */}
       <TouchableOpacity style={styles.button} onPress={onReset}>
-        <Image
-          source={require("../assets/reset.png")}
-          style={{ width: 20, height: 20 }}
-        />
+        <Reset width="20px" height="20px" />
       </TouchableOpacity>
 
       {/* Erase Button */}
       <TouchableOpacity style={styles.button} onPress={onErase}>
-        <Image
-          source={require("../assets/erase.png")}
-          style={{ width: 20, height: 20 }}
-        />
+        <Erase width="20px" height="20px" />
       </TouchableOpacity>
 
       {/* Hint Button */}
       <TouchableOpacity style={styles.button} onPress={onHint}>
         <View style={styles.hintIndicator}>
           {hints > 0 && <Text style={styles.hintText}>{hints}</Text>}
-          {hints == 0 && (
-            <Image
-              source={require("../assets/ad.png")}
-              style={{ width: 12, height: 12 }}
-            />
-          )}
+          {hints == 0 && <Ad style={{ width: 15, height: 16 }} />}
         </View>
-        <Image
-          source={require("../assets/hint.png")}
-          style={{ width: 20, height: 20 }}
-        />
+        <Hint width="20px" height="20px" />
       </TouchableOpacity>
 
       {/* Pause Button */}
       <TouchableOpacity style={styles.button} onPress={onPause}>
-        <Image
-          source={require("../assets/pause.png")}
-          style={{ width: 20, height: 20 }}
-        />
+        <Pause width="20px" height="20px" />
       </TouchableOpacity>
     </View>
   );
@@ -107,7 +95,7 @@ const styles = StyleSheet.create({
   button: {
     padding: 10,
     backgroundColor: themeStyles.colors.blue,
-    borderRadius: 50,
+    borderRadius: 100,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -115,8 +103,8 @@ const styles = StyleSheet.create({
   },
   hintIndicator: {
     position: "absolute",
-    top: -6,
-    right: -5,
+    top: -15,
+    right: -12,
     paddingHorizontal: 3,
     paddingVertical: 2,
     backgroundColor: themeStyles.colors.gold,
@@ -128,7 +116,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   hintText: {
-    fontSize: 10,
+    fontSize: 16,
     fontFamily: themeStyles.fonts.fontFamily,
   },
 });

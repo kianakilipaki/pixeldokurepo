@@ -1,6 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
-import themeStyles from "../styles/theme";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Play from "../assets/icons/play.svg";
 import { Dimensions } from "react-native";
 

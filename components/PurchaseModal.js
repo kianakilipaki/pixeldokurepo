@@ -15,6 +15,7 @@ import CoinShop from "./CoinShop";
 import themeStyle from "../styles/theme";
 import { Dimensions } from "react-native";
 import { useThemes } from "../utils/themeContext";
+import Coin from "../assets/icons/coin.svg";
 
 const { width } = Dimensions.get("window");
 
@@ -73,10 +74,7 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
               </View>
 
               <View style={styles.coinContainer}>
-                <Image
-                  source={require("../assets/coin.png")}
-                  style={{ width: 16, height: 16, marginRight: 5 }}
-                />
+                <Coin width="16px" height="16px" />
                 <Text style={styles.coinText}>500</Text>
               </View>
             </View>
@@ -178,7 +176,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "gray",
-    marginLeft: "auto", // Push coinContainer to the right
+    marginLeft: "auto",
     shadowColor: themeStyle.colors.bgcolor3,
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
