@@ -9,7 +9,7 @@ import {
   Animated,
 } from "react-native";
 import { useGameStat } from "../utils/gameStatContext";
-import { spriteMap } from "../utils/helper";
+import { spriteMap } from "../utils/assetsMap";
 import LockOverlay from "./LockOverlay";
 import PurchaseModal from "./PurchaseModal";
 import themeStyles from "../styles/theme";

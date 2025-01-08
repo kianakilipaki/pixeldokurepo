@@ -1,25 +1,15 @@
-import themeStyles from "../styles/theme";
+// assetsMap.js
+import React from "react";
+import { View, Text } from "react-native";
 import { Dimensions } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import Birds from "../assets/themes/Winter-Birds.svg";
+
+export const ASSETS = {
+  birds: Birds,
+};
 
 const { width } = Dimensions.get("window");
-
-// Create sudoku grid lines
-export const getCellBorderStyles = (rowIndex, colIndex) => {
-  const isThickTop = rowIndex % 3 === 0;
-  const isThickLeft = colIndex % 3 === 0;
-  const isThickBottom = rowIndex === 8;
-  const isThickRight = colIndex === 8;
-
-  return {
-    borderTopWidth: isThickTop ? 3 : 1,
-    borderLeftWidth: isThickLeft ? 3 : 1,
-    borderBottomWidth: isThickBottom ? 3 : 1,
-    borderRightWidth: isThickRight ? 3 : 1,
-    borderColor: themeStyles.colors.forecolor1,
-    zIndex: 2,
-  };
-};
 
 // map sprite position to numbers
 export const spriteMap = {
@@ -51,6 +41,7 @@ export const spriteMapLG = {
 export const defaultThemes = {
   birds: {
     title: "BirdDoku",
+    srcName: "Winter-Birds",
     source: require("../assets/themes/Winter-Birds.png"),
     bgSource: require("../assets/themes/MntForest-bg.png"),
     locked: false,
@@ -77,4 +68,22 @@ export const defaultThemes = {
     bgSource: require("../assets/gradient.png"),
     locked: true,
   },
+};
+
+export const ThemeAsset = ({ name, size = 20, position = {} }) => {
+  const SvgIcon = ASSETS[name];
+
+  if (!SvgIcon) {
+    return (
+      <View>
+        <Text>{name}</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={{ position: "absolute", ...position }}>
+      <SvgIcon width={size} height={size} />
+    </View>
+  );
 };

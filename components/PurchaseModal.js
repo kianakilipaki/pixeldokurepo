@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useCoins } from "../utils/coinContext";
-import { spriteMap } from "../utils/helper";
+import { spriteMap } from "../utils/assetsMap";
 import CoinShop from "./CoinShop";
 import themeStyle from "../styles/theme";
 import { Dimensions } from "react-native";

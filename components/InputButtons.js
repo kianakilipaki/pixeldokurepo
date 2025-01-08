@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { spriteMapLG } from "../utils/helper";
+import { spriteMapLG } from "../utils/assetsMap";
 import { useGame } from "../utils/gameContext";
 import themeStyles from "../styles/theme";
 

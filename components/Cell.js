@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Image, StyleSheet } from "react-native";
-import { spriteMap } from "../utils/helper";
+import { View, StyleSheet } from "react-native";
+import { ThemeAsset, spriteMap } from "../utils/assetsMap";
 import themeStyles from "../styles/theme";
 
 import { Dimensions } from "react-native";

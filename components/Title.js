@@ -1,10 +1,18 @@
 // TitleAndButtons.js
 import React from "react";
-import { Animated, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  Animated,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+} from "react-native";
 import themeStyles from "../styles/theme";
+import Icon from "../assets/icon.svg";
 
 const Title = ({ fadeAnimation, savedGame, onContinue, onToggleExpansion }) => (
   <Animated.View style={[styles.centerContainer, { opacity: fadeAnimation }]}>
+    <Icon style={styles.icon} />
     <Text style={styles.header}>Welcome to</Text>
     <Text style={styles.title}>PixelDoku</Text>
     {savedGame && (
@@ -29,6 +37,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  icon: {
+    width: "200px",
+    height: "200px",
   },
   header: {
     fontFamily: themeStyles.fonts.fontFamily,
