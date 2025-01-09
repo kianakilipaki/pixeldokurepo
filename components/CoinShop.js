@@ -11,6 +11,7 @@ import {
   Image,
 } from "react-native";
 import { useCoins } from "../utils/coinContext";
+import themeStyle from "../styles/theme";
 
 const { width, height } = Dimensions.get("window");
 
@@ -75,7 +76,11 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
           </View>
 
           <View style={styles.buttonContainer}>
-            <Button title="Close" onPress={closeModal} color="#007BFF" />
+            <Button
+              title="Close"
+              onPress={closeModal}
+              color={themeStyle.colors.blue}
+            />
           </View>
         </View>
       </View>
@@ -103,12 +108,11 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f8f8f8",
   },
   modalHeaderText: {
+    fontFamily: themeStyle.fonts.fontFamily,
     fontSize: 24,
-    fontWeight: "bold",
-    color: "#ffffff",
+    color: "white",
     textShadowColor: "rgba(0, 0, 0, 0.2)",
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
@@ -142,14 +146,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   buyButton: {
-    backgroundColor: "#007BFF",
+    backgroundColor: themeStyle.colors.blue,
     width: 70,
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
   buyButtonText: {
-    color: "#fff",
+    color: "white",
     fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
