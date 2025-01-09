@@ -2,11 +2,6 @@ import React from "react";
 import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 import { useGame } from "../utils/gameContext";
 import themeStyles from "../styles/theme";
-import Ad from "../assets/icons/ad.svg";
-import Hint from "../assets/icons/hint.svg";
-import Reset from "../assets/icons/reset.svg";
-import Pause from "../assets/icons/pause.svg";
-import Erase from "../assets/icons/erase.svg";
 
 const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   const {
@@ -60,26 +55,43 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
     <View style={styles.buttonContainer}>
       {/* Reset Button */}
       <TouchableOpacity style={styles.button} onPress={onReset}>
-        <Reset width="20px" height="20px" />
+        <Image
+          source={require("../assets/icons/reset.png")}
+          style={{ width: 20, height: 20 }}
+        />
       </TouchableOpacity>
 
       {/* Erase Button */}
       <TouchableOpacity style={styles.button} onPress={onErase}>
-        <Erase width="20px" height="20px" />
+        <Image
+          source={require("../assets/icons/erase.png")}
+          style={{ width: 20, height: 20 }}
+        />
       </TouchableOpacity>
 
       {/* Hint Button */}
       <TouchableOpacity style={styles.button} onPress={onHint}>
         <View style={styles.hintIndicator}>
           {hints > 0 && <Text style={styles.hintText}>{hints}</Text>}
-          {hints == 0 && <Ad style={{ width: 15, height: 16 }} />}
+          {hints == 0 && (
+            <Image
+              source={require("../assets/icons/ad.png")}
+              style={{ width: 16, height: 16 }}
+            />
+          )}
         </View>
-        <Hint width="20px" height="20px" />
+        <Image
+          source={require("../assets/icons/hint.png")}
+          style={{ width: 20, height: 20 }}
+        />
       </TouchableOpacity>
 
       {/* Pause Button */}
       <TouchableOpacity style={styles.button} onPress={onPause}>
-        <Pause width="20px" height="20px" />
+        <Image
+          source={require("../assets/icons/pause.png")}
+          style={{ width: 20, height: 20 }}
+        />
       </TouchableOpacity>
     </View>
   );

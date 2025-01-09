@@ -8,9 +8,9 @@ import {
   ImageBackground,
   TouchableOpacity,
   Dimensions,
+  Image,
 } from "react-native";
 import { useCoins } from "../utils/coinContext";
-import Coin from "../assets/icons/coin.svg";
 
 const { width, height } = Dimensions.get("window");
 
@@ -54,7 +54,10 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
           <View style={styles.modalBody}>
             {coinOptions.map((option, index) => (
               <View style={styles.coinContainer} key={index}>
-                <Coin width="30px" height="30px" />
+                <Image
+                  source={require("../assets/icons/coin.png")}
+                  style={{ width: 30, height: 30 }}
+                />
                 <Text style={styles.coinText}>{option.coins} Coins</Text>
                 <Text style={styles.costText}>{option.cost}</Text>
                 <TouchableOpacity

@@ -6,15 +6,13 @@ import {
   Button,
   StyleSheet,
   ImageBackground,
+  Image,
 } from "react-native";
 import { useCoins } from "../utils/coinContext";
 import { useGame } from "../utils/gameContext";
 import { useGameStat } from "../utils/gameStatContext";
 import themeStyles from "../styles/theme";
 import { Dimensions } from "react-native";
-import Star from "../assets/icons/star.svg";
-import GrayStar from "../assets/icons/gray-star.svg";
-import Coin from "../assets/icons/coin.svg";
 
 const { width } = Dimensions.get("window");
 
@@ -102,6 +100,8 @@ const CompletionModal = ({
   }, [board]);
 
   const { title, message, buttons } = modalContent[modalType] || {};
+  const star = require("../assets/icons/star.png");
+  const grayStar = require("../assets/icons/gray-star.png");
 
   return (
     <Modal
@@ -114,21 +114,18 @@ const CompletionModal = ({
         <View style={styles.modalContainer}>
           {/* Header Section */}
           <View style={styles.starContainer}>
-            {retryCounter >= 1 ? (
-              <Star style={styles.star1} />
-            ) : (
-              <GrayStar style={styles.star1} />
-            )}
-            {retryCounter >= 2 ? (
-              <Star style={styles.star2} />
-            ) : (
-              <GrayStar style={styles.star2} />
-            )}
-            {retryCounter >= 3 ? (
-              <Star style={styles.star3} />
-            ) : (
-              <GrayStar style={styles.star3} />
-            )}
+            <Image
+              source={retryCounter >= 1 ? star : grayStar}
+              style={styles.star1}
+            />
+            <Image
+              source={retryCounter >= 2 ? star : grayStar}
+              style={styles.star2}
+            />
+            <Image
+              source={retryCounter == 3 ? star : grayStar}
+              style={styles.star3}
+            />
           </View>
 
           <ImageBackground
@@ -147,7 +144,10 @@ const CompletionModal = ({
             {coinsAwarded && (
               <View style={styles.coinContainer}>
                 <Text style={styles.coinText}> +{coinsAwarded}</Text>
-                <Coin width="16px" height="16px" />
+                <Image
+                  source={require("../assets/icons/coin.png")}
+                  style={{ width: 16, height: 16 }}
+                />
               </View>
             )}
           </View>
@@ -231,14 +231,14 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   star1: {
-    width: 60,
-    height: 60,
+    width: 64,
+    height: 64,
     marginRight: 10,
     transform: [{ rotate: "-15deg" }, { translateY: -10 }],
   },
   star2: {
-    width: 60,
-    height: 60,
+    width: 64,
+    height: 64,
     transform: [{ translateY: -20 }],
   },
   star3: {

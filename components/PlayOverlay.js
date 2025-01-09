@@ -1,6 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import Play from "../assets/icons/play.svg";
+import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -9,7 +8,10 @@ const PlayOverlay = ({ onPress }) => {
   return (
     <View style={styles.overlay}>
       <TouchableOpacity style={styles.playButton} onPress={onPress}>
-        <Play width={width * 0.3} height={width * 0.3} />
+        <Image
+          source={require("../assets/icons/play.png")}
+          style={{ width: width * 0.3, height: width * 0.3 }}
+        />
       </TouchableOpacity>
     </View>
   );

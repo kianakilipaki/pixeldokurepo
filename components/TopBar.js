@@ -3,7 +3,6 @@ import { View, StyleSheet, Text, Image } from "react-native";
 import Timer from "./Timer";
 import { useGame } from "../utils/gameContext";
 import themeStyles from "../styles/theme";
-import Heart from "../assets/icons/heart.svg";
 
 const TopBar = ({ isPaused }) => {
   const { difficulty, retryCounter } = useGame();
@@ -13,7 +12,11 @@ const TopBar = ({ isPaused }) => {
       {/* Retry Counter */}
       <View style={styles.retryContainer}>
         {Array.from({ length: retryCounter }, (_, i) => (
-          <Heart key={i} width="20px" height="20px" style={styles.heartIcon} />
+          <Image
+            source={require("../assets/icons/heart.png")}
+            key={i}
+            style={styles.heartIcon}
+          />
         ))}
       </View>
       {difficulty && <Text style={styles.difficultyText}>{difficulty}</Text>}
@@ -37,6 +40,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   heartIcon: {
+    width: 20,
+    height: 20,
     marginRight: 4,
   },
   timerContainer: {

@@ -90,7 +90,7 @@ const SudokuScreen = ({ route, navigation }) => {
         <CompletionModal
           setIsModalVisible={setIsModalVisible}
           isModalVisible={isModalVisible}
-          onNextPuzzle={() => resetGame()}
+          onNextPuzzle={() => startNewGame(theme, difficulty)}
           onRetry={() => setBoard(initialBoard)}
         />
       </View>

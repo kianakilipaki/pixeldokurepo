@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Modal,
   View,
@@ -15,7 +15,6 @@ import CoinShop from "./CoinShop";
 import themeStyle from "../styles/theme";
 import { Dimensions } from "react-native";
 import { useThemes } from "../utils/themeContext";
-import Coin from "../assets/icons/coin.svg";
 
 const { width } = Dimensions.get("window");
 
@@ -74,7 +73,10 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
               </View>
 
               <View style={styles.coinContainer}>
-                <Coin width="16px" height="16px" />
+                <Image
+                  source={require("../assets/icons/coin.png")}
+                  style={{ width: 16, height: 16 }}
+                />
                 <Text style={styles.coinText}>500</Text>
               </View>
             </View>
