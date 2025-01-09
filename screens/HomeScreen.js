@@ -34,8 +34,12 @@ const HomeScreen = ({ navigation }) => {
 
   const handleContinue = () => {
     if (savedGame) {
-      loadProgress();
-      navigation.navigate("SudokuScreen");
+      const game = loadProgress();
+      navigation.navigate("SudokuScreen", {
+        theme: game.theme,
+        difficulty: game.difficulty,
+        isNewGame: false,
+      });
     }
   };
 

@@ -7,7 +7,6 @@ import TopBar from "../components/TopBar";
 import Header from "../components/Header";
 import { useGame } from "../utils/gameContext";
 import PlayOverlay from "../components/PlayOverlay";
-import { generateSudoku } from "../utils/GeneratePuzzle";
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -21,12 +20,8 @@ const SudokuScreen = ({ route, navigation }) => {
     board,
     setBoard,
     initialBoard,
-    setInitialBoard,
-    setSolutionBoard,
-    setTimer,
-    setRetryCounter,
     saveProgress,
-    setHints,
+    resetProgress,
   } = useGame();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -34,22 +29,20 @@ const SudokuScreen = ({ route, navigation }) => {
   const [selectedCell, setSelectedCell] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  const resetGame = useCallback(() => {
-    try {
-      const { puzzle, solution } = generateSudoku(difficulty);
-      setBoard(puzzle);
-      setInitialBoard(puzzle);
-      setSolutionBoard(solution);
-      setTimer(0);
-      setRetryCounter(3);
-      setHints(3);
-    } catch (error) {
-      console.error("Error loading game:", error);
-    } finally {
-      saveProgress();
-      setIsLoading(false);
-    }
-  }, [difficulty]);
+  const startNewGame = useCallback(
+    (theme, difficulty) => {
+      try {
+        setTheme(theme);
+        setDifficulty(difficulty);
+        resetProgress();
+      } catch (error) {
+        console.error("Error loading game:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [difficulty]
+  );
 
   const updateBoard = (value) => {
     const [row, col] = selectedCell || [];
@@ -62,11 +55,9 @@ const SudokuScreen = ({ route, navigation }) => {
   };
 
   useEffect(() => {
-    if (!theme) {
-      const { theme, difficulty } = route.params;
-      setTheme(theme);
-      setDifficulty(difficulty);
-      resetGame();
+    const { theme, difficulty, isNewGame } = route.params;
+    if (isNewGame) {
+      startNewGame(theme, difficulty);
     } else {
       setIsLoading(false);
     }

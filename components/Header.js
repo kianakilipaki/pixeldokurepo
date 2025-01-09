@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     paddingTop: 30,
-    backgroundColor: themeStyles.colors.blue1,
+    backgroundColor: themeStyles.colors.blue,
     borderBottomColor: themeStyles.colors.forecolor1,
     borderBottomWidth: 2,
   },

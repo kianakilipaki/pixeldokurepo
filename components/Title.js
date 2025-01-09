@@ -53,6 +53,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: themeStyles.colors.red,
     transform: [{ scaleY: 2 }],
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 2,
   },
   button: {
     width: "60%",

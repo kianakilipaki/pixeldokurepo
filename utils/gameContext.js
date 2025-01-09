@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { generateSudoku } from "../utils/GeneratePuzzle";
 
 const GameContext = createContext();
 
@@ -50,9 +51,27 @@ export const GameProvider = ({ children }) => {
         setTimer(progress.timer);
         setHints(progress.hints);
         console.log("Progress loaded:", progress);
+        return progress;
       }
     } catch (error) {
       console.error("Error loading progress:", error);
+    }
+  };
+
+  // Reset progress function
+  const resetProgress = async () => {
+    try {
+      const { puzzle, solution } = generateSudoku(difficulty);
+      setBoard(puzzle);
+      setInitialBoard(puzzle);
+      setSolutionBoard(solution);
+      setTimer(0);
+      setRetryCounter(3);
+      setHints(3);
+    } catch (error) {
+      console.error("Error starting new game:", error);
+    } finally {
+      saveProgress();
     }
   };
 
@@ -77,6 +96,7 @@ export const GameProvider = ({ children }) => {
         setHints,
         saveProgress,
         loadProgress,
+        resetProgress,
       }}
     >
       {children}

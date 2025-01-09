@@ -38,6 +38,7 @@ const ThemeList = ({ item, themeKey, navigation }) => {
     navigation.navigate("SudokuScreen", {
       theme: item,
       difficulty,
+      isNewGame: true,
     });
   };
 
