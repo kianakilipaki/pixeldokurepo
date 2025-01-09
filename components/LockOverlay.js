@@ -6,7 +6,7 @@ const LockOverlay = ({ onPress }) => {
   return (
     <View style={styles.overlay}>
       <TouchableOpacity onPress={onPress}>
-        <Lock style={styles.lockIcon} />
+        <Lock width="20px" height="20px" style={styles.lockIcon} />
       </TouchableOpacity>
     </View>
   );

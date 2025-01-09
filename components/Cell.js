@@ -1,6 +1,6 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { ThemeAsset, spriteMap } from "../utils/assetsMap";
+import { View, StyleSheet, Image } from "react-native";
+import { spriteMap } from "../utils/assetsMap";
 import themeStyles from "../styles/theme";
 
 import { Dimensions } from "react-native";
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   spriteImage: {
+    aspectRatio: 1,
     position: "absolute",
     width: width * 0.3,
     height: width * 0.3,

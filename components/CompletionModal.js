@@ -231,13 +231,19 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   star1: {
+    width: 60,
+    height: 60,
     marginRight: 10,
     transform: [{ rotate: "-15deg" }, { translateY: -10 }],
   },
   star2: {
+    width: 60,
+    height: 60,
     transform: [{ translateY: -20 }],
   },
   star3: {
+    width: 60,
+    height: 60,
     marginLeft: 10,
     transform: [{ rotate: "15deg" }, { translateY: -10 }],
   },

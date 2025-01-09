@@ -3,12 +3,6 @@ import React from "react";
 import { View, Text } from "react-native";
 import { Dimensions } from "react-native";
 
-import Birds from "../assets/themes/Winter-Birds.svg";
-
-export const ASSETS = {
-  birds: Birds,
-};
-
 const { width } = Dimensions.get("window");
 
 // map sprite position to numbers
@@ -68,22 +62,4 @@ export const defaultThemes = {
     bgSource: require("../assets/gradient.png"),
     locked: true,
   },
-};
-
-export const ThemeAsset = ({ name, size = 20, position = {} }) => {
-  const SvgIcon = ASSETS[name];
-
-  if (!SvgIcon) {
-    return (
-      <View>
-        <Text>{name}</Text>
-      </View>
-    );
-  }
-
-  return (
-    <View style={{ position: "absolute", ...position }}>
-      <SvgIcon width={size} height={size} />
-    </View>
-  );
 };

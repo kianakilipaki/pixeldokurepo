@@ -13,7 +13,7 @@ const TopBar = ({ isPaused }) => {
       {/* Retry Counter */}
       <View style={styles.retryContainer}>
         {Array.from({ length: retryCounter }, (_, i) => (
-          <Heart key={i} width="20px" style={styles.heartIcon} />
+          <Heart key={i} width="20px" height="20px" style={styles.heartIcon} />
         ))}
       </View>
       {difficulty && <Text style={styles.difficultyText}>{difficulty}</Text>}

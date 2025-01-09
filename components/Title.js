@@ -8,11 +8,11 @@ import {
   Image,
 } from "react-native";
 import themeStyles from "../styles/theme";
-import Icon from "../assets/icon.svg";
 
 const Title = ({ fadeAnimation, savedGame, onContinue, onToggleExpansion }) => (
   <Animated.View style={[styles.centerContainer, { opacity: fadeAnimation }]}>
-    <Icon style={styles.icon} />
+    {/* <Icon style={styles.icon} /> */}
+    <Image source={require("../assets/icon.png")} style={styles.icon} />
     <Text style={styles.header}>Welcome to</Text>
     <Text style={styles.title}>PixelDoku</Text>
     {savedGame && (

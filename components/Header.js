@@ -9,7 +9,7 @@ const Header = ({ title, onBackPress }) => {
     <View style={styles.headerContainer}>
       {/* Back Arrow */}
       <TouchableOpacity onPress={onBackPress} style={styles.backArrow}>
-        <BackArrow width="20px" />
+        <BackArrow width="20px" height="20px" />
       </TouchableOpacity>
 
       {/* Title */}
