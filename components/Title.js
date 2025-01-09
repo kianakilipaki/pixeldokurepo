@@ -11,7 +11,6 @@ import themeStyles from "../styles/theme";
 
 const Title = ({ fadeAnimation, savedGame, onContinue, onToggleExpansion }) => (
   <Animated.View style={[styles.centerContainer, { opacity: fadeAnimation }]}>
-    {/* <Icon style={styles.icon} /> */}
     <Image source={require("../assets/icon.png")} style={styles.icon} />
     <Text style={styles.header}>Welcome to</Text>
     <Text style={styles.title}>PixelDoku</Text>
@@ -39,8 +38,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   icon: {
-    width: "200px",
-    height: "200px",
+    width: 200,
+    height: 200,
   },
   header: {
     fontFamily: themeStyles.fonts.fontFamily,

@@ -28,7 +28,7 @@ const Coins = () => {
 const styles = StyleSheet.create({
   coinContainer: {
     position: "absolute",
-    top: 40,
+    top: 30,
     right: 10,
     backgroundColor: themeStyles.colors.bgcolor3,
     paddingVertical: 3,

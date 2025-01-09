@@ -30,6 +30,7 @@ const ThemeList = ({ item, themeKey, navigation }) => {
   const stats = gameStats[themeKey] || { Easy: 0, Medium: 0, Hard: 0 };
 
   const openModal = () => {
+    if (item.title == "Coming Soon") return;
     setIsModalVisible(true);
   };
 
@@ -98,30 +99,25 @@ const ThemeList = ({ item, themeKey, navigation }) => {
 
 const styles = StyleSheet.create({
   themeContainer: {
-    width: "100vw",
+    width: "100%",
     width: width,
     alignSelf: "center",
     marginVertical: 10,
-    overflow: "hidden",
-    elevation: 5,
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: themeStyles.colors.forecolor1,
+    backgroundColor: "white",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4.65,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
     elevation: 5,
+    borderWidth: 2,
+    borderColor: themeStyles.colors.forecolor1,
   },
   themeBackground: {
-    width: "100vw",
-    height: 78,
-    width: width,
-    height: "fit-content",
-    resizeMode: "cover",
+    flex: 1,
+    width: "100%",
+    height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 10,
   },
   themeHeader: {
     flexDirection: "row",
@@ -147,7 +143,6 @@ const styles = StyleSheet.create({
     color: themeStyles.colors.forecolor1,
   },
   difficultyContainer: {
-    borderRadius: 10,
     width: width * 0.8,
     paddingVertical: 10,
     paddingHorizontal: 15,

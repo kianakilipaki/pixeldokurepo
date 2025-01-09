@@ -60,12 +60,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: "100%",
     height: "90%",
-    backgroundColor: themeStyles.colors.forecolor3,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 10,
-    zIndex: 10,
-    elevation: 10, // Android-specific visibility
   },
   header: {
     fontFamily: themeStyles.fonts.fontFamily,

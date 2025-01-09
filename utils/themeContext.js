@@ -10,12 +10,20 @@ const getThemes = async () => {
   try {
     const savedThemes = await AsyncStorage.getItem("themesStatus");
     if (savedThemes) {
-      return JSON.parse(savedThemes); // Return saved themes if available
+      const parsedThemes = JSON.parse(savedThemes);
+
+      // Merge saved themes with default themes
+      const mergedThemes = { ...defaultThemes, ...parsedThemes };
+
+      // Save merged themes back to AsyncStorage
+      await AsyncStorage.setItem("themesStatus", JSON.stringify(mergedThemes));
+
+      return mergedThemes;
     }
-    return defaultThemes; // Return default status if nothing is saved
+    return defaultThemes;
   } catch (error) {
     console.error("Error fetching themes status:", error);
-    return defaultThemes; // Return default status in case of error
+    return defaultThemes; // Return default themes in case of error
   }
 };
 
@@ -61,6 +69,15 @@ export const ThemeProvider = ({ children }) => {
       {children}
     </ThemeContext.Provider>
   );
+};
+
+const resetThemes = async () => {
+  try {
+    await AsyncStorage.removeItem("themesStatus");
+    console.log("Themes reset!");
+  } catch (error) {
+    console.error("Error resetting themes:", error);
+  }
 };
 
 // Custom hook to use theme context
