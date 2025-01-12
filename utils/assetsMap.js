@@ -49,7 +49,7 @@ export const defaultThemes = {
   cats: {
     title: "CatDoku",
     source: require("../assets/themes/cats.png"),
-    bgSource: require("../assets/themes/MntForest-bg.png"),
+    bgSource: require("../assets/themes/cat-city.png"),
     locked: true,
   },
   unknown1: {
