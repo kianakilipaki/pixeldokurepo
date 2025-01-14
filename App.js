@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import HomeScreen from "./screens/HomeScreen";
-import SudokuScreen from "./screens/SudokuScreen";
+import HomeScreen from "./app/HomeScreen";
+import SudokuScreen from "./app/SudokuScreen";
 import { CoinProvider } from "./utils/coinContext";
 import { GameProvider } from "./utils/gameContext";
 import { GameStatProvider } from "./utils/gameStatContext";
