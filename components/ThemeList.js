@@ -12,7 +12,7 @@ import { useGameStat } from "../utils/gameStatContext";
 import { spriteMap } from "../utils/assetsMap";
 import LockOverlay from "./LockOverlay";
 import PurchaseModal from "./PurchaseModal";
-import themeStyles from "../styles/themeStyles";
+import themeStyles from "../utils/themeStyles";
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");

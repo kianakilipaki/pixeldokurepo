@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { spriteMapLG } from "../utils/assetsMap";
 import { useGame } from "../utils/gameContext";
-import themeStyles from "../styles/themeStyles";
+import themeStyles from "../utils/themeStyles";
 
 const InputButtons = ({ onPress }) => {
   const { theme } = useGame();

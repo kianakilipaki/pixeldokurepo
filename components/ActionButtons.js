@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 import { useGame } from "../utils/gameContext";
-import themeStyles from "../styles/themeStyles";
+import themeStyles from "../utils/themeStyles";
 
 const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   const {

@@ -11,7 +11,7 @@ import {
 import { useCoins } from "../utils/coinContext";
 import { useGame } from "../utils/gameContext";
 import { useGameStat } from "../utils/gameStatContext";
-import themeStyles from "../styles/themeStyles";
+import themeStyles from "../utils/themeStyles";
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");

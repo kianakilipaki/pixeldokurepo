@@ -1,4 +1,4 @@
-import themeStyles from "../styles/themeStyles";
+import themeStyles from "../utils/themeStyles";
 
 // Utility to check if a number can be placed at a given position
 const isValidPlacement = (board, row, col, num) => {

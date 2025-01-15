@@ -12,7 +12,7 @@ import {
 import { useCoins } from "../utils/coinContext";
 import { spriteMap } from "../utils/assetsMap";
 import CoinShop from "./CoinShop";
-import themeStyle from "../styles/themeStyles";
+import themeStyle from "../utils/themeStyles";
 import { Dimensions } from "react-native";
 import { useThemes } from "../utils/themeContext";
 

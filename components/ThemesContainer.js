@@ -1,7 +1,7 @@
 import React from "react";
 import { Animated, FlatList, StyleSheet, Text, Dimensions } from "react-native";
 import ThemeList from "./ThemeList";
-import themeStyles from "../styles/themeStyles";
+import themeStyles from "../utils/themeStyles";
 import LoadingIndicator from "./loadingIcon";
 import { useThemes } from "../utils/themeContext";
 

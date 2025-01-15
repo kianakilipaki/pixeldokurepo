@@ -7,7 +7,7 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-import themeStyles from "../styles/themeStyles";
+import themeStyles from "../utils/themeStyles";
 
 const Title = ({ fadeAnimation, savedGame, onContinue, onToggleExpansion }) => (
   <Animated.View style={[styles.centerContainer, { opacity: fadeAnimation }]}>
