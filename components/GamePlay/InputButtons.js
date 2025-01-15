@@ -1,26 +1,56 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { spriteMapLG } from "../../utils/assetsMap";
 import { useGame } from "../../utils/gameContext";
 import themeStyles from "../../utils/themeStyles";
 
 const InputButtons = ({ onPress, deselect }) => {
-  const { theme } = useGame();
+  const { theme, board } = useGame();
+  const [clearedValues, setClearedValues] = useState([]);
+
+  useEffect(() => {
+    const countMap = new Map();
+
+    // Count occurrences of each number on the board
+    for (let row = 0; row < board.length; row++) {
+      for (let col = 0; col < board[row].length; col++) {
+        const value = board[row][col];
+        if (value !== 0) {
+          // Ignore empty cells (assumed to be 0)
+          countMap.set(value, (countMap.get(value) || 0) + 1);
+        }
+      }
+    }
+
+    // Find values with exactly 9 occurrences
+    const newClearedValues = [];
+    for (const [key, count] of countMap.entries()) {
+      if (count === 9) {
+        newClearedValues.push(parseInt(key, 10));
+      }
+    }
+
+    setClearedValues(newClearedValues); // Reset state directly
+  }, [board]);
+
   return (
     <View style={styles.birdButtons}>
-      {Object.entries(spriteMapLG).map(([value, position]) => (
-        <TouchableOpacity
-          key={value}
-          style={styles.cellContainer}
-          onPress={() => {
-            onPress(parseInt(value, 10));
-          }}
-        >
-          <Image source={theme.source} style={[styles.spriteImage, position]} />
-        </TouchableOpacity>
-      ))}
+      {Object.entries(spriteMapLG).map(([value, position]) => {
+        const isCleared = clearedValues.includes(parseInt(value, 10));
+        return (
+          <TouchableOpacity
+            key={value}
+            style={[styles.cellContainer, isCleared && styles.darken]}
+            onPress={() => onPress(parseInt(value, 10))}
+          >
+            <Image
+              source={theme.source}
+              style={[styles.spriteImage, position, isCleared && styles.darken]}
+            />
+          </TouchableOpacity>
+        );
+      })}
       <TouchableOpacity
-        key={0}
         style={styles.cellContainer}
         onPress={deselect}
       ></TouchableOpacity>
@@ -40,7 +70,8 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     margin: 5,
-    border: "1px solid themeStyles.colors.forecolor1",
+    borderColor: themeStyles.colors.forecolor1,
+    borderWidth: 1,
     borderRadius: 10,
     backgroundColor: themeStyles.colors.bgcolor1,
     overflow: "hidden",
@@ -50,10 +81,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
   },
+  darken: {
+    backgroundColor: themeStyles.colors.bgcolor2,
+    opacity: 0.3,
+  },
   spriteImage: {
     position: "absolute",
     width: 144,
     height: 144,
+    opacity: 1, // Default opacity
   },
 });
 

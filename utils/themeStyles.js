@@ -8,7 +8,7 @@ const themeStyle = {
     bgcolor2: "#989797b0",
     bgcolor3: "#747373a7",
     highlight1: "#ff8800ad",
-    highlight2: "#ff880058",
+    highlight2: "#FF88003F",
     highlight3: "#663600ad",
     gold: "#eec027",
     red: "#b80d0d",
