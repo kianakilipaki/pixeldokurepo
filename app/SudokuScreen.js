@@ -51,6 +51,10 @@ const SudokuScreen = ({ route, navigation }) => {
       newBoard[row][col] = value;
       setBoard(newBoard);
       saveProgress(newBoard);
+    } else {
+      const x = selectedCell ? selectedCell[0] : 0;
+      const y = selectedCell ? selectedCell[1] : 0;
+      setSelectedCell([x, y, value]);
     }
   };
 
@@ -84,6 +88,7 @@ const SudokuScreen = ({ route, navigation }) => {
           selectedCell={selectedCell}
           onCellSelect={setSelectedCell}
           updateBoard={updateBoard}
+          deselect={() => setSelectedCell(null)}
           onReset={() => setBoard(initialBoard)}
           onPause={() => setIsPaused(true)}
         />

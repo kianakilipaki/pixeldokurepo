@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 3,
     borderBottomWidth: 3,
     borderRightWidth: 3,
-    borderColor: themeStyles.colors.blue,
+    borderColor: themeStyles.colors.red,
   },
   notEditable: {
     backgroundColor: themeStyles.colors.bgcolor2,

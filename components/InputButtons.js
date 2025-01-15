@@ -4,7 +4,7 @@ import { spriteMapLG } from "../utils/assetsMap";
 import { useGame } from "../utils/gameContext";
 import themeStyles from "../utils/themeStyles";
 
-const InputButtons = ({ onPress }) => {
+const InputButtons = ({ onPress, deselect }) => {
   const { theme } = useGame();
   return (
     <View style={styles.birdButtons}>
@@ -19,6 +19,11 @@ const InputButtons = ({ onPress }) => {
           <Image source={theme.source} style={[styles.spriteImage, position]} />
         </TouchableOpacity>
       ))}
+      <TouchableOpacity
+        key={0}
+        style={styles.cellContainer}
+        onPress={deselect}
+      ></TouchableOpacity>
     </View>
   );
 };
