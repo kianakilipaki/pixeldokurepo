@@ -34,7 +34,7 @@ const SudokuScreen = ({ route, navigation }) => {
       try {
         setTheme(theme);
         setDifficulty(difficulty);
-        resetProgress();
+        resetProgress(difficulty);
       } catch (error) {
         console.error("Error loading game:", error);
       } finally {
@@ -53,8 +53,8 @@ const SudokuScreen = ({ route, navigation }) => {
       saveProgress(newBoard);
       setSelectedCell([row, col, value]);
     } else {
-      const x = selectedCell ? selectedCell[0] : 0;
-      const y = selectedCell ? selectedCell[1] : 0;
+      const x = selectedCell ? selectedCell[0] : null;
+      const y = selectedCell ? selectedCell[1] : null;
       setSelectedCell([x, y, value]);
     }
   };

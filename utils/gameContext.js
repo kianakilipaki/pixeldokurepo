@@ -59,7 +59,7 @@ export const GameProvider = ({ children }) => {
   };
 
   // Reset progress function
-  const resetProgress = async () => {
+  const resetProgress = async (difficulty) => {
     try {
       const { puzzle, solution } = generateSudoku(difficulty);
       setBoard(puzzle);

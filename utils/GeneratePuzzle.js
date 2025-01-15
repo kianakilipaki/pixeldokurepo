@@ -33,7 +33,7 @@ const fillBoard = (board) => {
 };
 
 const removeCells = (board, difficulty) => {
-  const difficultyMap = { easy: 30, medium: 40, hard: 50 }; // Numbers to remove
+  const difficultyMap = { Easy: 30, Medium: 40, Hard: 50 }; // Numbers to remove
   const cellsToRemove = difficultyMap[difficulty] || 30;
 
   for (let i = 0; i < cellsToRemove; i++) {
@@ -90,7 +90,7 @@ const shuffleRowsAndColumns = (board) => {
   }
 };
 
-export const generateSudoku = (difficulty = "easy") => {
+export const generateSudoku = (difficulty = "Easy") => {
   // Create an empty board
   const board = Array.from({ length: 9 }, () => Array(9).fill(0));
 
