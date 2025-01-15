@@ -36,7 +36,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   };
 
   const onHint = () => {
-    if (hints <= 0) return; // Prevent using hints if there are none left
+    //if (hints <= 0) return; // Prevent using hints if there are none left
     const emptyCells = [];
     board.forEach((row, rowIndex) => {
       row.forEach((value, colIndex) => {

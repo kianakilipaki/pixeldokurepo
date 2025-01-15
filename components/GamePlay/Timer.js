@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { useGame } from "../../utils/gameContext";
 import themeStyles from "../../utils/themeStyles";
+import { formatTime } from "../../utils/GeneratePuzzle";
 
 const Timer = ({ isPaused }) => {
   const { timer, setTimer } = useGame();
@@ -22,14 +23,6 @@ const Timer = ({ isPaused }) => {
     // Cleanup on component unmount or dependency change
     return () => clearInterval(intervalRef.current);
   }, [isPaused, setTimer]);
-
-  const formatTime = (secs) => {
-    const minutes = Math.floor(secs / 60);
-    const remainingSeconds = secs % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(
-      remainingSeconds
-    ).padStart(2, "0")}`;
-  };
 
   return (
     <View style={styles.timerContainer}>

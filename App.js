@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import HomeScreen from "./app/HomeScreen";
 import SudokuScreen from "./app/SudokuScreen";
+import NotFoundScreen from "./app/NotFoundScreen";
 import { CoinProvider } from "./utils/coinContext";
 import { GameProvider } from "./utils/gameContext";
-import { GameStatProvider } from "./utils/gameStatContext";
+import { HighScoreProvider } from "./utils/highscoreContext";
 import * as Font from "expo-font";
 import LoadingIndicator from "./components/loadingIcon";
 import { ThemeProvider } from "./utils/themeContext";
@@ -43,7 +44,7 @@ const App = () => {
   return (
     <ThemeProvider>
       <GameProvider>
-        <GameStatProvider>
+        <HighScoreProvider>
           <CoinProvider>
             {/* Conditional Screen Rendering */}
             {currentScreen.name === "Home" && (
@@ -55,8 +56,12 @@ const App = () => {
                 navigation={{ navigate }}
               />
             )}
+            {currentScreen.name !== "Home" &&
+              currentScreen.name !== "SudokuScreen" && (
+                <NotFoundScreen navigation={{ navigate }} /> // Render Not Found
+              )}
           </CoinProvider>
-        </GameStatProvider>
+        </HighScoreProvider>
       </GameProvider>
     </ThemeProvider>
   );

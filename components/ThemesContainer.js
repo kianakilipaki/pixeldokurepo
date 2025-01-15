@@ -1,11 +1,18 @@
 import React from "react";
-import { Animated, FlatList, StyleSheet, Text, Dimensions } from "react-native";
+import {
+  Animated,
+  FlatList,
+  StyleSheet,
+  Text,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import ThemeList from "./ThemeList";
 import themeStyles from "../utils/themeStyles";
 import LoadingIndicator from "./loadingIcon";
 import { useThemes } from "../utils/themeContext";
 
-const ThemeListContainer = ({ slideAnimation, navigation }) => {
+const ThemeListContainer = ({ slideAnimation, navigation, toggle }) => {
   const screenHeight = Dimensions.get("window").height;
   const { themes } = useThemes();
 
@@ -29,7 +36,11 @@ const ThemeListContainer = ({ slideAnimation, navigation }) => {
         },
       ]}
     >
-      <Text style={styles.header}>Choose a Theme</Text>
+      {/* Header with Touchable */}
+      <TouchableOpacity onPress={toggle}>
+        <Text style={styles.header}>Choose a Theme</Text>
+      </TouchableOpacity>
+
       {Object.keys(themes).length > 0 ? (
         <FlatList
           data={Object.keys(themes).map((key) => ({

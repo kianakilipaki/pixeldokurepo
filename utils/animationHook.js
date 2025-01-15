@@ -1,4 +1,3 @@
-// useThemeAnimation.js
 import { useState, useRef } from "react";
 import { Animated } from "react-native";
 
@@ -8,14 +7,18 @@ const useThemeAnimation = () => {
   const fadeAnimation = useRef(new Animated.Value(1)).current;
 
   const toggleExpansion = () => {
+    const toSlideValue = isExpanded ? 0 : 1; // Toggle slide position
+    const toFadeValue = isExpanded ? 1 : 0; // Toggle fade opacity
+
+    // Run both animations in parallel
     Animated.parallel([
       Animated.timing(slideAnimation, {
-        toValue: isExpanded ? 0 : 1,
+        toValue: toSlideValue,
         duration: 500,
         useNativeDriver: true,
       }),
       Animated.timing(fadeAnimation, {
-        toValue: isExpanded ? 1 : 0,
+        toValue: toFadeValue,
         duration: 300,
         useNativeDriver: true,
       }),

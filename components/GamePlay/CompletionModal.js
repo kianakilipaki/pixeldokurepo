@@ -10,9 +10,10 @@ import {
 } from "react-native";
 import { useCoins } from "../../utils/coinContext";
 import { useGame } from "../../utils/gameContext";
-import { useGameStat } from "../../utils/gameStatContext";
+import { useHighScore } from "../../utils/highscoreContext";
 import themeStyles from "../../utils/themeStyles";
 import { Dimensions } from "react-native";
+import { formatTime } from "../../utils/GeneratePuzzle";
 
 const { width } = Dimensions.get("window");
 
@@ -31,7 +32,7 @@ const CompletionModal = ({
     retryCounter,
     setRetryCounter,
   } = useGame();
-  const { saveGameStat } = useGameStat();
+  const { saveHighScore } = useHighScore();
 
   const { addCoins } = useCoins();
   const [modalType, setModalType] = useState(null);
@@ -40,7 +41,7 @@ const CompletionModal = ({
   const modalContent = {
     success: {
       title: "Congrats!",
-      message: `You completed the puzzle in ${timer} seconds!`,
+      message: `You completed the puzzle in ${formatTime(timer)}!`,
       buttons: [
         { title: "Restart", onPress: onRetry },
         { title: "Next Puzzle", onPress: onNextPuzzle },
@@ -71,7 +72,7 @@ const CompletionModal = ({
     const totalCoins = coinReward + retryCounter * 2;
     setCoinsAwarded(totalCoins);
     addCoins(totalCoins);
-    saveGameStat(theme.themeKey, difficulty);
+    saveHighScore(theme.themeKey, difficulty, timer);
   };
 
   useEffect(() => {

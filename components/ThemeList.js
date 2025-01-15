@@ -8,18 +8,19 @@ import {
   StyleSheet,
   Animated,
 } from "react-native";
-import { useGameStat } from "../utils/gameStatContext";
+import { useHighScore } from "../utils/highscoreContext";
 import { spriteMap } from "../utils/assetsMap";
 import LockOverlay from "./LockOverlay";
 import PurchaseModal from "./PurchaseModal";
 import themeStyles from "../utils/themeStyles";
 import { Dimensions } from "react-native";
+import { formatTime } from "../utils/GeneratePuzzle";
 
 const { width } = Dimensions.get("window");
 
 const ThemeList = ({ item, themeKey, navigation }) => {
   const [expandedTheme, setExpandedTheme] = useState(null);
-  const { gameStats } = useGameStat();
+  const { HighScore } = useHighScore();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const toggleTheme = (key) => {
@@ -27,7 +28,7 @@ const ThemeList = ({ item, themeKey, navigation }) => {
   };
 
   const isExpanded = expandedTheme === themeKey;
-  const stats = gameStats[themeKey] || { Easy: 0, Medium: 0, Hard: 0 };
+  const Scores = HighScore[themeKey] || { Easy: 0, Medium: 0, Hard: 0 };
 
   const openModal = () => {
     if (item.title == "Coming Soon") return;
@@ -71,7 +72,7 @@ const ThemeList = ({ item, themeKey, navigation }) => {
 
         {!item.locked && isExpanded && (
           <Animated.View style={styles.difficultyContainer}>
-            {Object.entries(stats).map(([difficulty, completed]) => (
+            {Object.entries(Scores).map(([difficulty, time]) => (
               <View key={difficulty}>
                 <TouchableOpacity
                   style={styles.difficultyButton}
@@ -80,7 +81,9 @@ const ThemeList = ({ item, themeKey, navigation }) => {
                   <Text style={styles.difficultyText}>
                     {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
                   </Text>
-                  <Text style={styles.statsText}>Completed {completed}</Text>
+                  <Text style={styles.ScoresText}>
+                    Best time {formatTime(time)}
+                  </Text>
                 </TouchableOpacity>
                 {difficulty !== "Hard" && <View style={styles.divider} />}
               </View>
@@ -162,7 +165,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
-  statsText: {
+  ScoresText: {
     textAlign: "right",
     color: "#333",
     fontSize: 14,

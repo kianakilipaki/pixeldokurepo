@@ -7,15 +7,17 @@ const Header = ({ title, onBackPress }) => {
   return (
     <View style={styles.headerContainer}>
       {/* Back Arrow */}
-      <TouchableOpacity onPress={onBackPress} style={styles.backArrow}>
-        <Image
-          source={require("../assets/icons/backArrow.png")}
-          style={{ width: 20, height: 20 }}
-        />
-      </TouchableOpacity>
+      {onBackPress && (
+        <TouchableOpacity onPress={onBackPress} style={styles.backArrow}>
+          <Image
+            source={require("../assets/icons/backArrow.png")}
+            style={{ width: 20, height: 20 }}
+          />
+        </TouchableOpacity>
+      )}
 
       {/* Title */}
-      <Text style={styles.titleText}>{title}</Text>
+      {title && <Text style={styles.titleText}>{title}</Text>}
 
       {/* Coins */}
       <Coins />
