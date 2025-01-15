@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Image, Text } from "react-native";
 import { useCoins } from "../utils/coinContext";
-import themeStyles from "../styles/theme";
+import themeStyles from "../styles/themeStyles";
 import CoinShop from "./CoinShop";
 
 const Coins = () => {

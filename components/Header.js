@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Coins from "./Coins";
-import themeStyles from "../styles/theme";
+import themeStyles from "../styles/themeStyles";
 
 const Header = ({ title, onBackPress }) => {
   return (

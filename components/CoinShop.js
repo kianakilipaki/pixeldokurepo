@@ -11,7 +11,7 @@ import {
   Image,
 } from "react-native";
 import { useCoins } from "../utils/coinContext";
-import themeStyle from "../styles/theme";
+import themeStyle from "../styles/themeStyles";
 
 const { width, height } = Dimensions.get("window");
 
