@@ -1,8 +1,8 @@
 import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import Timer from "./Timer";
-import { useGame } from "../utils/gameContext";
-import themeStyles from "../utils/themeStyles";
+import { useGame } from "../../utils/gameContext";
+import themeStyles from "../../utils/themeStyles";
 
 const TopBar = ({ isPaused }) => {
   const { difficulty, retryCounter } = useGame();
@@ -13,7 +13,7 @@ const TopBar = ({ isPaused }) => {
       <View style={styles.retryContainer}>
         {Array.from({ length: retryCounter }, (_, i) => (
           <Image
-            source={require("../assets/icons/heart.png")}
+            source={require("../../assets/icons/heart.png")}
             key={i}
             style={styles.heartIcon}
           />

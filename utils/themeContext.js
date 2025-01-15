@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { defaultThemes } from "../utils/assetsMap";
+import { defaultThemes } from "./assetsMap";
 
 // Create a Context for themes
 const ThemeContext = createContext();

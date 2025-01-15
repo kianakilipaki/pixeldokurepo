@@ -1,8 +1,8 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import Cell from "./Cell";
-import { getCellBorderStyles } from "../utils/GeneratePuzzle";
-import { useGame } from "../utils/gameContext";
+import { getCellBorderStyles } from "../../utils/GeneratePuzzle";
+import { useGame } from "../../utils/gameContext";
 
 const Board = ({ selectedCell, onCellSelect }) => {
   const { theme, board, initialBoard } = useGame();

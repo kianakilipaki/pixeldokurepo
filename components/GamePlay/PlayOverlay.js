@@ -9,7 +9,7 @@ const PlayOverlay = ({ onPress }) => {
     <View style={styles.overlay}>
       <TouchableOpacity style={styles.playButton} onPress={onPress}>
         <Image
-          source={require("../assets/icons/play.png")}
+          source={require("../../assets/icons/play.png")}
           style={{ width: width * 0.3, height: width * 0.3 }}
         />
       </TouchableOpacity>

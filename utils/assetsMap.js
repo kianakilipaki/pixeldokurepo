@@ -1,6 +1,4 @@
 // assetsMap.js
-import React from "react";
-import { View, Text } from "react-native";
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");

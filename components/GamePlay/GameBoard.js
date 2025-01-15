@@ -1,7 +1,7 @@
 import React from "react";
-import ActionButtons from "../components/ActionButtons";
-import Board from "../components/Board";
-import InputButtons from "../components/InputButtons";
+import ActionButtons from "./ActionButtons";
+import Board from "./Board";
+import InputButtons from "./InputButtons";
 
 const GameBoard = ({
   selectedCell,

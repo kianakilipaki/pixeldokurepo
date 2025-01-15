@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Text, StyleSheet, View } from "react-native";
-import { useGame } from "../utils/gameContext";
-import themeStyles from "../utils/themeStyles";
+import { useGame } from "../../utils/gameContext";
+import themeStyles from "../../utils/themeStyles";
 
 const Timer = ({ isPaused }) => {
   const { timer, setTimer } = useGame();

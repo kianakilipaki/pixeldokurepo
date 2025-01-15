@@ -8,10 +8,10 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
-import { useCoins } from "../utils/coinContext";
-import { useGame } from "../utils/gameContext";
-import { useGameStat } from "../utils/gameStatContext";
-import themeStyles from "../utils/themeStyles";
+import { useCoins } from "../../utils/coinContext";
+import { useGame } from "../../utils/gameContext";
+import { useGameStat } from "../../utils/gameStatContext";
+import themeStyles from "../../utils/themeStyles";
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -100,8 +100,8 @@ const CompletionModal = ({
   }, [board]);
 
   const { title, message, buttons } = modalContent[modalType] || {};
-  const star = require("../assets/icons/star.png");
-  const grayStar = require("../assets/icons/gray-star.png");
+  const star = require("../../assets/icons/star.png");
+  const grayStar = require("../../assets/icons/gray-star.png");
 
   return (
     <Modal
@@ -129,7 +129,7 @@ const CompletionModal = ({
           </View>
 
           <ImageBackground
-            source={require("../assets/gradient.png")}
+            source={require("../../assets/gradient.png")}
             resizeMode="cover"
             style={styles.modalHeader}
           >
@@ -145,7 +145,7 @@ const CompletionModal = ({
               <View style={styles.coinContainer}>
                 <Text style={styles.coinText}> +{coinsAwarded}</Text>
                 <Image
-                  source={require("../assets/icons/coin.png")}
+                  source={require("../../assets/icons/coin.png")}
                   style={{ width: 16, height: 16 }}
                 />
               </View>

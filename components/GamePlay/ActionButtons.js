@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
-import { useGame } from "../utils/gameContext";
-import themeStyles from "../utils/themeStyles";
-import ModalTemplate from "./ModalTemplate";
+import { useGame } from "../../utils/gameContext";
+import themeStyles from "../../utils/themeStyles";
+import ModalTemplate from "../ModalTemplate";
 
 const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   const {
@@ -67,7 +67,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
         onPress={() => setModalVisible(true)} // Fixed incorrect invocation
       >
         <Image
-          source={require("../assets/icons/reset.png")}
+          source={require("../../assets/icons/reset.png")}
           style={{ width: 20, height: 20 }}
         />
       </TouchableOpacity>
@@ -75,7 +75,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
       {/* Erase Button */}
       <TouchableOpacity style={styles.button} onPress={onErase}>
         <Image
-          source={require("../assets/icons/erase.png")}
+          source={require("../../assets/icons/erase.png")}
           style={{ width: 20, height: 20 }}
         />
       </TouchableOpacity>
@@ -86,13 +86,13 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
           {hints > 0 && <Text style={styles.hintText}>{hints}</Text>}
           {hints === 0 && (
             <Image
-              source={require("../assets/icons/ad.png")}
+              source={require("../../assets/icons/ad.png")}
               style={{ width: 16, height: 16 }}
             />
           )}
         </View>
         <Image
-          source={require("../assets/icons/hint.png")}
+          source={require("../../assets/icons/hint.png")}
           style={{ width: 20, height: 20 }}
         />
       </TouchableOpacity>
@@ -100,7 +100,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
       {/* Pause Button */}
       <TouchableOpacity style={styles.button} onPress={onPause}>
         <Image
-          source={require("../assets/icons/pause.png")}
+          source={require("../../assets/icons/pause.png")}
           style={{ width: 20, height: 20 }}
         />
       </TouchableOpacity>

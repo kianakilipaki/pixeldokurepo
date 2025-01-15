@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { spriteMapLG } from "../utils/assetsMap";
-import { useGame } from "../utils/gameContext";
-import themeStyles from "../utils/themeStyles";
+import { spriteMapLG } from "../../utils/assetsMap";
+import { useGame } from "../../utils/gameContext";
+import themeStyles from "../../utils/themeStyles";
 
 const InputButtons = ({ onPress, deselect }) => {
   const { theme } = useGame();

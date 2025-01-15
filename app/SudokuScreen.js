@@ -1,12 +1,12 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { View, StyleSheet, ImageBackground } from "react-native";
-import CompletionModal from "../components/CompletionModal";
-import GameBoard from "../components/GameBoard";
+import CompletionModal from "../components/GamePlay/CompletionModal";
+import GameBoard from "../components/GamePlay/GameBoard";
 import LoadingIndicator from "../components/loadingIcon";
-import TopBar from "../components/TopBar";
+import TopBar from "../components/GamePlay/TopBar";
 import Header from "../components/Header";
 import { useGame } from "../utils/gameContext";
-import PlayOverlay from "../components/PlayOverlay";
+import PlayOverlay from "../components/GamePlay/PlayOverlay";
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
