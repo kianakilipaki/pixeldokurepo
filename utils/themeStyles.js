@@ -9,6 +9,7 @@ const themeStyle = {
     bgcolor3: "#747373a7",
     highlight1: "#ff8800ad",
     highlight2: "#ff880058",
+    highlight3: "#663600ad",
     gold: "#eec027",
     red: "#b80d0d",
     blue: "#1986e0",

@@ -1,20 +1,12 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  ImageBackground,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useCoins } from "../utils/coinContext";
 import { spriteMap } from "../utils/assetsMap";
 import CoinShop from "./CoinShop";
 import themeStyle from "../utils/themeStyles";
 import { Dimensions } from "react-native";
 import { useThemes } from "../utils/themeContext";
+import ModalTemplate from "./ModalTemplate";
 
 const { width } = Dimensions.get("window");
 
@@ -25,9 +17,6 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
   const [isWarningVisible, setIsWarningVisible] = useState(false);
   const [isCoinShopVisible, setIsCoinShopVisible] = useState(false);
 
-  const closeModal = () => {
-    setIsModalVisible(false);
-  };
   const purchaseTheme = () => {
     if (coins < 500) {
       setIsWarningVisible(true);
@@ -36,116 +25,66 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
       setIsWarningVisible(false);
       removeCoins(500);
       unlockTheme(theme.themeKey);
-      closeModal();
+      setIsModalVisible(false);
     }
   };
 
-  const openShop = () => {
-    setIsCoinShopVisible(true);
+  const modalBody = () => {
+    return (
+      <>
+        <Text style={styles.modalText}>Purchase {theme.title} theme?</Text>
+
+        <View style={styles.wrapper}>
+          <View style={styles.thumbnail}>
+            <Image
+              source={theme.source}
+              style={[styles.spriteImage, spriteMap[2]]}
+            />
+          </View>
+
+          <View style={styles.coinContainer}>
+            <Image
+              source={require("../assets/icons/coin.png")}
+              style={{ width: 16, height: 16 }}
+            />
+            <Text style={styles.coinText}>500</Text>
+          </View>
+        </View>
+        {isWarningVisible && (
+          <>
+            <Text style={{ color: themeStyle.colors.red, marginBottom: 5 }}>
+              Insufficent Funds
+            </Text>
+            <TouchableOpacity
+              style={styles.warningButton}
+              onPress={() => setIsCoinShopVisible(true)}
+            >
+              <Text style={styles.buyButtonText}>Buy Coins</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </>
+    );
   };
 
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isModalVisible}
-      onRequestClose={closeModal}
-    >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
-          <ImageBackground
-            source={require("../assets/gradient.png")}
-            resizeMode="cover"
-            style={styles.modalHeader}
-          >
-            <Text style={styles.modalHeaderText}>Confirm Purchase</Text>
-          </ImageBackground>
-
-          <View style={styles.modalBody}>
-            <Text style={styles.modalText}>Purchase {theme.title} theme?</Text>
-
-            <View style={styles.wrapper}>
-              <View style={styles.thumbnail}>
-                <Image
-                  source={theme.source}
-                  style={[styles.spriteImage, spriteMap[2]]}
-                />
-              </View>
-
-              <View style={styles.coinContainer}>
-                <Image
-                  source={require("../assets/icons/coin.png")}
-                  style={{ width: 16, height: 16 }}
-                />
-                <Text style={styles.coinText}>500</Text>
-              </View>
-            </View>
-            {isWarningVisible && (
-              <>
-                <Text style={{ color: themeStyle.colors.red, marginBottom: 5 }}>
-                  Insufficent Funds
-                </Text>
-                <TouchableOpacity
-                  style={styles.warningButton}
-                  onPress={openShop}
-                >
-                  <Text style={styles.buyButtonText}>Buy Coins</Text>
-                </TouchableOpacity>
-              </>
-            )}
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <View style={styles.buttonWrapper}>
-              <Button title={"Confirm"} onPress={purchaseTheme} />
-            </View>
-            <View style={styles.buttonWrapper}>
-              <Button title={"Cancel"} onPress={closeModal} />
-            </View>
-          </View>
-        </View>
-      </View>
+    <>
+      <ModalTemplate
+        modalTitle="Confirm Purchase"
+        modalBody={modalBody()}
+        confirmAction={purchaseTheme}
+        modalVisible={isModalVisible}
+        setModalVisible={setIsModalVisible}
+      />
       <CoinShop
         isCoinShopVisible={isCoinShopVisible}
         setIsCoinShopVisible={setIsCoinShopVisible}
       />
-    </Modal>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContainer: {
-    width: width * 0.8,
-    backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: themeStyle.colors.forecolor1,
-    borderRadius: 10,
-  },
-  modalHeader: {
-    width: width * 0.8,
-    padding: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    overflow: "hidden",
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-  },
-  modalHeaderText: {
-    fontFamily: themeStyle.fonts.fontFamily,
-    fontSize: 20,
-    color: "white",
-  },
-  modalBody: {
-    padding: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   wrapper: {
     flexDirection: "row",
     alignItems: "center",
@@ -194,15 +133,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingVertical: 5,
     paddingHorizontal: 10,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 10,
-  },
-  buttonWrapper: {
-    flex: 1,
-    paddingHorizontal: 5,
   },
   buyButtonText: {
     fontFamily: themeStyle.fonts.fontFamily,

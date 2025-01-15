@@ -45,7 +45,12 @@ const Cell = ({
       colIndex >= sectionColStart &&
       colIndex < sectionColStart + 3;
 
-    return sameRow || sameCol || sameSection;
+    const same = sameRow || sameCol || sameSection;
+    return same && !isEditable
+      ? styles.hintedCell2
+      : same && isEditable
+      ? styles.hintedCell
+      : null;
   };
 
   return (
@@ -53,10 +58,10 @@ const Cell = ({
       style={[
         styles.cellContainer,
         style,
-        isCellHinted() && styles.hintedCell,
-        isCellSelected() && styles.selectedCell,
         isCellSame() && styles.highlightedCell,
         !isEditable && styles.notEditable,
+        isCellHinted(),
+        isCellSelected() && styles.selectedCell,
       ]}
       onStartShouldSetResponder={onSelect}
     >
@@ -88,6 +93,9 @@ const styles = StyleSheet.create({
   },
   hintedCell: {
     backgroundColor: themeStyles.colors.highlight2,
+  },
+  hintedCell2: {
+    backgroundColor: themeStyles.colors.highlight3,
   },
   selectedCell: {
     backgroundColor: themeStyles.colors.highlight1,

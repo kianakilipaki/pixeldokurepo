@@ -31,6 +31,7 @@ const getThemes = async () => {
 export const ThemeProvider = ({ children }) => {
   const [themes, setThemes] = useState(null);
 
+  //resetThemes();
   // Load themes when the provider mounts
   useEffect(() => {
     const fetchThemes = async () => {

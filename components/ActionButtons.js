@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 import { useGame } from "../utils/gameContext";
 import themeStyles from "../utils/themeStyles";
+import ModalTemplate from "./ModalTemplate";
 
 const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   const {
@@ -13,6 +14,13 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
     setHints,
     saveProgress,
   } = useGame();
+
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleConfirm = () => {
+    onReset();
+    setModalVisible(false);
+  };
 
   const onErase = () => {
     if (selectedCell) {
@@ -28,7 +36,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   };
 
   const onHint = () => {
-    //if (hints <= 0) return; // Prevent using hints if there are none left
+    if (hints <= 0) return; // Prevent using hints if there are none left
     const emptyCells = [];
     board.forEach((row, rowIndex) => {
       row.forEach((value, colIndex) => {
@@ -54,7 +62,10 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   return (
     <View style={styles.buttonContainer}>
       {/* Reset Button */}
-      <TouchableOpacity style={styles.button} onPress={onReset}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setModalVisible(true)} // Fixed incorrect invocation
+      >
         <Image
           source={require("../assets/icons/reset.png")}
           style={{ width: 20, height: 20 }}
@@ -73,7 +84,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
       <TouchableOpacity style={styles.button} onPress={onHint}>
         <View style={styles.hintIndicator}>
           {hints > 0 && <Text style={styles.hintText}>{hints}</Text>}
-          {hints == 0 && (
+          {hints === 0 && (
             <Image
               source={require("../assets/icons/ad.png")}
               style={{ width: 16, height: 16 }}
@@ -93,6 +104,18 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
           style={{ width: 20, height: 20 }}
         />
       </TouchableOpacity>
+
+      <ModalTemplate
+        modalTitle="Confirm Reset"
+        modalBody={
+          <Text style={styles.modalText}>
+            Are you sure you want to reset your board?
+          </Text>
+        }
+        confirmAction={handleConfirm}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
     </View>
   );
 };
@@ -130,6 +153,11 @@ const styles = StyleSheet.create({
   hintText: {
     fontSize: 16,
     fontFamily: themeStyles.fonts.fontFamily,
+  },
+  modalText: {
+    fontSize: 18,
+    textAlign: "center",
+    marginBottom: 10,
   },
 });
 

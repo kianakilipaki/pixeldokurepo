@@ -1,19 +1,8 @@
 import React from "react";
-import {
-  Modal,
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useCoins } from "../utils/coinContext";
 import themeStyle from "../utils/themeStyles";
-
-const { width, height } = Dimensions.get("window");
+import ModalTemplate from "./ModalTemplate";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
@@ -26,102 +15,49 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
     { coins: 4000, cost: "$4.99" },
   ];
 
-  const closeModal = () => {
+  const buyCoins = (coins, cost) => {
+    addCoins(coins);
     setIsCoinShopVisible(false);
   };
 
-  const buyCoins = (coins, cost) => {
-    addCoins(coins);
-    closeModal();
+  const modalBody = () => {
+    return (
+      <>
+        {coinOptions.map((option, index) => (
+          <View style={styles.coinContainer} key={index}>
+            <Image
+              source={require("../assets/icons/coin.png")}
+              style={{ width: 30, height: 30 }}
+            />
+            <Text style={styles.coinText}>{option.coins} Coins</Text>
+            <Text style={styles.costText}>{option.cost}</Text>
+            <TouchableOpacity
+              onPress={() => buyCoins(option.coins, option.cost)}
+              style={styles.buyButton}
+            >
+              {option.cost == "AD" ? (
+                <Text style={styles.buyButtonText}>Free</Text>
+              ) : (
+                <Text style={styles.buyButtonText}>Buy</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        ))}
+      </>
+    );
   };
 
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isCoinShopVisible}
-      onRequestClose={closeModal}
-    >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
-          <ImageBackground
-            source={require("../assets/gradient.png")}
-            resizeMode="cover"
-            style={styles.modalHeader}
-          >
-            <Text style={styles.modalHeaderText}>Coin Shop</Text>
-          </ImageBackground>
-
-          <View style={styles.modalBody}>
-            {coinOptions.map((option, index) => (
-              <View style={styles.coinContainer} key={index}>
-                <Image
-                  source={require("../assets/icons/coin.png")}
-                  style={{ width: 30, height: 30 }}
-                />
-                <Text style={styles.coinText}>{option.coins} Coins</Text>
-                <Text style={styles.costText}>{option.cost}</Text>
-                <TouchableOpacity
-                  onPress={() => buyCoins(option.coins, option.cost)}
-                  style={styles.buyButton}
-                >
-                  {option.cost == "AD" ? (
-                    <Text style={styles.buyButtonText}>Free</Text>
-                  ) : (
-                    <Text style={styles.buyButtonText}>Buy</Text>
-                  )}
-                </TouchableOpacity>
-              </View>
-            ))}
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Close"
-              onPress={closeModal}
-              color={themeStyle.colors.blue}
-            />
-          </View>
-        </View>
-      </View>
-    </Modal>
+    <ModalTemplate
+      modalTitle="Coin Shop"
+      modalBody={modalBody()}
+      modalVisible={isCoinShopVisible}
+      setModalVisible={setIsCoinShopVisible}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContainer: {
-    width: width * 0.85,
-    maxHeight: height * 0.8,
-    backgroundColor: "white",
-    borderRadius: 10,
-    overflow: "hidden",
-    elevation: 5,
-  },
-  modalHeader: {
-    width: "100%",
-    paddingVertical: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalHeaderText: {
-    fontFamily: themeStyle.fonts.fontFamily,
-    fontSize: 24,
-    color: "white",
-    textShadowColor: "rgba(0, 0, 0, 0.2)",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 2,
-  },
-  modalBody: {
-    padding: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   coinContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -157,12 +93,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
-  },
-  buttonContainer: {
-    padding: 10,
-    borderTopWidth: 1,
-    borderTopColor: "#ccc",
-    alignItems: "center",
   },
 });
 
