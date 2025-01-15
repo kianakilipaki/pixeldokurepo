@@ -58,38 +58,51 @@ const Cell = ({
       style={[
         styles.cellContainer,
         style,
-        isCellSame() && styles.highlightedCell,
         !isEditable && styles.notEditable,
         isCellHinted(),
         isCellSelected() && styles.selectedCell,
       ]}
-      onStartShouldSetResponder={onSelect}
     >
-      {currentCell[2] !== 0 && (
-        <Image
-          source={theme.source}
-          style={[styles.spriteImage, spriteMap[currentCell[2]]]}
-        />
-      )}
+      <View
+        style={[styles.innerContainer, isCellSame() && styles.highlightedCell]}
+        onStartShouldSetResponder={onSelect}
+      >
+        {currentCell[2] !== 0 && (
+          <Image
+            source={theme.source}
+            style={[styles.spriteImage, spriteMap[currentCell[2]]]}
+          />
+        )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   cellContainer: {
-    width: width * 0.105,
-    height: width * 0.105,
+    width: width * 0.1,
+    height: width * 0.1,
     backgroundColor: themeStyles.colors.bgcolor1,
-    overflow: "hidden",
-    position: "relative",
     justifyContent: "center",
     alignItems: "center",
+  },
+  innerContainer: {
+    zIndex: 100,
+    width: width * 0.1 - 2,
+    height: width * 0.1 - 2,
+    borderTopWidth: 3,
+    borderLeftWidth: 3,
+    borderBottomWidth: 3,
+    borderRightWidth: 3,
+    borderColor: "transparent", // Default to no border
+    overflow: "hidden",
+    position: "relative",
   },
   spriteImage: {
     aspectRatio: 1,
     position: "absolute",
-    width: width * 0.3,
-    height: width * 0.3,
+    width: width * 0.255,
+    height: width * 0.255,
   },
   hintedCell: {
     backgroundColor: themeStyles.colors.highlight2,
@@ -101,10 +114,6 @@ const styles = StyleSheet.create({
     backgroundColor: themeStyles.colors.highlight1,
   },
   highlightedCell: {
-    borderTopWidth: 3,
-    borderLeftWidth: 3,
-    borderBottomWidth: 3,
-    borderRightWidth: 3,
     borderColor: themeStyles.colors.red,
   },
   notEditable: {

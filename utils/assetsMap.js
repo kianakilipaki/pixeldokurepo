@@ -6,14 +6,14 @@ const { width } = Dimensions.get("window");
 // map sprite position to numbers
 export const spriteMap = {
   1: { top: 0, left: 0 },
-  2: { top: 0, left: -width * 0.1 },
-  3: { top: 0, left: -width * 0.2 },
-  4: { top: -width * 0.1, left: 0 },
-  5: { top: -width * 0.1, left: -width * 0.1 },
-  6: { top: -width * 0.1, left: -width * 0.2 },
-  7: { top: -width * 0.2, left: 0 },
-  8: { top: -width * 0.2, left: -width * 0.1 },
-  9: { top: -width * 0.2, left: -width * 0.2 },
+  2: { top: 0, left: -width * 0.085 },
+  3: { top: 0, left: -width * 0.17 },
+  4: { top: -width * 0.085, left: 0 },
+  5: { top: -width * 0.085, left: -width * 0.085 },
+  6: { top: -width * 0.085, left: -width * 0.17 },
+  7: { top: -width * 0.17, left: 0 },
+  8: { top: -width * 0.17, left: -width * 0.085 },
+  9: { top: -width * 0.17, left: -width * 0.17 },
 };
 
 // map sprite position to numbers for input buttons
