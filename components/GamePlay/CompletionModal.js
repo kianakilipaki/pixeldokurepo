@@ -264,6 +264,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   coinText: {
+    marginBottom: 2,
     fontSize: 16,
     fontFamily: themeStyles.fonts.fontFamily,
     marginRight: 5,

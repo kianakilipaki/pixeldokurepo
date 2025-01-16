@@ -47,7 +47,7 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
               source={require("../assets/icons/coin.png")}
               style={{ width: 16, height: 16 }}
             />
-            <Text style={styles.coinText}>500</Text>
+            <Text style={styles.coinText}>-500</Text>
           </View>
         </View>
         {isWarningVisible && (
@@ -109,21 +109,23 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   coinContainer: {
-    flexDirection: "row",
-    alignItems: "center",
     backgroundColor: themeStyle.colors.gray1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 100,
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "gray",
-    marginLeft: "auto",
     shadowColor: themeStyle.colors.gray3,
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
   },
   coinText: {
+    marginBottom: 2,
     fontSize: 16,
     fontFamily: themeStyle.fonts.fontFamily,
     marginLeft: 5,
