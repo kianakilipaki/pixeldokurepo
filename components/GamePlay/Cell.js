@@ -17,6 +17,7 @@ const Cell = ({
 }) => {
   const isCellSelected = () => {
     if (!selectedCell) return false;
+    if (selectedCell[0] === null && selectedCell[1] === null) return false;
     return (
       currentCell[0] === selectedCell[0] && currentCell[1] === selectedCell[1]
     );
@@ -30,6 +31,7 @@ const Cell = ({
 
   const isCellHinted = () => {
     if (!selectedCell) return false;
+    if (selectedCell[0] === null && selectedCell[1] === null) return false;
 
     const [rowIndex, colIndex] = currentCell;
     const [selectedRow, selectedCol] = selectedCell;
