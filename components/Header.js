@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingTop: 30,
     backgroundColor: themeStyles.colors.blue,
-    borderBottomColor: themeStyles.colors.forecolor1,
+    borderBottomColor: themeStyles.colors.black1,
     borderBottomWidth: 2,
   },
   backArrow: {
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 20,
-    color: themeStyles.colors.forecolor1,
+    color: themeStyles.colors.black1,
     fontFamily: themeStyles.fonts.fontFamily,
   },
 });

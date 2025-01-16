@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 30,
     right: 10,
-    backgroundColor: themeStyles.colors.bgcolor3,
+    backgroundColor: themeStyles.colors.gray3,
     paddingVertical: 3,
     paddingHorizontal: 5,
     borderRadius: 8,

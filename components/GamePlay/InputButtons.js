@@ -70,10 +70,10 @@ const styles = StyleSheet.create({
     height: 50,
     padding: 10,
     margin: 5,
-    borderColor: themeStyles.colors.forecolor1,
+    borderColor: themeStyles.colors.black1,
     borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: themeStyles.colors.bgcolor1,
+    backgroundColor: themeStyles.colors.gray1,
     overflow: "hidden",
     position: "relative",
     shadowColor: "#000",
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
   },
   darken: {
-    backgroundColor: themeStyles.colors.bgcolor2,
+    backgroundColor: themeStyles.colors.gray2,
     opacity: 0.3,
   },
   spriteImage: {

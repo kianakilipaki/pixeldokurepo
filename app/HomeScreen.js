@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     fontFamily: themeStyles.fonts.fontFamily,
     fontSize: 36,
     textAlign: "center",
-    color: themeStyles.colors.forecolor1,
+    color: themeStyles.colors.black1,
   },
   title: {
     fontFamily: themeStyles.fonts.fontFamily,
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     borderCollapse: "collapsed",
   },
   continueButton: {
-    backgroundColor: themeStyles.colors.forecolor1,
+    backgroundColor: themeStyles.colors.black1,
   },
   newGameButton: {
     backgroundColor: themeStyles.colors.blue,

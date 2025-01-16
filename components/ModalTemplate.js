@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     width: width * 0.8,
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: themeStyle.colors.forecolor1,
+    borderColor: themeStyle.colors.black1,
     borderRadius: 10,
   },
   modalHeader: {

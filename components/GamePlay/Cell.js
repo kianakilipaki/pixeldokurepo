@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   cellContainer: {
     width: width * 0.1,
     height: width * 0.1,
-    backgroundColor: themeStyles.colors.bgcolor1,
+    backgroundColor: themeStyles.colors.gray1,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     borderColor: themeStyles.colors.red,
   },
   notEditable: {
-    backgroundColor: themeStyles.colors.bgcolor2,
+    backgroundColor: themeStyles.colors.gray2,
   },
 });
 

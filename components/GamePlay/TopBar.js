@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   difficultyText: {
     fontFamily: "Silkscreen-Regular",
     fontSize: 20,
-    color: themeStyles.colors.forecolor1,
+    color: themeStyles.colors.black1,
     marginTop: 3,
   },
 });

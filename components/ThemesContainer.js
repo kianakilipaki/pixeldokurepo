@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     fontFamily: themeStyles.fonts.fontFamily,
     fontSize: 24,
     textAlign: "center",
-    color: themeStyles.colors.forecolor1,
+    color: themeStyles.colors.black1,
     marginBottom: 10,
   },
 });

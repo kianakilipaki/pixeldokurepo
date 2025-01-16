@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
     borderWidth: 2,
-    borderColor: themeStyles.colors.forecolor1,
+    borderColor: themeStyles.colors.black1,
   },
   themeBackground: {
     flex: 1,
@@ -144,13 +144,13 @@ const styles = StyleSheet.create({
   themeTitle: {
     fontFamily: themeStyles.fonts.fontFamily,
     fontSize: 20,
-    color: themeStyles.colors.forecolor1,
+    color: themeStyles.colors.black1,
   },
   difficultyContainer: {
     width: width * 0.8,
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: themeStyles.colors.bgcolor1,
+    backgroundColor: themeStyles.colors.gray1,
   },
   difficultyButton: {
     padding: 10,

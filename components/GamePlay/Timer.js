@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   timerText: {
     fontSize: 20,
     fontFamily: themeStyles.fonts.fontFamily,
-    color: themeStyles.colors.forecolor1,
+    color: themeStyles.colors.black1,
   },
 });
 

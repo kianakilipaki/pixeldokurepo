@@ -121,7 +121,7 @@ export const getCellBorderStyles = (rowIndex, colIndex) => {
     borderLeftWidth: isThickLeft ? 3 : 1,
     borderBottomWidth: isThickBottom ? 3 : 1,
     borderRightWidth: isThickRight ? 3 : 1,
-    borderColor: themeStyles.colors.forecolor1,
+    borderColor: themeStyles.colors.black1,
     zIndex: 2,
   };
 };
