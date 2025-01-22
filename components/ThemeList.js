@@ -55,19 +55,23 @@ const ThemeList = ({ item, themeKey, navigation }) => {
           onPress={() => toggleTheme(themeKey)}
           style={styles.themeHeader}
         >
-          <View style={styles.thumbnail}>
-            <Image
-              source={item.source}
-              style={[styles.spriteImage, spriteMap[1]]}
-            />
-          </View>
+          {item.source && (
+            <View style={styles.thumbnail}>
+              <Image
+                source={item.source}
+                style={[styles.spriteImage, spriteMap[1]]}
+              />
+            </View>
+          )}
           <Text style={styles.themeTitle}>{item.title}</Text>
-          <View style={styles.thumbnail}>
-            <Image
-              source={item.source}
-              style={[styles.spriteImage, spriteMap[2]]}
-            />
-          </View>
+          {item.source && (
+            <View style={styles.thumbnail}>
+              <Image
+                source={item.source}
+                style={[styles.spriteImage, spriteMap[2]]}
+              />
+            </View>
+          )}
         </TouchableOpacity>
 
         {!item.locked && isExpanded && (

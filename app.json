@@ -24,10 +24,26 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "output": "web-build",
+      "output": "single",
       "publicPath": "./"
     },
-    "assetBundlePatterns": ["**/*"],
-    "plugins": ["expo-asset"]
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "plugins": [
+      "expo-asset",
+      "expo-build-properties"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a9206d7c-7666-4f76-9f46-b9146ed68f8d"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/a9206d7c-7666-4f76-9f46-b9146ed68f8d"
+    }
   }
 }

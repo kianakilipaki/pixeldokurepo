@@ -50,6 +50,12 @@ export const defaultThemes = {
     bgSource: require("../assets/themes/cat-city.png"),
     locked: true,
   },
+  dogs: {
+    title: "DogDoku",
+    source: require("../assets/themes/dogs.png"),
+    bgSource: require("../assets/themes/MntForest-bg.png"),
+    locked: true,
+  },
   unknown1: {
     title: "Coming Soon",
     bgSource: require("../assets/gradient.png"),
