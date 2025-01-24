@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 10,
+    paddingVertical: 20,
     paddingHorizontal: 15,
     paddingTop: 30,
     backgroundColor: themeStyles.colors.blue,

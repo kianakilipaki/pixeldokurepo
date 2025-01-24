@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 30,
     right: 10,
-    backgroundColor: themeStyles.colors.gray3,
+    backgroundColor: themeStyles.colors.gray1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
     marginLeft: 4,
     fontSize: 16,
-    color: themeStyles.colors.gold,
+    color: themeStyles.colors.black1,
     fontFamily: themeStyles.fonts.fontFamily,
   },
 });
