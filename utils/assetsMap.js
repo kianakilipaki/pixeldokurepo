@@ -53,7 +53,7 @@ export const defaultThemes = {
   dogs: {
     title: "DogDoku",
     source: require("../assets/themes/dogs.png"),
-    bgSource: require("../assets/themes/MntForest-bg.png"),
+    bgSource: require("../assets/themes/dog-park.png"),
     locked: true,
   },
   unknown1: {
