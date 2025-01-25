@@ -20,20 +20,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.alanilyon.pixeldoku"
+      "package": "com.alanilyon.pixeldoku",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "output": "single",
       "publicPath": "./"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "plugins": [
-      "expo-asset",
-      "expo-build-properties"
-    ],
+    "assetBundlePatterns": ["**/*"],
+    "plugins": ["expo-asset", "expo-build-properties"],
     "extra": {
       "eas": {
         "projectId": "a9206d7c-7666-4f76-9f46-b9146ed68f8d"
