@@ -5,21 +5,36 @@ import { defaultThemes } from "./assetsMap";
 // Create a Context for themes
 const ThemeContext = createContext();
 
-// Function to get the current themes' status from asyncStorage
+// Function to get and merge themes
 const getThemes = async () => {
   try {
     const savedThemes = await AsyncStorage.getItem("themesStatus");
     if (savedThemes) {
       const parsedThemes = JSON.parse(savedThemes);
 
-      // Merge saved themes with default themes
-      const mergedThemes = { ...defaultThemes, ...parsedThemes };
+      console.log(defaultThemes);
+      // Merge `defaultThemes` with the saved themes, preserving the `locked` state
+      const mergedThemes = Object.keys(defaultThemes).reduce((acc, key) => {
+        acc[key] = {
+          ...defaultThemes[key], // Take the updated data from `defaultThemes`
+          locked: parsedThemes[key]?.locked ?? defaultThemes[key].locked, // Ensure `locked` state persists
+        };
+        return acc;
+      }, {});
 
-      // Save merged themes back to AsyncStorage
-      await AsyncStorage.setItem("themesStatus", JSON.stringify(mergedThemes));
+      // Save merged themes back to AsyncStorage if they differ
+      if (JSON.stringify(parsedThemes) !== JSON.stringify(mergedThemes)) {
+        await AsyncStorage.setItem(
+          "themesStatus",
+          JSON.stringify(mergedThemes)
+        );
+      }
 
       return mergedThemes;
     }
+
+    // No saved themes, initialize with `defaultThemes`
+    await AsyncStorage.setItem("themesStatus", JSON.stringify(defaultThemes));
     return defaultThemes;
   } catch (error) {
     console.error("Error fetching themes status:", error);

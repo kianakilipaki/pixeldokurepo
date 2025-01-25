@@ -9,7 +9,7 @@ import {
   Animated,
 } from "react-native";
 import { useHighScore } from "../utils/highscoreContext";
-import { spriteMap } from "../utils/assetsMap";
+import { spriteMapLG } from "../utils/assetsMap";
 import LockOverlay from "./LockOverlay";
 import PurchaseModal from "./PurchaseModal";
 import themeStyles from "../utils/themeStyles";
@@ -46,12 +46,14 @@ const ThemeList = ({ item, themeKey, navigation }) => {
   return (
     <View style={styles.themeContainer}>
       <ImageBackground
+        key={`bg-${themeKey}`} // Force re-render
         source={item.bgSource}
         style={styles.themeBackground}
         resizeMode="cover"
       >
         {item.locked && <LockOverlay onPress={openModal} />}
         <TouchableOpacity
+          key={`header-${themeKey}`} // Unique key
           onPress={() => toggleTheme(themeKey)}
           style={styles.themeHeader}
         >
@@ -59,7 +61,7 @@ const ThemeList = ({ item, themeKey, navigation }) => {
             <View style={styles.thumbnail}>
               <Image
                 source={item.source}
-                style={[styles.spriteImage, spriteMap[1]]}
+                style={[styles.spriteImage, spriteMapLG[1]]}
               />
             </View>
           )}
@@ -68,7 +70,7 @@ const ThemeList = ({ item, themeKey, navigation }) => {
             <View style={styles.thumbnail}>
               <Image
                 source={item.source}
-                style={[styles.spriteImage, spriteMap[2]]}
+                style={[styles.spriteImage, spriteMapLG[2]]}
               />
             </View>
           )}
@@ -117,7 +119,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 10,
     elevation: 5,
-    borderWidth: 2,
+    borderTopWidth: 2,
+    borderBottomWidth: 2,
     borderColor: themeStyles.colors.black1,
   },
   themeBackground: {
@@ -133,8 +136,9 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   thumbnail: {
-    width: width * 0.1,
-    height: width * 0.1,
+    width: 50,
+    height: 50,
+    padding: 10,
     overflow: "hidden",
     position: "relative",
     justifyContent: "center",
@@ -142,8 +146,9 @@ const styles = StyleSheet.create({
   },
   spriteImage: {
     position: "absolute",
-    width: width * 0.3,
-    height: width * 0.3,
+    width: 144,
+    height: 144,
+    opacity: 1, // Default opacity
   },
   themeTitle: {
     fontFamily: themeStyles.fonts.fontFamily,
@@ -155,6 +160,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: themeStyles.colors.gray1,
+    overflow: "hidden", // Prevent overflow
   },
   difficultyButton: {
     padding: 10,
