@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
+import themeStyles from "../utils/themeStyles";
 
 const NotFoundScreen = ({ navigation }) => {
   return (
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f8f9fa",
   },
   text: {
-    fontSize: 24,
+    fontSize: themeStyles.fonts.headerFontSize,
     fontWeight: "bold",
     marginBottom: 20,
   },

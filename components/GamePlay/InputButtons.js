@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { spriteMapLG } from "../../utils/assetsMap";
+import { spriteMapLG, cellSizeLG, isTablet } from "../../utils/assetsMap";
 import { useGame } from "../../utils/gameContext";
 import themeStyles from "../../utils/themeStyles";
 
@@ -63,11 +63,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
-    marginVertical: 20,
+    marginVertical: isTablet ? 30 : 20,
   },
   cellContainer: {
-    width: 50,
-    height: 50,
+    width: cellSizeLG,
+    height: cellSizeLG,
     padding: 10,
     margin: 5,
     borderColor: themeStyles.colors.black1,
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
   },
   spriteImage: {
     position: "absolute",
-    width: 144,
-    height: 144,
+    width: cellSizeLG * 3,
+    height: cellSizeLG * 3,
     opacity: 1, // Default opacity
   },
 });

@@ -14,7 +14,7 @@ const Coins = () => {
     <View style={styles.coinContainer}>
       <Image
         source={require("../assets/icons/coin.png")}
-        style={{ width: 16, height: 16 }}
+        style={themeStyles.icons.iconSizeSmall}
       />
       <Text style={styles.coinText} onPress={openShop}>
         {coins}
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   coinText: {
     marginBottom: 2,
     marginLeft: 4,
-    fontSize: 16,
+    fontSize: themeStyles.fonts.regularFontSize,
     color: themeStyles.colors.black1,
     fontFamily: themeStyles.fonts.fontFamily,
   },

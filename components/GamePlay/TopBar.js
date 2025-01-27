@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Image } from "react-native";
 import Timer from "./Timer";
 import { useGame } from "../../utils/gameContext";
 import themeStyles from "../../utils/themeStyles";
+import { isTablet } from "../../utils/assetsMap";
 
 const TopBar = ({ isPaused }) => {
   const { difficulty, retryCounter } = useGame();
@@ -15,7 +16,7 @@ const TopBar = ({ isPaused }) => {
           <Image
             source={require("../../assets/icons/heart.png")}
             key={i}
-            style={styles.heartIcon}
+            style={[themeStyles.icons.iconSizeMedium, { marginRight: 4 }]}
           />
         ))}
       </View>
@@ -34,22 +35,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    margin: isTablet ? 10 : 0,
   },
   retryContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
-  },
-  heartIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 4,
   },
   timerContainer: {
     alignItems: "flex-end",
   },
   difficultyText: {
     fontFamily: "Silkscreen-Regular",
-    fontSize: 20,
+    fontSize: themeStyles.fonts.largeFontSize,
     color: themeStyles.colors.black1,
     marginTop: 3,
   },

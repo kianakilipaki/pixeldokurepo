@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontFamily: themeStyles.fonts.fontFamily,
-    fontSize: 23,
+    fontSize: themeStyles.fonts.headerFontSize,
   },
 });
 

@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   timerText: {
-    fontSize: 20,
+    fontSize: themeStyles.fonts.largeFontSize,
     fontFamily: themeStyles.fonts.fontFamily,
     color: themeStyles.colors.black1,
   },

@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ImageBackground,
 } from "react-native";
-import themeStyle from "../utils/themeStyles";
+import themeStyles from "../utils/themeStyles";
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -65,13 +65,15 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: width * 0.8,
+    maxWidth: "400px",
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: themeStyle.colors.black1,
+    borderColor: themeStyles.colors.black1,
     borderRadius: 10,
   },
   modalHeader: {
     width: width * 0.8,
+    maxWidth: "400px",
     padding: 20,
     justifyContent: "center",
     alignItems: "center",
@@ -80,8 +82,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   modalHeaderText: {
-    fontFamily: themeStyle.fonts.fontFamily,
-    fontSize: 20,
+    fontFamily: themeStyles.fonts.fontFamily,
+    fontSize: themeStyles.fonts.largeFontSize,
     color: "white",
   },
   modalBody: {
@@ -95,6 +97,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonWrapper: {
+    fontSize: themeStyles.fonts.regularFontSize,
     flex: 1,
     paddingHorizontal: 5,
   },

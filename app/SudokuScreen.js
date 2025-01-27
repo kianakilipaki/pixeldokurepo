@@ -8,6 +8,7 @@ import Header from "../components/Header";
 import { useGame } from "../utils/gameContext";
 import PlayOverlay from "../components/GamePlay/PlayOverlay";
 import { Dimensions } from "react-native";
+import { isTablet } from "../utils/assetsMap";
 
 const { width } = Dimensions.get("window");
 
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: width * 0.05,
+    padding: isTablet ? width * 0.1 : width * 0.05,
     justifyContent: "center",
     alignItems: "center",
   },

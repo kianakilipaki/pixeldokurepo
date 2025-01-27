@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontFamily: themeStyles.fonts.fontFamily,
-    fontSize: 24,
+    fontSize: themeStyles.fonts.headerFontSize,
     textAlign: "center",
     color: themeStyles.colors.black1,
     marginBottom: 10,

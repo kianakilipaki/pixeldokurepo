@@ -147,7 +147,7 @@ const CompletionModal = ({
                 <Text style={styles.coinText}> +{coinsAwarded}</Text>
                 <Image
                   source={require("../../assets/icons/coin.png")}
-                  style={{ width: 16, height: 16 }}
+                  style={themeStyles.icons.iconSizeSmall}
                 />
               </View>
             )}
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   },
   modalHeaderText: {
     fontFamily: themeStyles.fonts.fontFamily,
-    fontSize: 24,
+    fontSize: themeStyles.fonts.headerFontSize,
     color: "white",
   },
   modalBody: {
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalText: {
-    fontSize: 18,
+    fontSize: themeStyles.fonts.largeFontSize,
     textAlign: "center",
   },
   buttonContainer: {
@@ -219,6 +219,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonWrapper: {
+    fontSize: themeStyles.fonts.regularFontSize,
     flex: 1,
     marginHorizontal: 5,
   },
@@ -265,7 +266,7 @@ const styles = StyleSheet.create({
   },
   coinText: {
     marginBottom: 2,
-    fontSize: 16,
+    fontSize: themeStyles.fonts.regularFontSize,
     fontFamily: themeStyles.fonts.fontFamily,
     marginRight: 5,
   },

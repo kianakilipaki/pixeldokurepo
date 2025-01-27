@@ -1,9 +1,7 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
-import { spriteMap } from "../../utils/assetsMap";
+import { View, StyleSheet, Image, Dimensions } from "react-native";
+import { spriteMap, cellSize } from "../../utils/assetsMap";
 import themeStyles from "../../utils/themeStyles";
-
-import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
 
@@ -82,20 +80,20 @@ const Cell = ({
 
 const styles = StyleSheet.create({
   cellContainer: {
-    width: width * 0.1,
-    height: width * 0.1,
+    width: cellSize * 1.2,
+    height: cellSize * 1.2,
     backgroundColor: themeStyles.colors.gray1,
     justifyContent: "center",
     alignItems: "center",
   },
   innerContainer: {
     zIndex: 100,
-    width: width * 0.1 - 2,
-    height: width * 0.1 - 2,
-    borderTopWidth: 3,
-    borderLeftWidth: 3,
-    borderBottomWidth: 3,
-    borderRightWidth: 3,
+    width: cellSize * 1.2,
+    height: cellSize * 1.2,
+    borderTopWidth: width * 0.01,
+    borderLeftWidth: width * 0.01,
+    borderBottomWidth: width * 0.01,
+    borderRightWidth: width * 0.01,
     borderColor: "transparent", // Default to no border
     overflow: "hidden",
     position: "relative",
@@ -103,8 +101,8 @@ const styles = StyleSheet.create({
   spriteImage: {
     aspectRatio: 1,
     position: "absolute",
-    width: width * 0.255,
-    height: width * 0.255,
+    width: cellSize * 3,
+    height: cellSize * 3,
   },
   hintedCell: {
     backgroundColor: themeStyles.colors.highlight2,

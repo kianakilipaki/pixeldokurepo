@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useCoins } from "../utils/coinContext";
-import themeStyle from "../utils/themeStyles";
+import themeStyles from "../utils/themeStyles";
 import ModalTemplate from "./ModalTemplate";
+import { isTablet } from "../utils/assetsMap";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
@@ -27,7 +28,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
           <View style={styles.coinContainer} key={index}>
             <Image
               source={require("../assets/icons/coin.png")}
-              style={{ width: 30, height: 30 }}
+              style={themeStyles.icons.iconSizeMedium}
             />
             <Text style={styles.coinText}>{option.coins} Coins</Text>
             <Text style={styles.costText}>{option.cost}</Text>
@@ -69,28 +70,28 @@ const styles = StyleSheet.create({
   },
   coinText: {
     marginLeft: 10,
-    fontSize: 16,
+    fontSize: themeStyles.fonts.regularFontSize,
     fontWeight: "bold",
     flex: 1,
     textAlign: "left",
     color: "#333",
   },
   costText: {
-    fontSize: 16,
+    fontSize: themeStyles.fonts.regularFontSize,
     color: "#555",
     marginHorizontal: 10,
     textAlign: "center",
   },
   buyButton: {
-    backgroundColor: themeStyle.colors.blue,
-    width: 70,
+    backgroundColor: themeStyles.colors.blue,
+    width: isTablet ? 100 : 80,
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 5,
   },
   buyButtonText: {
     color: "white",
-    fontSize: 14,
+    fontSize: themeStyles.fonts.regularFontSize,
     fontWeight: "bold",
     textAlign: "center",
   },

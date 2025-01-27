@@ -11,7 +11,7 @@ const Header = ({ title, onBackPress }) => {
         <TouchableOpacity onPress={onBackPress} style={styles.backArrow}>
           <Image
             source={require("../assets/icons/backArrow.png")}
-            style={{ width: 20, height: 20 }}
+            style={themeStyles.icons.iconSizeMedium}
           />
         </TouchableOpacity>
       )}
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   titleText: {
-    fontSize: 20,
+    fontSize: themeStyles.fonts.largeFontSize,
     color: themeStyles.colors.black1,
     fontFamily: themeStyles.fonts.fontFamily,
   },

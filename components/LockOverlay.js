@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import themeStyles from "../utils/themeStyles";
 
 const LockOverlay = ({ onPress }) => {
   return (
@@ -7,7 +8,7 @@ const LockOverlay = ({ onPress }) => {
       <TouchableOpacity onPress={onPress}>
         <Image
           source={require("../assets/icons/lock.png")}
-          style={styles.lockIcon}
+          style={themeStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
     </View>
@@ -25,12 +26,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     zIndex: 10,
-  },
-  lockIcon: {
-    width: 20,
-    height: 20,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 

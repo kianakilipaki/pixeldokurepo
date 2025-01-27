@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useCoins } from "../utils/coinContext";
-import { spriteMap } from "../utils/assetsMap";
+import { isTablet, spriteMap } from "../utils/assetsMap";
 import CoinShop from "./CoinShop";
-import themeStyle from "../utils/themeStyles";
+import themeStyles from "../utils/themeStyles";
 import { Dimensions } from "react-native";
 import { useThemes } from "../utils/themeContext";
 import ModalTemplate from "./ModalTemplate";
@@ -36,23 +36,26 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
 
         <View style={styles.wrapper}>
           <View style={styles.thumbnail}>
-            <Image
-              source={theme.source}
-              style={[styles.spriteImage, spriteMap[2]]}
-            />
+            <Image source={theme.source} style={styles.spriteImage} />
           </View>
 
           <View style={styles.coinContainer}>
             <Image
               source={require("../assets/icons/coin.png")}
-              style={{ width: 16, height: 16 }}
+              style={themeStyles.icons.iconSizeSmall}
             />
             <Text style={styles.coinText}>-500</Text>
           </View>
         </View>
         {isWarningVisible && (
           <>
-            <Text style={{ color: themeStyle.colors.red, marginBottom: 5 }}>
+            <Text
+              style={{
+                color: themeStyles.colors.red,
+                marginBottom: 5,
+                fontSize: themeStyles.fonts.regularFontSize,
+              }}
+            >
               Insufficent Funds
             </Text>
             <TouchableOpacity
@@ -88,28 +91,28 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     marginVertical: 10,
   },
   thumbnail: {
-    width: width * 0.2,
-    height: width * 0.2,
+    width: isTablet ? width * 0.12 : width * 0.2,
+    height: isTablet ? width * 0.12 : width * 0.2,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 5, // Add spacing between the thumbnail and text
-    marginLeft: 30,
+    marginRight: 20, // Add spacing between the thumbnail and text
   },
   spriteImage: {
-    width: width * 0.2,
-    height: width * 0.2,
+    width: isTablet ? width * 0.12 : width * 0.2,
+    height: isTablet ? width * 0.12 : width * 0.2,
     resizeMode: "contain",
   },
   modalText: {
-    fontSize: 18,
+    fontSize: themeStyles.fonts.largeFontSize,
     textAlign: "center",
     marginBottom: 10,
   },
   coinContainer: {
-    backgroundColor: themeStyle.colors.gray1,
+    backgroundColor: themeStyles.colors.gray1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -119,25 +122,26 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "gray",
-    shadowColor: themeStyle.colors.gray3,
+    shadowColor: themeStyles.colors.gray3,
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
   },
   coinText: {
     marginBottom: 2,
-    fontSize: 16,
-    fontFamily: themeStyle.fonts.fontFamily,
+    fontSize: themeStyles.fonts.regularFontSize,
+    fontFamily: themeStyles.fonts.fontFamily,
     marginLeft: 5,
   },
   warningButton: {
-    backgroundColor: themeStyle.colors.gold,
+    backgroundColor: themeStyles.colors.gold,
+    fontSize: themeStyles.fonts.regularFontSize,
     borderRadius: 10,
     paddingVertical: 5,
     paddingHorizontal: 10,
   },
   buyButtonText: {
-    fontFamily: themeStyle.fonts.fontFamily,
+    fontFamily: themeStyles.fonts.fontFamily,
   },
 });
 

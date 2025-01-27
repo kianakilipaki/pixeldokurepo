@@ -9,7 +9,7 @@ import {
   Animated,
 } from "react-native";
 import { useHighScore } from "../utils/highscoreContext";
-import { spriteMapLG } from "../utils/assetsMap";
+import { spriteMapLG, cellSizeLG } from "../utils/assetsMap";
 import LockOverlay from "./LockOverlay";
 import PurchaseModal from "./PurchaseModal";
 import themeStyles from "../utils/themeStyles";
@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
   themeContainer: {
     width: "100%",
     width: width,
+    minHeight: 120,
     alignSelf: "center",
     marginVertical: 10,
     backgroundColor: "white",
@@ -136,8 +137,8 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   thumbnail: {
-    width: 50,
-    height: 50,
+    width: cellSizeLG,
+    height: cellSizeLG,
     padding: 10,
     overflow: "hidden",
     position: "relative",
@@ -146,13 +147,13 @@ const styles = StyleSheet.create({
   },
   spriteImage: {
     position: "absolute",
-    width: 144,
-    height: 144,
+    width: cellSizeLG * 3,
+    height: cellSizeLG * 3,
     opacity: 1, // Default opacity
   },
   themeTitle: {
     fontFamily: themeStyles.fonts.fontFamily,
-    fontSize: 20,
+    fontSize: themeStyles.fonts.largeFontSize,
     color: themeStyles.colors.black1,
   },
   difficultyContainer: {
@@ -173,12 +174,12 @@ const styles = StyleSheet.create({
     textAlign: "left",
     color: "#333",
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: themeStyles.fonts.regularFontSize,
   },
   ScoresText: {
     textAlign: "right",
     color: "#333",
-    fontSize: 14,
+    fontSize: themeStyles.fonts.regularFontSize,
     fontWeight: "normal",
   },
   divider: {

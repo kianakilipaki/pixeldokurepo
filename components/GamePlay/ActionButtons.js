@@ -68,7 +68,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
       >
         <Image
           source={require("../../assets/icons/reset.png")}
-          style={{ width: 20, height: 20 }}
+          style={themeStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
 
@@ -76,7 +76,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
       <TouchableOpacity style={styles.button} onPress={onErase}>
         <Image
           source={require("../../assets/icons/erase.png")}
-          style={{ width: 20, height: 20 }}
+          style={themeStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
 
@@ -87,13 +87,13 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
           {hints === 0 && (
             <Image
               source={require("../../assets/icons/ad.png")}
-              style={{ width: 16, height: 16 }}
+              style={themeStyles.icons.iconSizeSmall}
             />
           )}
         </View>
         <Image
           source={require("../../assets/icons/hint.png")}
-          style={{ width: 20, height: 20 }}
+          style={themeStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
 
@@ -101,7 +101,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
       <TouchableOpacity style={styles.button} onPress={onPause}>
         <Image
           source={require("../../assets/icons/pause.png")}
-          style={{ width: 20, height: 20 }}
+          style={themeStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
 
@@ -151,11 +151,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   hintText: {
-    fontSize: 16,
+    fontSize: themeStyles.fonts.regularFontSize,
     fontFamily: themeStyles.fonts.fontFamily,
   },
   modalText: {
-    fontSize: 18,
+    fontSize: themeStyles.fonts.largeFontSize,
     textAlign: "center",
     marginBottom: 10,
   },

@@ -3,30 +3,35 @@ import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
 
+export const isTablet = width > 765;
+export const cellSize = isTablet ? (width * 0.085) / 1.1 : width * 0.085;
+
 // map sprite position to numbers
 export const spriteMap = {
   1: { top: 0, left: 0 },
-  2: { top: 0, left: -width * 0.085 },
-  3: { top: 0, left: -width * 0.17 },
-  4: { top: -width * 0.085, left: 0 },
-  5: { top: -width * 0.085, left: -width * 0.085 },
-  6: { top: -width * 0.085, left: -width * 0.17 },
-  7: { top: -width * 0.17, left: 0 },
-  8: { top: -width * 0.17, left: -width * 0.085 },
-  9: { top: -width * 0.17, left: -width * 0.17 },
+  2: { top: 0, left: -cellSize },
+  3: { top: 0, left: -cellSize * 2 },
+  4: { top: -cellSize, left: 0 },
+  5: { top: -cellSize, left: -cellSize },
+  6: { top: -cellSize, left: -cellSize * 2 },
+  7: { top: -cellSize * 2, left: 0 },
+  8: { top: -cellSize * 2, left: -cellSize },
+  9: { top: -cellSize * 2, left: -cellSize * 2 },
 };
+
+export const cellSizeLG = isTablet ? width * 0.07 : width * 0.14;
 
 // map sprite position to numbers for input buttons
 export const spriteMapLG = {
   1: { top: 0, left: 0 },
-  2: { top: 0, left: -48 },
-  3: { top: 0, left: -96 },
-  4: { top: -48, left: 0 },
-  5: { top: -48, left: -48 },
-  6: { top: -48, left: -96 },
-  7: { top: -96, left: 0 },
-  8: { top: -96, left: -48 },
-  9: { top: -96, left: -96 },
+  2: { top: 0, left: -cellSizeLG },
+  3: { top: 0, left: -cellSizeLG * 2 },
+  4: { top: -cellSizeLG, left: 0 },
+  5: { top: -cellSizeLG, left: -cellSizeLG },
+  6: { top: -cellSizeLG, left: -cellSizeLG * 2 },
+  7: { top: -cellSizeLG * 2, left: 0 },
+  8: { top: -cellSizeLG * 2, left: -cellSizeLG },
+  9: { top: -cellSizeLG * 2, left: -cellSizeLG * 2 },
 };
 
 // sprite themes
