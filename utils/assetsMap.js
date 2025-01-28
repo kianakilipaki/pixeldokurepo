@@ -41,24 +41,28 @@ export const defaultThemes = {
     srcName: "Winter-Birds",
     source: require("../assets/themes/Winter-Birds.png"),
     bgSource: require("../assets/themes/MntForest-bg.png"),
+    bgSound: require("../assets/themes/forest-guitar-lofi-161108.mp3"),
     locked: false,
   },
   fish: {
     title: "FishDoku",
     source: require("../assets/themes/coral-fish.png"),
     bgSource: require("../assets/themes/ocean-bg.png"),
+    bgSound: require("../assets/themes/waves-of-solitude-lofi-beats-281203.mp3"),
     locked: true,
   },
   cats: {
     title: "CatDoku",
     source: require("../assets/themes/cats.png"),
     bgSource: require("../assets/themes/cat-city.png"),
+    bgSound: require("../assets/themes/lofi-song-memories-sunbeam-by-lofium-242711.mp3"),
     locked: true,
   },
   dogs: {
     title: "DogDoku",
     source: require("../assets/themes/dogs.png"),
     bgSource: require("../assets/themes/dog-park.png"),
+    bgSound: require("../assets/themes/good-morning-upbeat-happy-ukulele-244395.mp3"),
     locked: true,
   },
   unknown1: {

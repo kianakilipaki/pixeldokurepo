@@ -60,9 +60,6 @@ const HomeScreen = ({ navigation }) => {
       style={styles.background}
       resizeMode="cover"
     >
-      {/* Coins */}
-      <Coins />
-
       {/* Title Page */}
       <Animated.View
         style={[styles.centerContainer, { opacity: fadeAnimation }]}

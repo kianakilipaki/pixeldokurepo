@@ -9,6 +9,7 @@ import { useGame } from "../utils/gameContext";
 import PlayOverlay from "../components/GamePlay/PlayOverlay";
 import { Dimensions } from "react-native";
 import { isTablet } from "../utils/assetsMap";
+import { useMusic } from "../utils/musicContext";
 
 const { width } = Dimensions.get("window");
 
@@ -24,6 +25,8 @@ const SudokuScreen = ({ route, navigation }) => {
     saveProgress,
     resetProgress,
   } = useGame();
+
+  const { playBackgroundMusic } = useMusic();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -62,6 +65,7 @@ const SudokuScreen = ({ route, navigation }) => {
     const { theme, difficulty, isNewGame } = route.params;
     if (isNewGame) {
       startNewGame(theme, difficulty);
+      playBackgroundMusic(theme.bgSound);
     } else {
       setIsLoading(false);
     }

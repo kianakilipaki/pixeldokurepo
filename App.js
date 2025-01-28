@@ -8,6 +8,7 @@ import { HighScoreProvider } from "./utils/highscoreContext";
 import * as Font from "expo-font";
 import LoadingIndicator from "./components/loadingIcon";
 import { ThemeProvider } from "./utils/themeContext";
+import { MusicProvider } from "./utils/musicContext";
 
 const App = () => {
   const [currentScreen, setCurrentScreen] = useState({
@@ -43,26 +44,28 @@ const App = () => {
 
   return (
     <ThemeProvider>
-      <GameProvider>
-        <HighScoreProvider>
-          <CoinProvider>
-            {/* Conditional Screen Rendering */}
-            {currentScreen.name === "Home" && (
-              <HomeScreen navigation={{ navigate }} />
-            )}
-            {currentScreen.name === "SudokuScreen" && (
-              <SudokuScreen
-                route={{ params: currentScreen.params }}
-                navigation={{ navigate }}
-              />
-            )}
-            {currentScreen.name !== "Home" &&
-              currentScreen.name !== "SudokuScreen" && (
-                <NotFoundScreen navigation={{ navigate }} /> // Render Not Found
+      <MusicProvider>
+        <GameProvider>
+          <HighScoreProvider>
+            <CoinProvider>
+              {/* Conditional Screen Rendering */}
+              {currentScreen.name === "Home" && (
+                <HomeScreen navigation={{ navigate }} />
               )}
-          </CoinProvider>
-        </HighScoreProvider>
-      </GameProvider>
+              {currentScreen.name === "SudokuScreen" && (
+                <SudokuScreen
+                  route={{ params: currentScreen.params }}
+                  navigation={{ navigate }}
+                />
+              )}
+              {currentScreen.name !== "Home" &&
+                currentScreen.name !== "SudokuScreen" && (
+                  <NotFoundScreen navigation={{ navigate }} /> // Render Not Found
+                )}
+            </CoinProvider>
+          </HighScoreProvider>
+        </GameProvider>
+      </MusicProvider>
     </ThemeProvider>
   );
 };
