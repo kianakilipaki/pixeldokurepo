@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./app/HomeScreen";
 import SudokuScreen from "./app/SudokuScreen";
 import NotFoundScreen from "./app/NotFoundScreen";
@@ -9,15 +11,12 @@ import * as Font from "expo-font";
 import LoadingIndicator from "./components/loadingIcon";
 import { ThemeProvider } from "./utils/themeContext";
 import { MusicProvider } from "./utils/musicContext";
+import Header from "./components/Header"; // Import custom header
+
+const Stack = createStackNavigator();
 
 const App = () => {
-  const [currentScreen, setCurrentScreen] = useState({
-    name: "Home",
-    params: null,
-  });
-
   const [fontsLoaded, setFontsLoaded] = useState(false);
-
   const loadFonts = async () => {
     await Font.loadAsync({
       "Silkscreen-Regular": require("./assets/fonts/Silkscreen-Regular.ttf"),
@@ -38,30 +37,45 @@ const App = () => {
     return <LoadingIndicator />;
   }
 
-  const navigate = (screenName, params = null) => {
-    setCurrentScreen({ name: screenName, params });
-  };
-
   return (
     <ThemeProvider>
       <MusicProvider>
         <GameProvider>
           <HighScoreProvider>
             <CoinProvider>
-              {/* Conditional Screen Rendering */}
-              {currentScreen.name === "Home" && (
-                <HomeScreen navigation={{ navigate }} />
-              )}
-              {currentScreen.name === "SudokuScreen" && (
-                <SudokuScreen
-                  route={{ params: currentScreen.params }}
-                  navigation={{ navigate }}
-                />
-              )}
-              {currentScreen.name !== "Home" &&
-                currentScreen.name !== "SudokuScreen" && (
-                  <NotFoundScreen navigation={{ navigate }} /> // Render Not Found
-                )}
+              <NavigationContainer>
+                <Stack.Navigator initialRouteName="Home">
+                  <Stack.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    options={{ headerShown: false }} // Hide header if needed
+                  />
+                  <Stack.Screen
+                    name="SudokuScreen"
+                    component={SudokuScreen}
+                    options={({ route, navigation }) => ({
+                      header: () => (
+                        <Header
+                          title={route.params?.theme?.title || "Sudoku"}
+                          onBackPress={() => navigation.goBack()}
+                        />
+                      ),
+                    })}
+                  />
+                  <Stack.Screen
+                    name="NotFound"
+                    component={NotFoundScreen}
+                    options={{
+                      header: ({ navigation }) => (
+                        <Header
+                          title="Page Not Found"
+                          onBackPress={() => navigation.goBack()} // Go back when needed
+                        />
+                      ),
+                    }}
+                  />
+                </Stack.Navigator>
+              </NavigationContainer>
             </CoinProvider>
           </HighScoreProvider>
         </GameProvider>

@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  StatusBar,
 } from "react-native";
-import Coins from "../components/Coins";
 import ThemeListContainer from "../components/ThemesContainer";
 import useThemeAnimation from "../utils/animationHook";
 import { useGame } from "../utils/gameContext";
@@ -60,6 +60,11 @@ const HomeScreen = ({ navigation }) => {
       style={styles.background}
       resizeMode="cover"
     >
+      <StatusBar
+        barStyle="light-content" // Choose 'dark-content' or 'light-content'
+        backgroundColor={themeStyles.colors.blue}
+        translucent={true}
+      />
       {/* Title Page */}
       <Animated.View
         style={[styles.centerContainer, { opacity: fadeAnimation }]}

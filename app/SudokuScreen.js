@@ -13,7 +13,7 @@ import { useMusic } from "../utils/musicContext";
 
 const { width } = Dimensions.get("window");
 
-const SudokuScreen = ({ route, navigation }) => {
+const SudokuScreen = ({ route }) => {
   const {
     theme,
     setTheme,
@@ -81,10 +81,6 @@ const SudokuScreen = ({ route, navigation }) => {
       resizeMode="cover"
       style={styles.image}
     >
-      <Header
-        title={theme.title}
-        onBackPress={() => navigation.navigate("Home")}
-      />
       <View style={styles.container}>
         <TopBar isPaused={isPaused || isModalVisible} />
         {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} />}
