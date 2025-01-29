@@ -63,7 +63,7 @@ const HomeScreen = ({ navigation }) => {
       <StatusBar
         barStyle="light-content" // Choose 'dark-content' or 'light-content'
         backgroundColor={themeStyles.colors.blue}
-        translucent={true}
+        translucent={false}
       />
       {/* Title Page */}
       <Animated.View

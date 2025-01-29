@@ -4,6 +4,7 @@ import { useCoins } from "../utils/coinContext";
 import themeStyles from "../utils/themeStyles";
 import ModalTemplate from "./ModalTemplate";
 import { isTablet } from "../utils/assetsMap";
+import { useRewardedAd } from "./Ad";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
@@ -21,6 +22,16 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
     setIsCoinShopVisible(false);
   };
 
+  const watchAd = useRewardedAd(); // Destructure the returned values
+
+  const handleWatchAd = () => {
+    const reward = watchAd();
+    console.log(reward);
+    if (reward > 0) {
+      buyCoins(100); // Add coins after watching the ad
+    }
+  };
+
   const modalBody = () => {
     return (
       <>
@@ -32,16 +43,22 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
             />
             <Text style={styles.coinText}>{option.coins} Coins</Text>
             <Text style={styles.costText}>{option.cost}</Text>
-            <TouchableOpacity
-              onPress={() => buyCoins(option.coins, option.cost)}
-              style={styles.buyButton}
-            >
-              {option.cost == "AD" ? (
+
+            {option.cost == "AD" ? (
+              <TouchableOpacity
+                onPress={handleWatchAd}
+                style={styles.buyButton}
+              >
                 <Text style={styles.buyButtonText}>Free</Text>
-              ) : (
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={() => buyCoins(option.coins, option.cost)}
+                style={styles.buyButton}
+              >
                 <Text style={styles.buyButtonText}>Buy</Text>
-              )}
-            </TouchableOpacity>
+              </TouchableOpacity>
+            )}
           </View>
         ))}
       </>

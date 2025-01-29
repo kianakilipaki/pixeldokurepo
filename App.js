@@ -11,12 +11,14 @@ import * as Font from "expo-font";
 import LoadingIndicator from "./components/loadingIcon";
 import { ThemeProvider } from "./utils/themeContext";
 import { MusicProvider } from "./utils/musicContext";
-import Header from "./components/Header"; // Import custom header
+import Header from "./components/Header";
 
 const Stack = createStackNavigator();
 
 const App = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  // Load fonts asynchronously
   const loadFonts = async () => {
     await Font.loadAsync({
       "Silkscreen-Regular": require("./assets/fonts/Silkscreen-Regular.ttf"),
@@ -31,6 +33,14 @@ const App = () => {
         setFontsLoaded(true);
       })
       .catch((error) => console.error("Error loading fonts:", error));
+  }, []);
+
+  // Initialize Google Mobile Ads SDK, ensuring it's only done once
+  useEffect(() => {
+    const initializeAds = async () => {
+      await mobileAds().initialize();
+    };
+    initializeAds();
   }, []);
 
   if (!fontsLoaded) {
