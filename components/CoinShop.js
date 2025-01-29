@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useCoins } from "../utils/coinContext";
 import themeStyles from "../utils/themeStyles";
@@ -8,6 +8,7 @@ import { useRewardedAd } from "./Ad";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
+  const { watchAd, rewardAmount } = useRewardedAd();
 
   const coinOptions = [
     { coins: 100, cost: "AD" },
@@ -22,15 +23,11 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
     setIsCoinShopVisible(false);
   };
 
-  const watchAd = useRewardedAd(); // Destructure the returned values
-
-  const handleWatchAd = () => {
-    const reward = watchAd();
-    console.log(reward);
-    if (reward > 0) {
+  useEffect(() => {
+    if (rewardAmount > 0) {
       buyCoins(100); // Add coins after watching the ad
     }
-  };
+  }, [rewardAmount]);
 
   const modalBody = () => {
     return (
@@ -45,10 +42,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
             <Text style={styles.costText}>{option.cost}</Text>
 
             {option.cost == "AD" ? (
-              <TouchableOpacity
-                onPress={handleWatchAd}
-                style={styles.buyButton}
-              >
+              <TouchableOpacity onPress={watchAd} style={styles.buyButton}>
                 <Text style={styles.buyButtonText}>Free</Text>
               </TouchableOpacity>
             ) : (

@@ -7,34 +7,26 @@ import {
 
 const adUnitId = __DEV__
   ? TestIds.REWARDED
-  : "ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy";
-
-const rewarded = RewardedAd.createForAdRequest(adUnitId);
+  : "ca-app-pub-6358927901907597/2631763735";
 
 export const useRewardedAd = () => {
   const [loaded, setLoaded] = useState(false);
+  const [rewarded, setRewarded] = useState(() =>
+    RewardedAd.createForAdRequest(adUnitId)
+  );
   const [rewardAmount, setRewardAmount] = useState(0);
 
-  const watchAd = () => {
-    if (loaded) {
-      rewarded.show();
-      console.log("ad loaded");
-      return rewardAmount;
-    } else {
-      rewarded.load();
-      console.log("ad did not load, trying again ", loaded);
-      rewarded.show();
-      return rewardAmount;
-    }
-  };
-
   useEffect(() => {
+    const loadAd = () => {
+      setLoaded(false); // Reset state before loading
+      rewarded.load();
+    };
+
     const unsubscribeLoaded = rewarded.addAdEventListener(
       RewardedAdEventType.LOADED,
-      () => {
-        setLoaded(true);
-      }
+      () => setLoaded(true)
     );
+
     const unsubscribeEarned = rewarded.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       (reward) => {
@@ -43,15 +35,25 @@ export const useRewardedAd = () => {
       }
     );
 
-    // Start loading the rewarded ad straight away
-    rewarded.load();
+    // Load ad initially
+    loadAd();
 
-    // Unsubscribe from events on unmount
     return () => {
       unsubscribeLoaded();
       unsubscribeEarned();
     };
-  }, []);
+  }, [rewarded]); // Re-run effect when rewarded ad instance changes
 
-  return watchAd;
+  const watchAd = () => {
+    if (loaded) {
+      rewarded.show();
+    } else {
+      console.log("Ad not loaded, reloading...");
+      const newRewarded = RewardedAd.createForAdRequest(adUnitId);
+      setRewarded(newRewarded);
+      newRewarded.load(); // Try loading again
+    }
+  };
+
+  return { watchAd, rewardAmount };
 };
