@@ -42,7 +42,7 @@ const SudokuScreen = ({ route }) => {
       } catch (error) {
         console.error("Error loading game:", error);
       } finally {
-        setIsLoading(false);
+        setIsLoading(true);
       }
     },
     [difficulty]
@@ -67,7 +67,7 @@ const SudokuScreen = ({ route }) => {
       startNewGame(theme, difficulty);
       playBackgroundMusic(theme.bgSound);
     } else {
-      setIsLoading(false);
+      setIsLoading(true);
       playBackgroundMusic(theme.bgSound);
     }
   }, [route.params]);
