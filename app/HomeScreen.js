@@ -15,6 +15,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingIndicator from "../components/loadingIcon";
 import { useThemes } from "../utils/themeContext";
 import themeStyles from "../utils/themeStyles";
+import { useTutorial } from "../utils/useTutorial";
+import TutorialModal from "../components/TutorialModal";
 
 const HomeScreen = ({ navigation }) => {
   const { loadProgress } = useGame();
@@ -22,6 +24,7 @@ const HomeScreen = ({ navigation }) => {
   const [savedGame, setSavedGame] = useState(false);
   const { slideAnimation, fadeAnimation, toggleExpansion } =
     useThemeAnimation();
+  const { showTutorial, completeTutorial } = useTutorial();
 
   useEffect(() => {
     const checkProgress = async () => {
@@ -39,9 +42,9 @@ const HomeScreen = ({ navigation }) => {
     checkProgress();
   }, []);
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (savedGame) {
-      const game = loadProgress();
+      const game = await loadProgress();
       navigation.navigate("SudokuScreen", {
         theme: game.theme,
         difficulty: game.difficulty,
@@ -94,6 +97,7 @@ const HomeScreen = ({ navigation }) => {
         toggle={toggleExpansion}
         navigation={navigation}
       />
+      <TutorialModal visible={showTutorial} onClose={completeTutorial} />
     </ImageBackground>
   );
 };

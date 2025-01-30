@@ -68,6 +68,7 @@ const SudokuScreen = ({ route }) => {
       playBackgroundMusic(theme.bgSound);
     } else {
       setIsLoading(false);
+      playBackgroundMusic(theme.bgSound);
     }
   }, [route.params]);
 
