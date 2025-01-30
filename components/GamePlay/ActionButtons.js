@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 import { useGame } from "../../utils/gameContext";
 import themeStyles from "../../utils/themeStyles";
 import ModalTemplate from "../ModalTemplate";
+import { useRewardedAd } from "../Ad";
 
 const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   const {
@@ -16,6 +17,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   } = useGame();
 
   const [modalVisible, setModalVisible] = useState(false);
+  const { watchAd, rewardAmount } = useRewardedAd();
 
   const handleConfirm = () => {
     onReset();
@@ -36,7 +38,6 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   };
 
   const onHint = () => {
-    //if (hints <= 0) return; // Prevent using hints if there are none left
     const emptyCells = [];
     board.forEach((row, rowIndex) => {
       row.forEach((value, colIndex) => {
@@ -58,6 +59,12 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (rewardAmount > 0) {
+      onHint();
+    }
+  }, [rewardAmount]);
 
   return (
     <View style={styles.buttonContainer}>
@@ -81,10 +88,13 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
       </TouchableOpacity>
 
       {/* Hint Button */}
-      <TouchableOpacity style={styles.button} onPress={onHint}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={hints <= 0 ? watchAd : onHint}
+      >
         <View style={styles.hintIndicator}>
           {hints > 0 && <Text style={styles.hintText}>{hints}</Text>}
-          {hints === 0 && (
+          {hints <= 0 && (
             <Image
               source={require("../../assets/icons/ad.png")}
               style={themeStyles.icons.iconSizeSmall}
