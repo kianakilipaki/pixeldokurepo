@@ -1,8 +1,9 @@
 {
   "expo": {
+    "platforms": ["android"], // Only build for Android
     "name": "pixeldoku",
     "slug": "pixeldoku",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -12,24 +13,22 @@
       "resizeMode": "contain",
       "backgroundColor": "#9b9b9b"
     },
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#9b9b9b"
       },
-      "package": "com.alanilyon.pixeldoku",
-      "versionCode": 1
-    },
-    "web": {
-      "favicon": "./assets/favicon.png",
-      "output": "single",
-      "publicPath": "./"
+      "package": "com.alanilyon.pixeldoku"
     },
     "assetBundlePatterns": ["**/*"],
-    "plugins": ["expo-asset", "expo-build-properties"],
+    "plugins": [
+      "expo-asset",
+      "expo-build-properties",
+      [
+        "react-native-google-mobile-ads",
+        { "androidAppId": "ca-app-pub-6358927901907597~5088797888" }
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "a9206d7c-7666-4f76-9f46-b9146ed68f8d"
@@ -41,9 +40,5 @@
     "updates": {
       "url": "https://u.expo.dev/a9206d7c-7666-4f76-9f46-b9146ed68f8d"
     }
-  },
-  "react-native-google-mobile-ads": {
-    "android_app_id": "ca-app-pub-6358927901907597~5088797888",
-    "ios_app_id": "ca-app-pub-6358927901907597~5088797888"
   }
 }
