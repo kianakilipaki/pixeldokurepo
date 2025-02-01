@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   StatusBar,
+  View,
 } from "react-native";
 import ThemeListContainer from "../components/ThemesContainer";
 import useThemeAnimation from "../utils/animationHook";
@@ -17,6 +18,7 @@ import { useThemes } from "../utils/themeContext";
 import themeStyles from "../utils/themeStyles";
 import { useTutorial } from "../utils/useTutorial";
 import TutorialModal from "../components/TutorialModal";
+import Coins from "../components/Coins";
 
 const HomeScreen = ({ navigation }) => {
   const { loadProgress } = useGame();
@@ -68,6 +70,10 @@ const HomeScreen = ({ navigation }) => {
         backgroundColor={themeStyles.colors.blue}
         translucent={false}
       />
+      <View style={styles.coinContainer}>
+        {/* Coins */}
+        <Coins />
+      </View>
       {/* Title Page */}
       <Animated.View
         style={[styles.centerContainer, { opacity: fadeAnimation }]}
@@ -158,6 +164,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: themeStyles.fonts.fontFamily,
     fontSize: themeStyles.fonts.headerFontSize,
+  },
+  coinContainer: {
+    position: "absolute",
+    right: 10,
   },
 });
 
