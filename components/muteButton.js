@@ -14,8 +14,8 @@ const MusicToggleButton = () => {
     }
   };
 
-  const mute = require("../assets/icons/mute.png");
-  const unmute = require("../assets/icons/unmute.png");
+  const unmute = require("../assets/icons/mute.png");
+  const mute = require("../assets/icons/unmute.png");
   return (
     <TouchableOpacity onPress={handleToggle}>
       <Image
