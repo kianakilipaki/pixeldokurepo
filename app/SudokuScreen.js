@@ -4,7 +4,6 @@ import CompletionModal from "../components/GamePlay/CompletionModal";
 import GameBoard from "../components/GamePlay/GameBoard";
 import LoadingIndicator from "../components/loadingIcon";
 import TopBar from "../components/GamePlay/TopBar";
-import Header from "../components/Header";
 import { useGame } from "../utils/gameContext";
 import PlayOverlay from "../components/GamePlay/PlayOverlay";
 import { Dimensions } from "react-native";
@@ -42,7 +41,7 @@ const SudokuScreen = ({ route }) => {
       } catch (error) {
         console.error("Error loading game:", error);
       } finally {
-        setIsLoading(true);
+        setIsLoading(false);
       }
     },
     [difficulty]
@@ -67,7 +66,7 @@ const SudokuScreen = ({ route }) => {
       startNewGame(theme, difficulty);
       playBackgroundMusic(theme.bgSound);
     } else {
-      setIsLoading(true);
+      setIsLoading(false);
       playBackgroundMusic(theme.bgSound);
     }
   }, [route.params]);

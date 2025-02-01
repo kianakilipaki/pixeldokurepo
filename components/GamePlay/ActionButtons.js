@@ -5,7 +5,7 @@ import themeStyles from "../../utils/themeStyles";
 import ModalTemplate from "../ModalTemplate";
 import { useRewardedAd } from "../Ad";
 
-const ActionButtons = ({ selectedCell, onReset, onPause }) => {
+const ActionButtons = ({ selectedCell, onCellSelect, onReset, onPause }) => {
   const {
     board,
     setBoard,
@@ -17,7 +17,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   } = useGame();
 
   const [modalVisible, setModalVisible] = useState(false);
-  const { watchAd, rewardAmount } = useRewardedAd();
+  const { watchAd, rewardAmount, setRewardAmount } = useRewardedAd();
 
   const handleConfirm = () => {
     onReset();
@@ -51,6 +51,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
       const randomCell =
         emptyCells[Math.floor(Math.random() * emptyCells.length)];
       const [rowIndex, colIndex] = randomCell;
+      onCellSelect([rowIndex, colIndex]);
       setBoard((prevBoard) => {
         const newBoard = prevBoard.map((row) => [...row]);
         newBoard[rowIndex][colIndex] = solutionBoard[rowIndex][colIndex];
@@ -63,6 +64,7 @@ const ActionButtons = ({ selectedCell, onReset, onPause }) => {
   useEffect(() => {
     if (rewardAmount > 0) {
       onHint();
+      setRewardAmount(0);
     }
   }, [rewardAmount]);
 

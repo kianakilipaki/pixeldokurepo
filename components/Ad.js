@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Alert } from "react-native";
 import {
   RewardedAd,
   RewardedAdEventType,
@@ -11,49 +12,46 @@ const adUnitId = __DEV__
 
 export const useRewardedAd = () => {
   const [loaded, setLoaded] = useState(false);
+  const [rewardAmount, setRewardAmount] = useState(0);
   const [rewarded, setRewarded] = useState(() =>
     RewardedAd.createForAdRequest(adUnitId)
   );
-  const [rewardAmount, setRewardAmount] = useState(0);
 
-  useEffect(() => {
-    const loadAd = () => {
-      setLoaded(false); // Reset state before loading
-      rewarded.load();
-    };
-
-    const unsubscribeLoaded = rewarded.addAdEventListener(
-      RewardedAdEventType.LOADED,
-      () => setLoaded(true)
+  const setupListeners = (rewardedAd) => {
+    rewardedAd.addAdEventListener(RewardedAdEventType.LOADED, () =>
+      setLoaded(true)
     );
-
-    const unsubscribeEarned = rewarded.addAdEventListener(
+    rewardedAd.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       (reward) => {
         console.log("User earned reward of ", reward);
         setRewardAmount(reward.amount);
       }
     );
+  };
 
-    // Load ad initially
-    loadAd();
+  const loadAd = () => {
+    setLoaded(false); // Reset state before loading
+    const newRewarded = RewardedAd.createForAdRequest(adUnitId);
+    setRewarded(newRewarded);
+    setupListeners(newRewarded);
+    newRewarded.load();
+  };
 
-    return () => {
-      unsubscribeLoaded();
-      unsubscribeEarned();
-    };
-  }, [rewarded]); // Re-run effect when rewarded ad instance changes
+  useEffect(() => {
+    setupListeners(rewarded);
+    loadAd(); // Initial load
+  }, []); // Runs once on mount
 
   const watchAd = () => {
     if (loaded) {
       rewarded.show();
+      setTimeout(loadAd, 3000); // Ensure a small delay before reloading
     } else {
-      console.log("Ad not loaded, reloading...");
-      const newRewarded = RewardedAd.createForAdRequest(adUnitId);
-      setRewarded(newRewarded);
-      newRewarded.load(); // Try loading again
+      Alert.alert("Ad not loaded, retrying...");
+      setTimeout(loadAd, 2000); // Retry after 2 seconds
     }
   };
 
-  return { watchAd, rewardAmount };
+  return { watchAd, rewardAmount, setRewardAmount };
 };

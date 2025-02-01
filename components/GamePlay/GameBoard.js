@@ -14,6 +14,7 @@ const GameBoard = ({
   <>
     <Board selectedCell={selectedCell} onCellSelect={onCellSelect} />
     <ActionButtons
+      onCellSelect={onCellSelect}
       selectedCell={selectedCell}
       onReset={onReset}
       onPause={onPause}
