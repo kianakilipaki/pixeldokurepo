@@ -84,6 +84,8 @@ const HomeScreen = ({ navigation }) => {
         {savedGame && (
           <TouchableOpacity
             style={[styles.button, styles.continueButton]}
+            accessibilityLabel={`Continue Previous Game`}
+            accessibilityRole="button"
             onPress={handleContinue}
           >
             <Text style={styles.buttonText}>Continue</Text>
@@ -91,6 +93,8 @@ const HomeScreen = ({ navigation }) => {
         )}
         <TouchableOpacity
           style={[styles.button, styles.newGameButton]}
+          accessibilityLabel={`Start New Game`}
+          accessibilityRole="button"
           onPress={toggleExpansion}
         >
           <Text style={styles.buttonText}>New Game</Text>

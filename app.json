@@ -11,12 +11,12 @@
     "splash": {
       "image": "./assets/favicon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#9b9b9b"
+      "backgroundColor": "#fff"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/favicon.png",
-        "backgroundColor": "#9b9b9b"
+        "backgroundColor": "#fff"
       },
       "package": "com.alanilyon.pixeldoku"
     },

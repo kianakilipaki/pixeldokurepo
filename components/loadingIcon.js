@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: themeStyles.colors.gray3,
+    backgroundColor: "#fff",
   },
   gif: {
     width: 100, // Adjust size as needed

@@ -12,30 +12,36 @@ import LoadingIndicator from "./components/loadingIcon";
 import { ThemeProvider } from "./utils/themeContext";
 import { MusicProvider } from "./utils/musicContext";
 import Header from "./components/Header";
+import * as SplashScreen from "expo-splash-screen";
+import mobileAds from "react-native-google-mobile-ads";
+
+SplashScreen.preventAutoHideAsync(); // Prevent auto-hiding the splash screen
 
 const Stack = createStackNavigator();
 
 const App = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  // Load fonts asynchronously
-  const loadFonts = async () => {
-    await Font.loadAsync({
-      "Silkscreen-Regular": require("./assets/fonts/Silkscreen-Regular.ttf"),
-      "Silkscreen-Bold": require("./assets/fonts/Silkscreen-Bold.ttf"),
-    });
-  };
-
+  // Load fonts asynchronously and hide splash screen only after fonts are ready
   useEffect(() => {
-    loadFonts()
-      .then(() => {
+    async function loadFonts() {
+      try {
+        await Font.loadAsync({
+          "Silkscreen-Regular": require("./assets/fonts/Silkscreen-Regular.ttf"),
+          "Silkscreen-Bold": require("./assets/fonts/Silkscreen-Bold.ttf"),
+        });
         console.log("Fonts loaded successfully");
         setFontsLoaded(true);
-      })
-      .catch((error) => console.error("Error loading fonts:", error));
+        await SplashScreen.hideAsync(); // Hide splash only when fonts are ready
+      } catch (error) {
+        console.error("Error loading fonts:", error);
+      }
+    }
+
+    loadFonts();
   }, []);
 
-  // Initialize Google Mobile Ads SDK, ensuring it's only done once
+  // Initialize Google Mobile Ads SDK once
   useEffect(() => {
     const initializeAds = async () => {
       await mobileAds().initialize();
@@ -44,7 +50,7 @@ const App = () => {
   }, []);
 
   if (!fontsLoaded) {
-    return <LoadingIndicator />;
+    return <LoadingIndicator />; // Show loading indicator while fonts are loading
   }
 
   return (
@@ -79,7 +85,7 @@ const App = () => {
                       header: ({ navigation }) => (
                         <Header
                           title="Page Not Found"
-                          onBackPress={() => navigation.goBack()} // Go back when needed
+                          onBackPress={() => navigation.goBack()}
                         />
                       ),
                     }}

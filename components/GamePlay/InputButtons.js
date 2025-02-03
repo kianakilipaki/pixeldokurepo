@@ -50,10 +50,12 @@ const InputButtons = ({ onPress, deselect }) => {
           </TouchableOpacity>
         );
       })}
-      <TouchableOpacity
-        style={styles.cellContainer}
-        onPress={deselect}
-      ></TouchableOpacity>
+      <TouchableOpacity style={styles.cellContainer} onPress={deselect}>
+        <Image
+          source={require("../../assets/icons/clear.png")}
+          style={styles.clearButton}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -90,6 +92,10 @@ const styles = StyleSheet.create({
     width: cellSizeLG * 3,
     height: cellSizeLG * 3,
     opacity: 1, // Default opacity
+  },
+  clearButton: {
+    width: "100%",
+    height: "100%",
   },
 });
 

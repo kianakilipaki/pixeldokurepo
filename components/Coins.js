@@ -29,9 +29,6 @@ const Coins = () => {
 
 const styles = StyleSheet.create({
   coinContainer: {
-    // position: "absolute",
-    // top: 30,
-    // right: 10,
     maxWidth: 100,
     backgroundColor: themeStyles.colors.gray1,
     flexDirection: "row",
