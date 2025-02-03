@@ -14,7 +14,9 @@ export const useRewardedAd = () => {
   const [loaded, setLoaded] = useState(false);
   const [rewardAmount, setRewardAmount] = useState(0);
   const [rewarded, setRewarded] = useState(() =>
-    RewardedAd.createForAdRequest(adUnitId)
+    RewardedAd.createForAdRequest(adUnitId, {
+      keywords: ["gaming", "puzzle", "brain games"],
+    })
   );
 
   const setupListeners = (rewardedAd) => {
@@ -32,7 +34,9 @@ export const useRewardedAd = () => {
 
   const loadAd = () => {
     setLoaded(false); // Reset state before loading
-    const newRewarded = RewardedAd.createForAdRequest(adUnitId);
+    const newRewarded = RewardedAd.createForAdRequest(adUnitId, {
+      keywords: ["gaming", "puzzle", "brain games"],
+    });
     setRewarded(newRewarded);
     setupListeners(newRewarded);
     newRewarded.load();

@@ -59,6 +59,8 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
               Insufficent Funds
             </Text>
             <TouchableOpacity
+              accessibilityLabel={`Go to Coin Shop`}
+              accessibilityRole="button"
               style={styles.warningButton}
               onPress={() => setIsCoinShopVisible(true)}
             >
@@ -134,11 +136,13 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   warningButton: {
+    minHeight: 48,
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: themeStyles.colors.gold,
     fontSize: themeStyles.fonts.regularFontSize,
     borderRadius: 10,
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
   },
   buyButtonText: {
     fontFamily: themeStyles.fonts.fontFamily,

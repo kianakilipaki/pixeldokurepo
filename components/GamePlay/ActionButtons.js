@@ -72,6 +72,8 @@ const ActionButtons = ({ selectedCell, onCellSelect, onReset, onPause }) => {
     <View style={styles.buttonContainer}>
       {/* Reset Button */}
       <TouchableOpacity
+        accessibilityLabel={`Reset Board`}
+        accessibilityRole="button"
         style={styles.button}
         onPress={() => setModalVisible(true)} // Fixed incorrect invocation
       >
@@ -82,7 +84,12 @@ const ActionButtons = ({ selectedCell, onCellSelect, onReset, onPause }) => {
       </TouchableOpacity>
 
       {/* Erase Button */}
-      <TouchableOpacity style={styles.button} onPress={onErase}>
+      <TouchableOpacity
+        accessibilityLabel={`Erase selected cell`}
+        accessibilityRole="button"
+        style={styles.button}
+        onPress={onErase}
+      >
         <Image
           source={require("../../assets/icons/erase.png")}
           style={themeStyles.icons.iconSizeMedium}
@@ -91,6 +98,8 @@ const ActionButtons = ({ selectedCell, onCellSelect, onReset, onPause }) => {
 
       {/* Hint Button */}
       <TouchableOpacity
+        accessibilityLabel={`Hint: Solve random cell`}
+        accessibilityRole="button"
         style={styles.button}
         onPress={hints <= 0 ? watchAd : onHint}
       >
@@ -110,7 +119,12 @@ const ActionButtons = ({ selectedCell, onCellSelect, onReset, onPause }) => {
       </TouchableOpacity>
 
       {/* Pause Button */}
-      <TouchableOpacity style={styles.button} onPress={onPause}>
+      <TouchableOpacity
+        accessibilityLabel={`Pause game`}
+        accessibilityRole="button"
+        style={styles.button}
+        onPress={onPause}
+      >
         <Image
           source={require("../../assets/icons/pause.png")}
           style={themeStyles.icons.iconSizeMedium}

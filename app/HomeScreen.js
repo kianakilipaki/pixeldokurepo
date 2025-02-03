@@ -147,6 +147,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "60%",
+    minHeight: 48,
     paddingVertical: 20,
     borderRadius: 10,
     marginVertical: 20,

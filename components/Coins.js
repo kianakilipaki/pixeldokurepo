@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image, Text } from "react-native";
+import { TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 import { useCoins } from "../utils/coinContext";
 import themeStyles from "../utils/themeStyles";
 import CoinShop from "./CoinShop";
@@ -11,19 +11,22 @@ const Coins = () => {
     setIsCoinShopVisible(true);
   };
   return (
-    <View style={styles.coinContainer}>
+    <TouchableOpacity
+      style={styles.coinContainer}
+      accessibilityLabel={`Coins: ${coins}. Click to open coin shop.`}
+      accessibilityRole="button"
+      onPress={openShop}
+    >
       <Image
         source={require("../assets/icons/coin.png")}
         style={themeStyles.icons.iconSizeSmall}
       />
-      <Text style={styles.coinText} onPress={openShop}>
-        {coins}
-      </Text>
+      <Text style={styles.coinText}>{coins}</Text>
       <CoinShop
         isCoinShopVisible={isCoinShopVisible}
         setIsCoinShopVisible={setIsCoinShopVisible}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 

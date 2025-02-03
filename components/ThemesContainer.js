@@ -37,7 +37,11 @@ const ThemeListContainer = ({ slideAnimation, navigation, toggle }) => {
       ]}
     >
       {/* Header with Touchable */}
-      <TouchableOpacity onPress={toggle}>
+      <TouchableOpacity
+        accessibilityLabel={`Choose a Theme`}
+        accessibilityRole="button"
+        onPress={toggle}
+      >
         <Text style={styles.header}>Choose a Theme</Text>
       </TouchableOpacity>
 

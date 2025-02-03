@@ -39,6 +39,8 @@ const InputButtons = ({ onPress, deselect }) => {
         const isCleared = clearedValues.includes(parseInt(value, 10));
         return (
           <TouchableOpacity
+            accessibilityLabel={`${theme.themeKey}${value}`}
+            accessibilityRole="button"
             key={value}
             style={[styles.cellContainer, isCleared && styles.darken]}
             onPress={() => onPress(parseInt(value, 10))}
@@ -50,7 +52,12 @@ const InputButtons = ({ onPress, deselect }) => {
           </TouchableOpacity>
         );
       })}
-      <TouchableOpacity style={styles.cellContainer} onPress={deselect}>
+      <TouchableOpacity
+        accessibilityLabel={`deselect cell`}
+        accessibilityRole="button"
+        style={styles.cellContainer}
+        onPress={deselect}
+      >
         <Image
           source={require("../../assets/icons/clear.png")}
           style={styles.clearButton}

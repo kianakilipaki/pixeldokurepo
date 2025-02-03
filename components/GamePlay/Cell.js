@@ -64,6 +64,8 @@ const Cell = ({
       ]}
     >
       <View
+        accessibilityLabel={`${theme.themeKey}${currentCell[2]}`}
+        accessibilityRole="button"
         style={[styles.innerContainer, isCellSame() && styles.highlightedCell]}
         onStartShouldSetResponder={onSelect}
       >

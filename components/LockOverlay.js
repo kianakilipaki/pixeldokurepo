@@ -5,7 +5,11 @@ import themeStyles from "../utils/themeStyles";
 const LockOverlay = ({ onPress }) => {
   return (
     <View style={styles.overlay}>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity
+        accessibilityLabel={`Theme locked: click to unlock`}
+        accessibilityRole="button"
+        onPress={onPress}
+      >
         <Image
           source={require("../assets/icons/lock.png")}
           style={themeStyles.icons.iconSizeMedium}

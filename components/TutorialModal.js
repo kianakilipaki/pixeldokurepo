@@ -3,11 +3,12 @@ import {
   View,
   Text,
   Modal,
-  Button,
+  TouchableOpacity,
   StyleSheet,
   Image,
   Dimensions,
 } from "react-native";
+import themeStyles from "../utils/themeStyles";
 
 const { width } = Dimensions.get("window");
 
@@ -29,7 +30,14 @@ export default function TutorialModal({ visible, onClose }) {
             2. No image should repeat within the same row, column, or box.
           </Text>
           <Text style={styles.text}>3. Use logic, not guessing!</Text>
-          <Button title="Got it!" onPress={onClose} />
+          <TouchableOpacity
+            style={themeStyles.buttons.button}
+            accessibilityLabel={`Got it`}
+            accessibilityRole="button"
+            onPress={onClose}
+          >
+            <Text style={themeStyles.buttons.buttonText}>Got it!</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>

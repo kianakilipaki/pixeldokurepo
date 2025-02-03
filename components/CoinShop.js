@@ -42,11 +42,18 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
             <Text style={styles.costText}>{option.cost}</Text>
 
             {option.cost == "AD" ? (
-              <TouchableOpacity onPress={watchAd} style={styles.buyButton}>
+              <TouchableOpacity
+                onPress={watchAd}
+                accessibilityLabel={`Watch Ad for 100 free coins`}
+                accessibilityRole="button"
+                style={styles.buyButton}
+              >
                 <Text style={styles.buyButtonText}>Free</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
+                accessibilityLabel={`Buy ${option.coins} for ${option.cost}`}
+                accessibilityRole="button"
                 onPress={() => buyCoins(option.coins, option.cost)}
                 style={styles.buyButton}
               >
@@ -94,6 +101,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   buyButton: {
+    minHeight: 48,
+    alignItems: "center",
+    justifyContent: "center",
     backgroundColor: themeStyles.colors.blue,
     width: isTablet ? 100 : 80,
     paddingVertical: 8,

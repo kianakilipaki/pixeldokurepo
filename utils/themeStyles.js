@@ -36,6 +36,27 @@ const themeStyles = {
       ? { width: 40, height: 40 }
       : { width: 30, height: 30 },
   },
+  buttons: {
+    button: {
+      flex: 1,
+      margin: 5,
+      height: 48,
+      borderRadius: 10,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#1986e0",
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 4.65,
+      elevation: 5,
+    },
+    buttonText: {
+      fontFamily: "Silkscreen-Regular",
+      fontSize: isTablet ? 20 : 16,
+      color: "#fff",
+    },
+  },
 };
 
 export default themeStyles;

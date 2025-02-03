@@ -3,7 +3,7 @@ import {
   Modal,
   View,
   Text,
-  Button,
+  TouchableOpacity,
   StyleSheet,
   ImageBackground,
   Image,
@@ -157,15 +157,20 @@ const CompletionModal = ({
           <View style={styles.buttonContainer}>
             {buttons &&
               buttons.map((button, index) => (
-                <View style={styles.buttonWrapper} key={index}>
-                  <Button
-                    title={button.title}
-                    onPress={() => {
-                      button.onPress();
-                      setIsModalVisible(false);
-                    }}
-                  />
-                </View>
+                <TouchableOpacity
+                  key={index}
+                  style={themeStyles.buttons.button}
+                  accessibilityLabel={`button.title`}
+                  accessibilityRole="button"
+                  onPress={() => {
+                    button.onPress();
+                    setIsModalVisible(false);
+                  }}
+                >
+                  <Text style={themeStyles.buttons.buttonText}>
+                    {button.title}
+                  </Text>
+                </TouchableOpacity>
               ))}
           </View>
         </View>

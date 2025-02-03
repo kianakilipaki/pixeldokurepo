@@ -7,7 +7,12 @@ const { width } = Dimensions.get("window");
 const PlayOverlay = ({ onPress }) => {
   return (
     <View style={styles.overlay}>
-      <TouchableOpacity style={styles.playButton} onPress={onPress}>
+      <TouchableOpacity
+        accessibilityLabel={`Resume game`}
+        accessibilityRole="button"
+        style={styles.playButton}
+        onPress={onPress}
+      >
         <Image
           source={require("../../assets/icons/play.png")}
           style={{ width: width * 0.2, height: width * 0.2 }}

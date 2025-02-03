@@ -17,7 +17,11 @@ const MusicToggleButton = () => {
   const unmute = require("../assets/icons/mute.png");
   const mute = require("../assets/icons/unmute.png");
   return (
-    <TouchableOpacity onPress={handleToggle}>
+    <TouchableOpacity
+      accessibilityLabel={isMuted ? "mute" : "unmute"}
+      accessibilityRole="button"
+      onPress={handleToggle}
+    >
       <Image
         source={isMuted ? mute : unmute}
         style={[themeStyles.icons.iconSizeSmall, { marginRight: 20 }]}

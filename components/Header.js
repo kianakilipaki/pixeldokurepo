@@ -14,6 +14,8 @@ const Header = ({ title, onBackPress }) => {
         {/* Back Arrow */}
         {onBackPress && (
           <TouchableOpacity
+            accessibilityLabel={`Go Back`}
+            accessibilityRole="button"
             onPress={() => {
               onBackPress();
               stopMusic();

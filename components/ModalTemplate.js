@@ -3,12 +3,12 @@ import {
   Modal,
   View,
   Text,
-  Button,
+  TouchableOpacity,
   StyleSheet,
   ImageBackground,
+  Dimensions,
 } from "react-native";
 import themeStyles from "../utils/themeStyles";
-import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
 
@@ -19,36 +19,47 @@ const ModalTemplate = ({
   modalVisible,
   setModalVisible,
 }) => {
-  const toggleModal = () => {
-    setModalVisible(!modalVisible);
-  };
+  const toggleModal = () => setModalVisible(!modalVisible);
 
   return (
     <Modal
       animationType="slide"
-      transparent={true}
+      transparent
       visible={modalVisible}
       onRequestClose={toggleModal}
+      accessible={true}
     >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
+      <View style={styles.overlay}>
+        <View style={styles.container}>
           <ImageBackground
             source={require("../assets/gradient.png")}
-            resizeMode="cover"
-            style={styles.modalHeader}
+            style={styles.header}
+            accessibilityRole="header"
           >
-            <Text style={styles.modalHeaderText}>{modalTitle}</Text>
+            <Text style={styles.headerText}>{modalTitle}</Text>
           </ImageBackground>
-          <View style={styles.modalBody}>{modalBody}</View>
-          <View style={styles.buttonContainer}>
+
+          <View style={styles.body}>{modalBody}</View>
+
+          <View style={styles.buttons}>
             {confirmAction && (
-              <View style={styles.buttonWrapper}>
-                <Button title={"Confirm"} onPress={confirmAction} />
-              </View>
+              <TouchableOpacity
+                style={themeStyles.buttons.button}
+                onPress={confirmAction}
+                accessibilityLabel="Confirm action"
+                accessibilityRole="button"
+              >
+                <Text style={themeStyles.buttons.buttonText}>Confirm</Text>
+              </TouchableOpacity>
             )}
-            <View style={styles.buttonWrapper}>
-              <Button title={"Cancel"} onPress={toggleModal} />
-            </View>
+            <TouchableOpacity
+              style={themeStyles.buttons.button}
+              onPress={toggleModal}
+              accessibilityLabel="Close the modal"
+              accessibilityRole="button"
+            >
+              <Text style={themeStyles.buttons.buttonText}>Cancel</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -57,23 +68,21 @@ const ModalTemplate = ({
 };
 
 const styles = StyleSheet.create({
-  modalOverlay: {
+  overlay: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-  modalContainer: {
+  container: {
     width: width * 0.8,
-    maxWidth: "400px",
+    maxWidth: 400,
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: themeStyles.colors.black1,
     borderRadius: 10,
   },
-  modalHeader: {
-    width: width * 0.8,
-    maxWidth: "400px",
+  header: {
     padding: 20,
     justifyContent: "center",
     alignItems: "center",
@@ -81,25 +90,20 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
-  modalHeaderText: {
+  headerText: {
     fontFamily: themeStyles.fonts.fontFamily,
     fontSize: themeStyles.fonts.largeFontSize,
     color: "white",
   },
-  modalBody: {
+  body: {
     padding: 15,
     justifyContent: "center",
     alignItems: "center",
   },
-  buttonContainer: {
+  buttons: {
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 10,
-  },
-  buttonWrapper: {
-    fontSize: themeStyles.fonts.regularFontSize,
-    flex: 1,
-    paddingHorizontal: 5,
   },
 });
 

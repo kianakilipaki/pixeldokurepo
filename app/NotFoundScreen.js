@@ -1,12 +1,19 @@
 import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import themeStyles from "../utils/themeStyles";
 
 const NotFoundScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>404 - Page Not Found</Text>
-      <Button title="Go Home" onPress={() => navigation.navigate("Home")} />
+      <TouchableOpacity
+        style={themeStyles.buttons.button}
+        accessibilityLabel={`Go back Home`}
+        accessibilityRole="button"
+        onPress={() => navigation.navigate("Home")}
+      >
+        <Text style={themeStyles.buttons.buttonText}>Go Home</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -17,11 +24,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#f8f9fa",
-  },
-  text: {
-    fontSize: themeStyles.fonts.headerFontSize,
-    fontWeight: "bold",
-    marginBottom: 20,
   },
 });
 

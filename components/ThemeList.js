@@ -53,6 +53,8 @@ const ThemeList = ({ item, themeKey, navigation }) => {
       >
         {item.locked && <LockOverlay onPress={openModal} />}
         <TouchableOpacity
+          accessibilityLabel={`Choose ${item.title} theme`}
+          accessibilityRole="button"
           key={`header-${themeKey}`} // Unique key
           onPress={() => toggleTheme(themeKey)}
           style={styles.themeHeader}
@@ -81,6 +83,10 @@ const ThemeList = ({ item, themeKey, navigation }) => {
             {Object.entries(Scores).map(([difficulty, time]) => (
               <View key={difficulty}>
                 <TouchableOpacity
+                  accessibilityLabel={`Difficulty: ${difficulty} Best Time: ${formatTime(
+                    time
+                  )}`}
+                  accessibilityRole="button"
                   style={styles.difficultyButton}
                   onPress={() => navigateToSudoku(difficulty)}
                 >
@@ -154,7 +160,10 @@ const styles = StyleSheet.create({
   themeTitle: {
     fontFamily: themeStyles.fonts.fontFamily,
     fontSize: themeStyles.fonts.largeFontSize,
-    color: themeStyles.colors.black1,
+    color: "#000", // White text on buttons
+    textShadowColor: "#fff", // Text shadow for buttons
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 5,
   },
   difficultyContainer: {
     width: width * 0.8,
