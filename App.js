@@ -12,17 +12,14 @@ import LoadingIndicator from "./components/loadingIcon";
 import { ThemeProvider } from "./utils/themeContext";
 import { MusicProvider } from "./utils/musicContext";
 import Header from "./components/Header";
-import * as SplashScreen from "expo-splash-screen";
 import mobileAds from "react-native-google-mobile-ads";
-
-SplashScreen.preventAutoHideAsync(); // Prevent auto-hiding the splash screen
 
 const Stack = createStackNavigator();
 
 const App = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  // Load fonts asynchronously and hide splash screen only after fonts are ready
+  // Load fonts asynchronously
   useEffect(() => {
     async function loadFonts() {
       try {
@@ -32,7 +29,6 @@ const App = () => {
         });
         console.log("Fonts loaded successfully");
         setFontsLoaded(true);
-        await SplashScreen.hideAsync(); // Hide splash only when fonts are ready
       } catch (error) {
         console.error("Error loading fonts:", error);
       }

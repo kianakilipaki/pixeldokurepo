@@ -78,7 +78,7 @@ const HomeScreen = ({ navigation }) => {
       <Animated.View
         style={[styles.centerContainer, { opacity: fadeAnimation }]}
       >
-        <Image source={require("../assets/icon.png")} style={styles.icon} />
+        <Image source={require("../assets/icon-bg.png")} style={styles.icon} />
         <Text style={styles.header}>Welcome to</Text>
         <Text style={styles.title}>PixelDoku</Text>
         {savedGame && (
