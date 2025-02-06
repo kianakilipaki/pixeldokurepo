@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: themeStyles.colors.black1,
     shadowColor: themeStyles.colors.gray3,
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },

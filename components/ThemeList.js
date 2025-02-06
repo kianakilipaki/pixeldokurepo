@@ -140,7 +140,11 @@ const styles = StyleSheet.create({
   themeHeader: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 15,
+    justifyContent: "center",
+    width: width * 0.8,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: themeStyles.colors.gray1,
   },
   thumbnail: {
     width: cellSizeLG,
@@ -161,9 +165,6 @@ const styles = StyleSheet.create({
     fontFamily: themeStyles.fonts.fontFamily,
     fontSize: themeStyles.fonts.largeFontSize,
     color: "#000", // White text on buttons
-    textShadowColor: "#fff", // Text shadow for buttons
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 5,
   },
   difficultyContainer: {
     width: width * 0.8,

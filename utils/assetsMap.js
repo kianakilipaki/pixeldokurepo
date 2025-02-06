@@ -65,6 +65,13 @@ export const defaultThemes = {
     bgSound: require("../assets/themes/good-morning-upbeat-happy-ukulele-244395.mp3"),
     locked: true,
   },
+  bugs: {
+    title: "BugDoku",
+    source: require("../assets/themes/bugs.png"),
+    bgSource: require("../assets/themes/leaf-bg.png"),
+    bgSound: require("../assets/themes/whispering-vinyl-loops-lofi-beats-281193.mp3"),
+    locked: true,
+  },
   unknown1: {
     title: "Coming Soon",
     bgSource: require("../assets/gradient.png"),

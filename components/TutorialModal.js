@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
   image: {
     width: width * 0.7,
     height: width * 0.7,
+    marginBottom: 10,
   },
   title: {
     fontSize: 18,

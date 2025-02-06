@@ -36,6 +36,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     margin: isTablet ? 10 : 0,
+    backgroundColor: themeStyles.colors.gray1,
+    padding: 5,
+    borderWidth: 3,
+    borderColor: themeStyles.colors.black1,
+    marginBottom: 10,
   },
   retryContainer: {
     flexDirection: "row",
@@ -45,7 +50,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   difficultyText: {
-    fontFamily: "Silkscreen-Regular",
+    fontFamily: themeStyles.fonts.fontFamily,
     fontSize: themeStyles.fonts.largeFontSize,
     color: themeStyles.colors.black1,
     marginTop: 3,
