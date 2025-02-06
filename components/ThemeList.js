@@ -182,19 +182,19 @@ const styles = StyleSheet.create({
   },
   difficultyText: {
     textAlign: "left",
-    color: "#333",
-    fontWeight: "bold",
+    color: themeStyles.colors.black1,
+    fontFamily: themeStyles.fonts.fontFamily,
     fontSize: themeStyles.fonts.regularFontSize,
   },
   ScoresText: {
     textAlign: "right",
-    color: "#333",
+    color: themeStyles.colors.black1,
     fontSize: themeStyles.fonts.regularFontSize,
     fontWeight: "normal",
   },
   divider: {
     height: 1,
-    backgroundColor: "#ddd",
+    backgroundColor: themeStyles.colors.black1,
     marginVertical: 5,
   },
 });
