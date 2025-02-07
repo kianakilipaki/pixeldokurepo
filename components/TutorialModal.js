@@ -24,14 +24,14 @@ export default function TutorialModal({ visible, onClose }) {
           />
           <Text style={styles.text}>
             1. Fill the grid so that each row, column, and 3x3 box contains all
-            unique images.
+            9 unique images.
           </Text>
           <Text style={styles.text}>
             2. No image should repeat within the same row, column, or box.
           </Text>
           <Text style={styles.text}>3. Use logic, not guessing!</Text>
           <TouchableOpacity
-            style={themeStyles.buttons.button}
+            style={styles.button}
             accessibilityLabel={`Got it`}
             accessibilityRole="button"
             onPress={onClose}
@@ -70,5 +70,17 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginBottom: 8,
+  },
+  button: {
+    height: 48,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#1986e0",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 5,
   },
 });
