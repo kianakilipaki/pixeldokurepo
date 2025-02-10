@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 import { useGame } from "../../utils/gameContext";
 import themeStyles from "../../utils/themeStyles";
-import ModalTemplate from "../ModalTemplate";
 import { useRewardedAd } from "../Ad";
 
-const ActionButtons = ({ selectedCell, onCellSelect, onReset, onPause }) => {
+const ActionButtons = ({ selectedCell, onCellSelect, onPause }) => {
   const {
     board,
     setBoard,
@@ -13,15 +12,15 @@ const ActionButtons = ({ selectedCell, onCellSelect, onReset, onPause }) => {
     solutionBoard,
     hints,
     setHints,
+    isPencilIn,
+    setIsPencilIn,
     saveProgress,
   } = useGame();
 
-  const [modalVisible, setModalVisible] = useState(false);
   const { watchAd, rewardAmount, setRewardAmount } = useRewardedAd();
 
-  const handleConfirm = () => {
-    onReset();
-    setModalVisible(false);
+  const handlePencilIn = () => {
+    setIsPencilIn(!isPencilIn);
   };
 
   const onErase = () => {
@@ -70,15 +69,19 @@ const ActionButtons = ({ selectedCell, onCellSelect, onReset, onPause }) => {
 
   return (
     <View style={styles.buttonContainer}>
-      {/* Reset Button */}
+      {/* Pencil In Button */}
       <TouchableOpacity
-        accessibilityLabel={`Reset Board`}
+        accessibilityLabel={`Pencil In: ${isPencilIn}`}
         accessibilityRole="button"
         style={styles.button}
-        onPress={() => setModalVisible(true)} // Fixed incorrect invocation
+        onPress={handlePencilIn}
       >
         <Image
-          source={require("../../assets/icons/reset.png")}
+          source={
+            isPencilIn
+              ? require("../../assets/icons/pencilIn.png")
+              : require("../../assets/icons/pencilOut.png")
+          }
           style={themeStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
@@ -130,18 +133,6 @@ const ActionButtons = ({ selectedCell, onCellSelect, onReset, onPause }) => {
           style={themeStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
-
-      <ModalTemplate
-        modalTitle="Confirm Reset"
-        modalBody={
-          <Text style={styles.modalText}>
-            Are you sure you want to reset your board?
-          </Text>
-        }
-        confirmAction={handleConfirm}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />
     </View>
   );
 };
@@ -179,11 +170,6 @@ const styles = StyleSheet.create({
   hintText: {
     fontSize: themeStyles.fonts.regularFontSize,
     fontFamily: themeStyles.fonts.fontFamily,
-  },
-  modalText: {
-    fontSize: themeStyles.fonts.largeFontSize,
-    textAlign: "center",
-    marginBottom: 10,
   },
 });
 

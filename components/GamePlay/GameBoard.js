@@ -7,7 +7,6 @@ const GameBoard = ({
   selectedCell,
   onCellSelect,
   updateBoard,
-  onReset,
   onPause,
   deselect,
 }) => (
@@ -16,7 +15,6 @@ const GameBoard = ({
     <ActionButtons
       onCellSelect={onCellSelect}
       selectedCell={selectedCell}
-      onReset={onReset}
       onPause={onPause}
     />
     <InputButtons onPress={updateBoard} deselect={deselect} />

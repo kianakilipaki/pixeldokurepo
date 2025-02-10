@@ -1,9 +1,9 @@
 {
   "expo": {
-    "platforms": ["android"], // Only build for Android
+    "platforms": ["android"],
     "name": "pixeldoku",
     "slug": "pixeldoku",
-    "version": "2.3.0",
+    "version": "2.5.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -46,6 +46,9 @@
     },
     "updates": {
       "url": "https://u.expo.dev/a9206d7c-7666-4f76-9f46-b9146ed68f8d"
+    },
+    "ios": {
+      "bundleIdentifier": "com.alanilyon.pixeldoku"
     }
   }
 }

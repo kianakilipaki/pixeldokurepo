@@ -78,9 +78,13 @@ const CompletionModal = ({
   useEffect(() => {
     if (!board || board.length === 0 || !solutionBoard) return;
 
-    const isComplete = board.flat().every((cell) => cell !== 0);
+    // Check if all cells are filled and are single numbers (not arrays)
+    const isComplete = board
+      .flat()
+      .every((cell) => typeof cell === "number" && cell !== 0);
     if (!isComplete) return;
 
+    // Check if board matches the solution
     const isCorrect = board
       .flat()
       .every((num, idx) => num === solutionBoard.flat()[idx]);

@@ -1,6 +1,11 @@
 import React from "react";
 import { View, StyleSheet, Image, Dimensions } from "react-native";
-import { spriteMap, cellSize } from "../../utils/assetsMap";
+import {
+  spriteMap,
+  cellSize,
+  miniSpriteMap,
+  miniCellSize,
+} from "../../utils/assetsMap";
 import themeStyles from "../../utils/themeStyles";
 
 const { width } = Dimensions.get("window");
@@ -53,6 +58,8 @@ const Cell = ({
       : null;
   };
 
+  const cellValue = currentCell[2];
+
   return (
     <View
       style={[
@@ -64,17 +71,26 @@ const Cell = ({
       ]}
     >
       <View
-        accessibilityLabel={`${theme.themeKey}${currentCell[2]}`}
+        accessibilityLabel={`${theme.themeKey}${cellValue}`}
         accessibilityRole="button"
         style={[styles.innerContainer, isCellSame() && styles.highlightedCell]}
         onStartShouldSetResponder={onSelect}
       >
-        {currentCell[2] !== 0 && (
+        {Array.isArray(cellValue) ? (
+          cellValue.map((arrayValue, index) => (
+            <View style={styles.miniInnerContainer}>
+              <Image
+                source={theme.source}
+                style={[styles.miniSpriteImage, miniSpriteMap[arrayValue]]}
+              />
+            </View>
+          ))
+        ) : cellValue !== 0 ? (
           <Image
             source={theme.source}
-            style={[styles.spriteImage, spriteMap[currentCell[2]]]}
+            style={[styles.spriteImage, spriteMap[cellValue]]}
           />
-        )}
+        ) : null}
       </View>
     </View>
   );
@@ -96,7 +112,9 @@ const styles = StyleSheet.create({
     borderLeftWidth: width * 0.01,
     borderBottomWidth: width * 0.01,
     borderRightWidth: width * 0.01,
-    borderColor: "transparent", // Default to no border
+    borderColor: "transparent",
+    flexDirection: "row",
+    flexWrap: "wrap",
     overflow: "hidden",
     position: "relative",
   },
@@ -105,6 +123,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: cellSize * 3,
     height: cellSize * 3,
+  },
+  miniInnerContainer: {
+    width: miniCellSize,
+    height: miniCellSize,
+    overflow: "hidden",
+  },
+  miniSpriteImage: {
+    aspectRatio: 1,
+    position: "absolute",
+    width: miniCellSize * 3,
+    height: miniCellSize * 3,
   },
   hintedCell: {
     backgroundColor: themeStyles.colors.highlight2,

@@ -6,6 +6,21 @@ const { width } = Dimensions.get("window");
 export const isTablet = width > 765;
 export const cellSize = isTablet ? (width * 0.085) / 1.1 : width * 0.085;
 
+export const miniCellSize = cellSize / 2.1;
+
+// map mini sprite position to numbers
+export const miniSpriteMap = {
+  1: { top: 0, left: 0 },
+  2: { top: 0, left: -miniCellSize },
+  3: { top: 0, left: -miniCellSize * 2 },
+  4: { top: -miniCellSize, left: 0 },
+  5: { top: -miniCellSize, left: -miniCellSize },
+  6: { top: -miniCellSize, left: -miniCellSize * 2 },
+  7: { top: -miniCellSize * 2, left: 0 },
+  8: { top: -miniCellSize * 2, left: -miniCellSize },
+  9: { top: -miniCellSize * 2, left: -miniCellSize * 2 },
+};
+
 // map sprite position to numbers
 export const spriteMap = {
   1: { top: 0, left: 0 },

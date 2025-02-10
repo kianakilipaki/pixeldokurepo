@@ -23,6 +23,7 @@ const SudokuScreen = ({ route }) => {
     initialBoard,
     saveProgress,
     resetProgress,
+    isPencilIn,
   } = useGame();
 
   const { playBackgroundMusic } = useMusic();
@@ -50,10 +51,36 @@ const SudokuScreen = ({ route }) => {
   const updateBoard = (value) => {
     const [row, col] = selectedCell || [];
     if (row != null && col != null && initialBoard[row][col] === 0) {
-      const newBoard = board.map((r, i) => (i === row ? [...r] : r));
-      newBoard[row][col] = value;
-      setBoard(newBoard);
-      saveProgress(newBoard);
+      setBoard((prevBoard) => {
+        const newBoard = prevBoard.map((r, i) => (i === row ? [...r] : r));
+        const cell = newBoard[row][col];
+
+        if (isPencilIn) {
+          if (cell === 0) {
+            // Convert 0 into an array with the value
+            newBoard[row][col] = [value];
+          } else if (Array.isArray(cell)) {
+            // Toggle the value in the array
+            newBoard[row][col] = cell.includes(value)
+              ? cell.filter((v) => v !== value) // Remove value
+              : [...cell, value]; // Add value if not there
+
+            // If array is empty after removal, reset to 0
+            if (newBoard[row][col].length === 0) {
+              newBoard[row][col] = 0;
+            }
+          } else if (cell > 0) {
+            newBoard[row][col] = [value];
+          }
+        } else {
+          // Convert an array or zero into a single value
+          newBoard[row][col] = value;
+        }
+
+        saveProgress(newBoard);
+        return newBoard;
+      });
+
       setSelectedCell([row, col, value]);
     } else {
       setSelectedCell([null, null, value]);
@@ -89,7 +116,6 @@ const SudokuScreen = ({ route }) => {
           onCellSelect={setSelectedCell}
           updateBoard={updateBoard}
           deselect={() => setSelectedCell(null)}
-          onReset={() => setBoard(initialBoard)}
           onPause={() => setIsPaused(true)}
         />
         <CompletionModal

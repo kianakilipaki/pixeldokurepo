@@ -14,6 +14,7 @@ export const GameProvider = ({ children }) => {
   const [retryCounter, setRetryCounter] = useState(3);
   const [hints, setHints] = useState(3);
   const [timer, setTimer] = useState(0);
+  const [isPencilIn, setIsPencilIn] = useState(false);
 
   // Save progress function
   const saveProgress = async (newBoard) => {
@@ -68,6 +69,7 @@ export const GameProvider = ({ children }) => {
       setTimer(0);
       setRetryCounter(3);
       setHints(3);
+      setIsPencilIn(false);
     } catch (error) {
       console.error("Error starting new game:", error);
     } finally {
@@ -94,6 +96,8 @@ export const GameProvider = ({ children }) => {
         setTimer,
         hints,
         setHints,
+        isPencilIn,
+        setIsPencilIn,
         saveProgress,
         loadProgress,
         resetProgress,
