@@ -1,6 +1,5 @@
 import React from "react";
 import { View, StyleSheet, Image } from "react-native";
-import themeStyles from "../utils/themeStyles";
 
 export default function LoadingIndicator() {
   return (
