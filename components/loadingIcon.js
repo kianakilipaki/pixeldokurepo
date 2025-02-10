@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   gif: {
-    width: 100, // Adjust size as needed
-    height: 70,
+    width: 200, // Adjust size as needed
+    height: 140,
   },
 });

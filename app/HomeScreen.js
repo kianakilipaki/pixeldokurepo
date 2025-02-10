@@ -56,7 +56,20 @@ const HomeScreen = ({ navigation }) => {
   };
 
   if (!themes) {
-    return <LoadingIndicator />;
+    return (
+      <>
+        <StatusBar
+          barStyle="light-content" // Choose 'dark-content' or 'light-content'
+          backgroundColor={themeStyles.colors.blue}
+          translucent={false}
+        />
+        <View style={styles.coinContainer}>
+          {/* Coins */}
+          <Coins />
+        </View>
+        <LoadingIndicator />
+      </>
+    );
   }
 
   return (
