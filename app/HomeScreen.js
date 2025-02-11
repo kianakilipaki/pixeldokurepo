@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   background: {
     position: "absolute",
     overflow: "hidden",
-    top: 1,
+    top: 0,
     width: "100%",
     height: "100%",
   },
@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
   coinContainer: {
     position: "absolute",
     right: 10,
+    top: 10,
   },
 });
 

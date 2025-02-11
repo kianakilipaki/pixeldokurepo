@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { View, StyleSheet, Image, Dimensions } from "react-native";
 import {
   spriteMap,
@@ -78,12 +78,14 @@ const Cell = ({
       >
         {Array.isArray(cellValue) ? (
           cellValue.map((arrayValue, index) => (
-            <View style={styles.miniInnerContainer}>
-              <Image
-                source={theme.source}
-                style={[styles.miniSpriteImage, miniSpriteMap[arrayValue]]}
-              />
-            </View>
+            <Fragment key={index}>
+              <View style={styles.miniInnerContainer}>
+                <Image
+                  source={theme.source}
+                  style={[styles.miniSpriteImage, miniSpriteMap[arrayValue]]}
+                />
+              </View>
+            </Fragment>
           ))
         ) : cellValue !== 0 ? (
           <Image
