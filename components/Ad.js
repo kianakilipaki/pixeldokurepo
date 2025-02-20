@@ -6,9 +6,7 @@ import {
   TestIds,
 } from "react-native-google-mobile-ads";
 
-const adUnitId = __DEV__
-  ? TestIds.REWARDED
-  : "ca-app-pub-6358927901907597/2631763735";
+const adUnitId = "ca-app-pub-6358927901907597/2631763735";
 
 export const useRewardedAd = () => {
   const [loaded, setLoaded] = useState(false);
@@ -16,6 +14,7 @@ export const useRewardedAd = () => {
   const [rewarded, setRewarded] = useState(() =>
     RewardedAd.createForAdRequest(adUnitId, {
       keywords: ["gaming", "puzzle", "brain games"],
+      maxAdContentRating: "G",
     })
   );
 
@@ -36,6 +35,7 @@ export const useRewardedAd = () => {
     setLoaded(false); // Reset state before loading
     const newRewarded = RewardedAd.createForAdRequest(adUnitId, {
       keywords: ["gaming", "puzzle", "brain games"],
+      maxAdContentRating: "G",
     });
     setRewarded(newRewarded);
     setupListeners(newRewarded);
