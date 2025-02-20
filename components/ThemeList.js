@@ -18,20 +18,20 @@ import { formatTime } from "../utils/GeneratePuzzle";
 
 const { width } = Dimensions.get("window");
 
-const ThemeList = ({ item, themeKey, navigation }) => {
-  const [expandedTheme, setExpandedTheme] = useState(null);
+const ThemeList = ({
+  item,
+  themeKey,
+  expandedTheme,
+  toggleTheme,
+  navigation,
+}) => {
   const { HighScore } = useHighScore();
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const toggleTheme = (key) => {
-    setExpandedTheme(expandedTheme === key ? null : key);
-  };
-
-  const isExpanded = expandedTheme === themeKey;
   const Scores = HighScore[themeKey] || { Easy: 0, Medium: 0, Hard: 0 };
 
   const openModal = () => {
-    if (item.title == "Coming Soon") return;
+    if (item.title === "Coming Soon") return;
     setIsModalVisible(true);
   };
 
@@ -43,10 +43,12 @@ const ThemeList = ({ item, themeKey, navigation }) => {
     });
   };
 
+  const isExpanded = expandedTheme === themeKey;
+
   return (
     <View style={styles.themeContainer}>
       <ImageBackground
-        key={`bg-${themeKey}`} // Force re-render
+        key={`bg-${themeKey}`}
         source={item.bgSource}
         style={styles.themeBackground}
         resizeMode="cover"
@@ -55,8 +57,8 @@ const ThemeList = ({ item, themeKey, navigation }) => {
         <TouchableOpacity
           accessibilityLabel={`Choose ${item.title} theme`}
           accessibilityRole="button"
-          key={`header-${themeKey}`} // Unique key
-          onPress={() => toggleTheme(themeKey)}
+          key={`header-${themeKey}`}
+          onPress={() => toggleTheme(themeKey)} // Call toggleTheme on press
           style={styles.themeHeader}
         >
           {item.source && (

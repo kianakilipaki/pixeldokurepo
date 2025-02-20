@@ -32,18 +32,60 @@ const fillBoard = (board) => {
   return true; // Board successfully filled
 };
 
-const removeCells = (board, difficulty) => {
-  const difficultyMap = { Easy: 30, Medium: 40, Hard: 50 }; // Numbers to remove
-  const cellsToRemove = difficultyMap[difficulty] || 30;
+const countSolutions = (board) => {
+  const cloneBoard = board.map((row) => [...row]); // Create a copy of the board
+  let solutionCount = 0;
 
-  for (let i = 0; i < cellsToRemove; i++) {
-    let row, col;
-    do {
-      row = Math.floor(Math.random() * 9);
-      col = Math.floor(Math.random() * 9);
-    } while (board[row][col] === 0); // Ensure we don't remove already empty cells
-    board[row][col] = 0;
+  const solve = (grid) => {
+    for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+        if (grid[row][col] === 0) {
+          for (let num = 1; num <= 9; num++) {
+            if (isValidPlacement(grid, row, col, num)) {
+              grid[row][col] = num;
+              solve(grid);
+              grid[row][col] = 0; // Backtrack
+
+              if (solutionCount >= 3) return; // Stop early if more than 3 solutions exist
+            }
+          }
+          return;
+        }
+      }
+    }
+    solutionCount++;
+  };
+
+  solve(cloneBoard);
+  return solutionCount;
+};
+
+const removeCells = (board, difficulty) => {
+  const difficultyMap = { Easy: 30, Medium: 40, Hard: 50 };
+  const targetRemovals = difficultyMap[difficulty] || 30;
+  let removedCells = 0;
+
+  let positions = [];
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      positions.push([row, col]);
+    }
   }
+  shuffleArray(positions); // Shuffle to randomize cell removals
+
+  for (const [row, col] of positions) {
+    if (removedCells >= targetRemovals) break;
+
+    const backup = board[row][col];
+    board[row][col] = 0; // Temporarily remove the number
+
+    if (countSolutions(board) === 1) {
+      removedCells++; // Only keep removal if uniqueness is preserved
+    } else {
+      board[row][col] = backup; // Restore if more than one solution exists
+    }
+  }
+
   return board;
 };
 
@@ -133,4 +175,71 @@ export const formatTime = (secs) => {
   return `${String(minutes).padStart(2, "0")}:${String(
     remainingSeconds
   ).padStart(2, "0")}`;
+};
+
+// Get the 3×3 box indices for a given cell
+export const getBoxIndices = (row, col) => {
+  const boxRowStart = Math.floor(row / 3) * 3;
+  const boxColStart = Math.floor(col / 3) * 3;
+  const boxIndices = [];
+
+  for (let i = 0; i < 9; i++) {
+    const boxRow = boxRowStart + Math.floor(i / 3);
+    const boxCol = boxColStart + (i % 3);
+    boxIndices.push([boxRow, boxCol]);
+  }
+
+  return boxIndices;
+};
+
+// Helper to remove a value from pencil marks in the same row, col, and section
+export const removePencilMarks = (board, row, col, value) => {
+  const updatedBoard = board.map((r) =>
+    r.map((cell) => (Array.isArray(cell) ? [...cell] : cell))
+  );
+
+  for (let i = 0; i < 9; i++) {
+    // Remove from row
+    if (Array.isArray(updatedBoard[row][i])) {
+      updatedBoard[row][i] = updatedBoard[row][i].filter((v) => v !== value);
+      if (updatedBoard[row][i].length === 0) updatedBoard[row][i] = 0;
+    }
+
+    // Remove from column
+    if (Array.isArray(updatedBoard[i][col])) {
+      updatedBoard[i][col] = updatedBoard[i][col].filter((v) => v !== value);
+      if (updatedBoard[i][col].length === 0) updatedBoard[i][col] = 0;
+    }
+  }
+
+  // Remove from the 3×3 section
+  const boxIndices = getBoxIndices(row, col);
+  boxIndices.forEach(([boxRow, boxCol]) => {
+    if (Array.isArray(updatedBoard[boxRow][boxCol])) {
+      updatedBoard[boxRow][boxCol] = updatedBoard[boxRow][boxCol].filter(
+        (v) => v !== value
+      );
+      if (updatedBoard[boxRow][boxCol].length === 0)
+        updatedBoard[boxRow][boxCol] = 0;
+    }
+  });
+
+  return updatedBoard;
+};
+
+// Helper to update a cell with pencil-in logic
+export const updateCell = (cell, value, isPencilIn) => {
+  if (isPencilIn) {
+    if (cell === 0) {
+      return [value]; // Convert 0 to an array with the value
+    } else if (Array.isArray(cell)) {
+      return cell.includes(value)
+        ? cell.filter((v) => v !== value) // Remove value if present
+        : [...cell, value]; // Add value if absent
+    } else {
+      return [value]; // Convert single value to pencil marks
+    }
+  }
+
+  return value; // Return single value for normal mode
 };

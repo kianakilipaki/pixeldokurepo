@@ -9,6 +9,7 @@ import PlayOverlay from "../components/GamePlay/PlayOverlay";
 import { Dimensions } from "react-native";
 import { isTablet } from "../utils/assetsMap";
 import { useMusic } from "../utils/musicContext";
+import { removePencilMarks, updateCell } from "../utils/GeneratePuzzle";
 
 const { width } = Dimensions.get("window");
 
@@ -50,31 +51,17 @@ const SudokuScreen = ({ route }) => {
 
   const updateBoard = (value) => {
     const [row, col] = selectedCell || [];
+
     if (row != null && col != null && initialBoard[row][col] === 0) {
       setBoard((prevBoard) => {
         const newBoard = prevBoard.map((r, i) => (i === row ? [...r] : r));
-        const cell = newBoard[row][col];
 
-        if (isPencilIn) {
-          if (cell === 0) {
-            // Convert 0 into an array with the value
-            newBoard[row][col] = [value];
-          } else if (Array.isArray(cell)) {
-            // Toggle the value in the array
-            newBoard[row][col] = cell.includes(value)
-              ? cell.filter((v) => v !== value) // Remove value
-              : [...cell, value]; // Add value if not there
+        // Update the selected cell using helper function
+        newBoard[row][col] = updateCell(newBoard[row][col], value, isPencilIn);
 
-            // If array is empty after removal, reset to 0
-            if (newBoard[row][col].length === 0) {
-              newBoard[row][col] = 0;
-            }
-          } else if (cell > 0) {
-            newBoard[row][col] = [value];
-          }
-        } else {
-          // Convert an array or zero into a single value
-          newBoard[row][col] = value;
+        // If it's not in pencil mode, remove the value from other cells in the same row, column, and section
+        if (!isPencilIn) {
+          return removePencilMarks(newBoard, row, col, value);
         }
 
         saveProgress(newBoard);

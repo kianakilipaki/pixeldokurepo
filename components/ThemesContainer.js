@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Animated,
   FlatList,
@@ -15,6 +15,12 @@ import { useThemes } from "../utils/themeContext";
 const ThemeListContainer = ({ slideAnimation, navigation, toggle }) => {
   const screenHeight = Dimensions.get("window").height;
   const { themes } = useThemes();
+  const [expandedTheme, setExpandedTheme] = useState(null); // Track the expanded theme key
+
+  const toggleTheme = (key) => {
+    // Expand the theme if not expanded, or collapse if already expanded
+    setExpandedTheme(expandedTheme === key ? null : key);
+  };
 
   if (!themes) {
     return <LoadingIndicator />;
@@ -29,7 +35,7 @@ const ThemeListContainer = ({ slideAnimation, navigation, toggle }) => {
             {
               translateY: slideAnimation.interpolate({
                 inputRange: [0, 1],
-                outputRange: [screenHeight, 0], // Numeric pixel values
+                outputRange: [screenHeight, 0],
               }),
             },
           ],
@@ -55,6 +61,8 @@ const ThemeListContainer = ({ slideAnimation, navigation, toggle }) => {
             <ThemeList
               item={item}
               themeKey={item.themeKey}
+              expandedTheme={expandedTheme} // Pass the expandedTheme state as a prop
+              toggleTheme={toggleTheme} // Pass the toggleTheme function as a prop
               navigation={navigation}
             />
           )}
