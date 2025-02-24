@@ -147,6 +147,8 @@ const styles = StyleSheet.create({
     fontSize: 36,
     textAlign: "center",
     color: themeStyles.colors.black1,
+    textShadowColor: "#fff",
+    textShadowRadius: 3,
   },
   title: {
     fontFamily: themeStyles.fonts.fontFamily,
