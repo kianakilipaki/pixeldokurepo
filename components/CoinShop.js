@@ -5,29 +5,43 @@ import themeStyles from "../utils/themeStyles";
 import ModalTemplate from "./ModalTemplate";
 import { isTablet } from "../utils/assetsMap";
 import { useRewardedAd } from "./Ad";
+import useIAP, { initiatePurchase } from "../utils/iapHook";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
   const { watchAd, rewardAmount } = useRewardedAd();
+  const { products } = useIAP(addCoins, setIsCoinShopVisible);
 
   const coinOptions = [
-    { coins: 100, cost: "AD" },
-    { coins: 500, cost: "$1.99" },
-    { coins: 1000, cost: "$2.99" },
-    { coins: 2000, cost: "$3.99" },
-    { coins: 4000, cost: "$4.99" },
+    { coins: 100, cost: "AD", sku: null },
+    { coins: 500, cost: "$1.99", sku: "500_coins" },
+    { coins: 1000, cost: "$2.99", sku: "1000_coins" },
+    { coins: 2000, cost: "$3.99", sku: "2000_coins" },
+    { coins: 4000, cost: "$4.99", sku: "4000_coins" },
   ];
-
-  const buyCoins = (coins, cost) => {
-    addCoins(coins);
-    setIsCoinShopVisible(false);
-  };
 
   useEffect(() => {
     if (rewardAmount > 0) {
-      buyCoins(100); // Add coins after watching the ad
+      addCoins(100);
+      setIsCoinShopVisible(false);
     }
   }, [rewardAmount]);
+
+  const buyCoins = (coins, sku) => {
+    if (sku) {
+      initiatePurchase(sku);
+    } else {
+      addCoins(coins);
+      setIsCoinShopVisible(false);
+    }
+  };
+  useEffect(() => {
+    const setupIAP = async () => {
+      const items = await initIAP();
+      console.log("Available IAP Products:", items);
+    };
+    setupIAP();
+  }, []);
 
   const modalBody = () => {
     return (
@@ -39,22 +53,20 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
               style={themeStyles.icons.iconSizeMedium}
             />
             <Text style={styles.coinText}>{option.coins} Coins</Text>
-            <Text style={styles.costText}>{option.cost}</Text>
+            <Text style={styles.costText}>
+              {option.sku
+                ? products.find((p) => p.productId === option.sku)
+                    ?.localizedPrice || option.cost
+                : option.cost}
+            </Text>
 
-            {option.cost == "AD" ? (
-              <TouchableOpacity
-                onPress={watchAd}
-                accessibilityLabel={`Watch Ad for 100 free coins`}
-                accessibilityRole="button"
-                style={styles.buyButton}
-              >
+            {option.cost === "AD" ? (
+              <TouchableOpacity onPress={watchAd} style={styles.buyButton}>
                 <Text style={styles.buyButtonText}>Free</Text>
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
-                accessibilityLabel={`Buy ${option.coins} for ${option.cost}`}
-                accessibilityRole="button"
-                onPress={() => buyCoins(option.coins, option.cost)}
+                onPress={() => buyCoins(option.coins, option.sku)}
                 style={styles.buyButton}
               >
                 <Text style={styles.buyButtonText}>Buy</Text>
