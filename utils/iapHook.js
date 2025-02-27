@@ -8,10 +8,16 @@ const itemSkus = ["500_coins", "1000_coins", "2000_coins", "4000_coins"];
 // Initialize IAP connection
 const initIAP = async () => {
   try {
+    console.log("Initializing IAP...");
     await RNIap.initConnection();
-    return await RNIap.getProducts(itemSkus);
+    console.log("IAP initialized successfully!");
+
+    const products = await RNIap.getProducts(itemSkus);
+    console.log("Fetched products:", products);
+
+    return products;
   } catch (err) {
-    console.warn("IAP initialization error:", err);
+    console.error("IAP initialization error:", err);
     return [];
   }
 };
