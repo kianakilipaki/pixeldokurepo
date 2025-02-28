@@ -8,30 +8,16 @@ const itemSkus = ["500_coins", "1000_coins", "2000_coins", "4000_coins"];
 // Initialize IAP connection
 const initIAP = async () => {
   try {
-    console.log("RNIap methods:", Object.keys(RNIap)); // Debug log
-
     await RNIap.initConnection();
-    console.log("IAP Connection Initialized");
+    console.log("IAP initialized successfully!");
 
-    const isBillingSupported = await RNIap.isBillingSupported?.();
-    if (isBillingSupported === undefined) {
-      throw new Error(
-        "isBillingSupported is undefined! Possible installation issue."
-      );
-    }
-    console.log(`Billing Supported: ${isBillingSupported}`);
+    // Fetch products
+    const products = await RNIap.getProducts({ skus: itemSkus });
+    console.log("Products retrieved:", products);
 
-    const availableProducts = await RNIap.getProducts([
-      "500_coins",
-      "1000_coins",
-      "2000_coins",
-      "4000_coins",
-    ]);
-    console.log("Available Products:", availableProducts);
-
-    return availableProducts;
-  } catch (error) {
-    console.error("IAP Initialization Error:", error);
+    return products;
+  } catch (err) {
+    console.error("IAP initialization error:", err.message);
     return [];
   }
 };
