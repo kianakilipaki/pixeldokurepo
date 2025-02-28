@@ -8,18 +8,26 @@ const itemSkus = ["500_coins", "1000_coins", "2000_coins", "4000_coins"];
 // Initialize IAP connection
 const initIAP = async () => {
   try {
+    console.log("RNIap methods:", Object.keys(RNIap)); // Debug log
+
     await RNIap.initConnection();
     console.log("IAP Connection Initialized");
 
-    const isBillingSupported = await RNIap.isBillingSupported();
+    const isBillingSupported = await RNIap.isBillingSupported?.();
+    if (isBillingSupported === undefined) {
+      throw new Error(
+        "isBillingSupported is undefined! Possible installation issue."
+      );
+    }
     console.log(`Billing Supported: ${isBillingSupported}`);
 
-    const availableProducts = await RNIap.getProducts(itemSkus);
+    const availableProducts = await RNIap.getProducts([
+      "500_coins",
+      "1000_coins",
+      "2000_coins",
+      "4000_coins",
+    ]);
     console.log("Available Products:", availableProducts);
-
-    if (availableProducts.length === 0) {
-      console.error("No products returned. Double-check Play Console setup.");
-    }
 
     return availableProducts;
   } catch (error) {
