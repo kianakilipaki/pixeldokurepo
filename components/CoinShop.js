@@ -22,7 +22,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
 
   useEffect(() => {
     if (rewardAmount > 0) {
-      addCoins(100);
+      addCoins(rewardAmount);
       setIsCoinShopVisible(false);
     }
   }, [rewardAmount]);
@@ -35,13 +35,6 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
       setIsCoinShopVisible(false);
     }
   };
-  useEffect(() => {
-    const setupIAP = async () => {
-      const items = await initIAP();
-      console.log("Available IAP Products:", items);
-    };
-    setupIAP();
-  }, []);
 
   const modalBody = () => {
     return (
@@ -56,7 +49,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
             <Text style={styles.costText}>
               {option.sku
                 ? products.find((p) => p.productId === option.sku)
-                    ?.localizedPrice || option.cost
+                    ?.localizedPrice ?? option.cost
                 : option.cost}
             </Text>
 

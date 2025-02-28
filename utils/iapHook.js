@@ -9,33 +9,32 @@ const itemSkus = ["500_coins", "1000_coins", "2000_coins", "4000_coins"];
 const initIAP = async () => {
   try {
     await RNIap.initConnection();
-    console.log("✅ IAP Connection Initialized");
+    console.log("IAP Connection Initialized");
 
     const isBillingSupported = await RNIap.isBillingSupported();
-    console.log(`💳 Billing Supported: ${isBillingSupported}`);
+    console.log(`Billing Supported: ${isBillingSupported}`);
 
     const availableProducts = await RNIap.getProducts(itemSkus);
-    console.log("🛍️ Available Products:", availableProducts);
+    console.log("Available Products:", availableProducts);
 
     if (availableProducts.length === 0) {
-      console.error(
-        "🚨 No products returned. Double-check Play Console setup."
-      );
+      console.error("No products returned. Double-check Play Console setup.");
     }
 
-    setProducts(availableProducts);
+    return availableProducts;
   } catch (error) {
-    console.error("❌ IAP Initialization Error:", error);
+    console.error("IAP Initialization Error:", error);
+    return [];
   }
 };
 
 export const initiatePurchase = async (sku) => {
   try {
-    console.log(`🛒 Attempting purchase: ${sku}`);
+    console.log(`Attempting purchase: ${sku}`);
     await RNIap.requestPurchase(sku);
-    console.log(`✅ Purchase started for: ${sku}`);
+    console.log(`Purchase started for: ${sku}`);
   } catch (error) {
-    console.error("❌ Purchase Error:", error);
+    console.error("Purchase Error:", error);
   }
 };
 
@@ -44,8 +43,8 @@ const finalizePurchase = async (purchase, onSuccess) => {
   try {
     if (purchase.transactionReceipt) {
       onSuccess(purchase.productId);
-      await RNIap.finishTransaction(purchase, false);
     }
+    await RNIap.finishTransaction(purchase, false); // ✅ Always finalize transaction
   } catch (err) {
     console.warn("finishTransaction error", err);
   }
@@ -57,13 +56,38 @@ export const endIAP = () => {
 };
 
 // Custom Hook for Managing IAP
-const useIAP = (addCoins, setIsCoinShopVisible) => {
+const useIAP = (addCoins) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const setupIAP = async () => {
       const items = await initIAP();
       setProducts(items);
+
+      // ✅ Process unfinished purchases
+      const processUnfinishedPurchases = async () => {
+        try {
+          const purchases = await RNIap.getAvailablePurchases();
+          purchases.forEach((purchase) => {
+            finalizePurchase(purchase, (productId) => {
+              const coinAmounts = {
+                "500_coins": 500,
+                "1000_coins": 1000,
+                "2000_coins": 2000,
+                "4000_coins": 4000,
+              };
+
+              if (coinAmounts[productId]) {
+                addCoins(coinAmounts[productId]);
+              }
+            });
+          });
+        } catch (err) {
+          console.warn("Error processing unfinished purchases", err);
+        }
+      };
+
+      await processUnfinishedPurchases();
     };
 
     setupIAP();
@@ -81,7 +105,6 @@ const useIAP = (addCoins, setIsCoinShopVisible) => {
 
           if (coinAmounts[productId]) {
             addCoins(coinAmounts[productId]);
-            setIsCoinShopVisible(false);
           }
         });
       }
