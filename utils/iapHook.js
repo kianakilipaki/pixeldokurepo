@@ -8,27 +8,34 @@ const itemSkus = ["500_coins", "1000_coins", "2000_coins", "4000_coins"];
 // Initialize IAP connection
 const initIAP = async () => {
   try {
-    console.log("Initializing IAP...");
     await RNIap.initConnection();
-    console.log("IAP initialized successfully!");
+    console.log("✅ IAP Connection Initialized");
 
-    const products = await RNIap.getProducts(itemSkus);
-    console.log("Fetched products:", products);
+    const isBillingSupported = await RNIap.isBillingSupported();
+    console.log(`💳 Billing Supported: ${isBillingSupported}`);
 
-    return products;
-  } catch (err) {
-    console.error("IAP initialization error:", err);
-    return [];
+    const availableProducts = await RNIap.getProducts(itemSkus);
+    console.log("🛍️ Available Products:", availableProducts);
+
+    if (availableProducts.length === 0) {
+      console.error(
+        "🚨 No products returned. Double-check Play Console setup."
+      );
+    }
+
+    setProducts(availableProducts);
+  } catch (error) {
+    console.error("❌ IAP Initialization Error:", error);
   }
 };
 
-// Request purchase for a specific product
 export const initiatePurchase = async (sku) => {
   try {
-    await RNIap.requestPurchase(sku, false);
-  } catch (err) {
-    console.warn("Purchase error", err);
-    throw new Error(err.message);
+    console.log(`🛒 Attempting purchase: ${sku}`);
+    await RNIap.requestPurchase(sku);
+    console.log(`✅ Purchase started for: ${sku}`);
+  } catch (error) {
+    console.error("❌ Purchase Error:", error);
   }
 };
 
