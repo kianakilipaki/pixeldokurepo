@@ -1,75 +1,170 @@
-import React, { useEffect } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
 import { useCoins } from "../utils/coinContext";
 import themeStyles from "../utils/themeStyles";
 import ModalTemplate from "./ModalTemplate";
 import { isTablet } from "../utils/assetsMap";
 import { useRewardedAd } from "./Ad";
-import useIAP, { initiatePurchase } from "../utils/iapHook";
+import {
+  requestPurchase,
+  useIAP,
+  getAvailablePurchases,
+  finishTransaction,
+} from "react-native-iap";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
   const { watchAd, rewardAmount } = useRewardedAd();
-  const { products } = useIAP(addCoins, setIsCoinShopVisible);
+  const {
+    connected,
+    products,
+    currentPurchase,
+    currentPurchaseError,
+    getProducts,
+  } = useIAP();
 
-  const coinOptions = [
-    { coins: 100, cost: "AD", sku: null },
-    { coins: 500, cost: "$1.99", sku: "500_coins" },
-    { coins: 1000, cost: "$2.99", sku: "1000_coins" },
-    { coins: 2000, cost: "$3.99", sku: "2000_coins" },
-    { coins: 4000, cost: "$4.99", sku: "4000_coins" },
-  ];
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    const checkUnfinishedPurchases = async () => {
+      try {
+        console.log("Checking for unfinished purchases...");
+        const purchases = await getAvailablePurchases();
+        for (const purchase of purchases) {
+          await finishTransaction({ purchase });
+        }
+        console.log("Unfinished purchases processed:", purchases);
+      } catch (error) {
+        console.error("Error processing unfinished purchases:", error);
+        setIsError(true);
+      }
+    };
+
+    checkUnfinishedPurchases();
+  }, []);
+
+  useEffect(() => {
+    console.log("IAP connected:", connected);
+    if (connected) {
+      getProducts({
+        skus: ["500_coins", "1000_coins", "2000_coins", "4000_coins"],
+      })
+        .then(() => console.log("Products retrieved successfully"))
+        .catch((error) => {
+          console.error("Error fetching products:", error);
+          setIsError(true);
+        });
+    }
+  }, [connected]);
 
   useEffect(() => {
     if (rewardAmount > 0) {
+      console.log("Reward received:", rewardAmount);
       addCoins(rewardAmount);
       setIsCoinShopVisible(false);
     }
   }, [rewardAmount]);
 
-  const buyCoins = (coins, sku) => {
-    if (sku) {
-      initiatePurchase(sku);
-    } else {
-      addCoins(coins);
+  useEffect(() => {
+    if (currentPurchaseError) {
+      console.error("Purchase Error:", currentPurchaseError);
+      Alert.alert(
+        "Purchase Error",
+        currentPurchaseError?.message || "Unknown error occurred."
+      );
+      setIsError(true);
+    }
+  }, [currentPurchaseError]);
+
+  useEffect(() => {
+    if (currentPurchase) {
+      console.log("Purchase successful:", currentPurchase);
+      addCoins(parseInt(currentPurchase.productId.replace("_coins", "")));
       setIsCoinShopVisible(false);
+      setIsError(false);
+    }
+  }, [currentPurchase]);
+
+  useEffect(() => {
+    if (products.length === 0) {
+      console.warn(
+        "No products found! Ensure products are set up correctly in the store."
+      );
+    }
+  }, [products]);
+
+  const buyCoins = async (sku) => {
+    if (!connected) {
+      console.error("IAP not connected. Cannot proceed with purchase.");
+      Alert.alert("Error", "In-app purchases are not available at the moment.");
+      setIsError(true);
+
+      return;
+    }
+
+    try {
+      console.log("Attempting to purchase:", sku);
+      await requestPurchase(sku);
+    } catch (error) {
+      console.error("Purchase request failed:", error);
+      Alert.alert("Purchase Error", error.message || "Something went wrong.");
+      setIsError(true);
     }
   };
 
-  const modalBody = () => {
-    return (
-      <>
-        {coinOptions.map((option, index) => (
-          <View style={styles.coinContainer} key={index}>
-            <Image
-              source={require("../assets/icons/coin.png")}
-              style={themeStyles.icons.iconSizeMedium}
-            />
-            <Text style={styles.coinText}>{option.coins} Coins</Text>
-            <Text style={styles.costText}>
-              {option.sku
-                ? products.find((p) => p.productId === option.sku)
-                    ?.localizedPrice ?? option.cost
-                : option.cost}
-            </Text>
+  const sortedProducts = [...products].sort((a, b) => {
+    const numA = parseInt(a.productId.replace("_coins", ""));
+    const numB = parseInt(b.productId.replace("_coins", ""));
+    return numA - numB;
+  });
 
-            {option.cost === "AD" ? (
-              <TouchableOpacity onPress={watchAd} style={styles.buyButton}>
-                <Text style={styles.buyButtonText}>Free</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={() => buyCoins(option.coins, option.sku)}
-                style={styles.buyButton}
-              >
-                <Text style={styles.buyButtonText}>Buy</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        ))}
-      </>
-    );
-  };
+  const modalBody = () => (
+    <>
+      {isError ? (
+        <Text style={styles.errorText}>
+          Something went wrong. Please try again later.
+        </Text>
+      ) : (
+        <></>
+      )}
+      <View style={styles.coinContainer}>
+        <Image
+          source={require("../assets/icons/coin.png")}
+          style={themeStyles.icons.iconSizeMedium}
+        />
+        <Text style={styles.coinText}>100 Coins</Text>
+        <Text style={styles.costText}>AD</Text>
+        <TouchableOpacity onPress={watchAd} style={styles.buyButton}>
+          <Text style={styles.buyButtonText}>Free</Text>
+        </TouchableOpacity>
+      </View>
+      {sortedProducts.map((product) => (
+        <View style={styles.coinContainer} key={product.productId}>
+          <Image
+            source={require("../assets/icons/coin.png")}
+            style={themeStyles.icons.iconSizeMedium}
+          />
+          <Text style={styles.coinText}>
+            {product.title.replace("(PixelDoku)", "")}
+          </Text>
+          <Text style={styles.costText}>{product.price}</Text>
+          <TouchableOpacity
+            onPress={() => buyCoins(product.productId)}
+            style={styles.buyButton}
+          >
+            <Text style={styles.buyButtonText}>Buy</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
+    </>
+  );
 
   return (
     <ModalTemplate
@@ -119,6 +214,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: themeStyles.fonts.regularFontSize,
     fontWeight: "bold",
+    textAlign: "center",
+  },
+  errorText: {
+    fontSize: 12,
+    color: themeStyles.colors.red,
+    marginHorizontal: 10,
     textAlign: "center",
   },
 });

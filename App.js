@@ -13,6 +13,7 @@ import { ThemeProvider } from "./utils/themeContext";
 import { MusicProvider } from "./utils/musicContext";
 import Header from "./components/Header";
 import mobileAds from "react-native-google-mobile-ads";
+import { withIAPContext } from "react-native-iap";
 
 const Stack = createStackNavigator();
 
@@ -96,4 +97,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withIAPContext(App);
