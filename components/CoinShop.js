@@ -12,11 +12,12 @@ import {
   initConnection,
   getAvailablePurchases,
   requestPurchase,
+  useRef,
 } from "react-native-iap";
-import ModalTemplate from "../components/ModalTemplate";
-import { useCoins } from "../hooks/useCoins";
-import { useRewardedAd } from "../hooks/useRewardedAd";
-import themeStyles from "../styles/themeStyles";
+import ModalTemplate from "./ModalTemplate";
+import { useCoins } from "../utils/coinContext";
+import { useRewardedAd } from "./Ad";
+import themeStyles from "../utils/themeStyles";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
@@ -70,15 +71,32 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   }, [connected]);
 
   // Handle purchase success and errors
+  const processedPurchases = useRef(new Set()); // Store processed purchases
+
   useEffect(() => {
     if (currentPurchaseError) {
       console.error("Purchase Error:", currentPurchaseError);
       setIsError(true);
     }
+
     if (currentPurchase) {
-      addCoins(parseInt(currentPurchase.productId.replace("_coins", "")));
+      const { productId, purchaseToken } = currentPurchase;
+
+      // Prevent duplicate processing of the same purchase
+      if (processedPurchases.current.has(purchaseToken)) {
+        console.log("Purchase already processed:", productId);
+        return;
+      }
+
+      processedPurchases.current.add(purchaseToken); // Mark as processed
+
+      const coinsToAdd = parseInt(productId.replace("_coins", ""), 10);
+      addCoins(coinsToAdd);
       setIsCoinShopVisible(false);
+
       console.log("Purchase successful:", currentPurchase);
+      console.log("Coins added:", coinsToAdd);
+
       setIsError(false);
     }
   }, [currentPurchaseError, currentPurchase]);
