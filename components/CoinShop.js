@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -12,7 +12,8 @@ import {
   initConnection,
   getAvailablePurchases,
   requestPurchase,
-  useRef,
+  acknowledgePurchaseAndroid,
+  finishTransaction,
 } from "react-native-iap";
 import ModalTemplate from "./ModalTemplate";
 import { useCoins } from "../utils/coinContext";
@@ -31,6 +32,8 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   } = useIAP();
 
   const [isError, setIsError] = useState(false);
+  const processedPurchases = useRef(new Set());
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Initialize In-App Purchases (IAP) on component mount
   useEffect(() => {
@@ -39,6 +42,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
         console.log("Initializing IAP connection...");
         await initConnection();
         console.log("IAP connection initialized.");
+        setIsInitialized(true);
       } catch (error) {
         console.error("IAP Initialization Error:", error);
       }
@@ -48,58 +52,40 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
 
   // Fetch products and check for unfinished purchases when connected
   useEffect(() => {
-    if (connected) {
-      getProducts({
-        skus: ["500_coins", "1000_coins", "2000_coins", "4000_coins"],
-      })
-        .then(() => console.log("Products retrieved successfully"))
-        .catch((error) => {
-          console.error("Error fetching products:", error);
-          setIsError(true);
-        });
+    if (!connected || !isInitialized) return;
 
-      (async () => {
-        try {
-          console.log("Checking for unfinished purchases...");
-          const purchases = await getAvailablePurchases();
-          console.log("Unfinished purchases processed:", purchases);
-        } catch (error) {
-          console.error("Error processing unfinished purchases:", error);
+    const checkUnfinishedPurchases = async () => {
+      try {
+        console.log("Checking for unfinished purchases...");
+        const purchases = await getAvailablePurchases();
+
+        for (const purchase of purchases) {
+          if (!purchase.acknowledged) {
+            console.log("Unacknowledged purchase found:", purchase.productId);
+
+            if (Platform.OS === "android") {
+              await acknowledgePurchaseAndroid(purchase.purchaseToken);
+            }
+            await finishTransaction({ purchase, isConsumable: true });
+            console.log("Unacknowledged purchase handled.");
+          }
         }
-      })();
-    }
-  }, [connected]);
-
-  // Handle purchase success and errors
-  const processedPurchases = useRef(new Set()); // Store processed purchases
-
-  useEffect(() => {
-    if (currentPurchaseError) {
-      console.error("Purchase Error:", currentPurchaseError);
-      setIsError(true);
-    }
-
-    if (currentPurchase) {
-      const { productId, purchaseToken } = currentPurchase;
-
-      // Prevent duplicate processing of the same purchase
-      if (processedPurchases.current.has(purchaseToken)) {
-        console.log("Purchase already processed:", productId);
-        return;
+      } catch (error) {
+        console.error("Error processing unfinished purchases:", error);
       }
+    };
 
-      processedPurchases.current.add(purchaseToken); // Mark as processed
+    getProducts({
+      skus: ["500_coins", "1000_coins", "2000_coins", "4000_coins"],
+    })
+      .then(() => console.log("Products retrieved successfully"))
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+        setIsError(true);
+      });
 
-      const coinsToAdd = parseInt(productId.replace("_coins", ""), 10);
-      addCoins(coinsToAdd);
-      setIsCoinShopVisible(false);
-
-      console.log("Purchase successful:", currentPurchase);
-      console.log("Coins added:", coinsToAdd);
-
-      setIsError(false);
-    }
-  }, [currentPurchaseError, currentPurchase]);
+    checkUnfinishedPurchases();
+  }, [connected, isInitialized]);
 
   // Reward user with coins if they watched an ad
   useEffect(() => {
@@ -109,6 +95,47 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
       setIsCoinShopVisible(false);
     }
   }, [rewardAmount]);
+
+  useEffect(() => {
+    if (currentPurchaseError) {
+      console.error("Purchase Error:", currentPurchaseError);
+      setIsError(true);
+    }
+
+    if (currentPurchase) {
+      processPurchase(currentPurchase);
+      setIsError(false);
+    }
+  }, [currentPurchaseError, currentPurchase]);
+
+  // Complete transaction of in-app purchase request
+  const processPurchase = async (purchase) => {
+    try {
+      const { productId, purchaseToken, acknowledged } = purchase;
+      if (!purchaseToken || processedPurchases.current.has(purchaseToken)) {
+        console.log("Purchase already processed:", productId);
+        return;
+      }
+      processedPurchases.current.add(purchaseToken);
+
+      const coinsToAdd = parseInt(productId.split("_")[0], 10) || 0; // Safer parsing
+      if (coinsToAdd > 0) {
+        addCoins(coinsToAdd);
+        setIsCoinShopVisible(false);
+        console.log(`Added ${coinsToAdd} coins`);
+      }
+
+      if (Platform.OS === "android" && !acknowledged) {
+        await acknowledgePurchaseAndroid(purchaseToken);
+        console.log("Purchase acknowledged");
+      }
+
+      await finishTransaction({ purchase, isConsumable: true });
+      console.log("Transaction finished");
+    } catch (error) {
+      console.error("Error finishing transaction:", error);
+    }
+  };
 
   // Handles in-app purchase request
   const handlePurchase = async (sku) => {
