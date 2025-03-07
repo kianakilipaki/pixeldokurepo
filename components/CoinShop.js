@@ -103,6 +103,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
     }
 
     if (currentPurchase) {
+      console.log("Current Purchase Data:", currentPurchase);
       processPurchase(currentPurchase);
       setIsError(false);
     }
@@ -111,9 +112,14 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   // Complete transaction of in-app purchase request
   const processPurchase = async (purchase) => {
     try {
-      const { productId, purchaseToken, acknowledged } = purchase;
+      const { productId, purchaseToken, isAcknowledgedAndroid } = purchase;
       if (!purchaseToken || processedPurchases.current.has(purchaseToken)) {
         console.log("Purchase already processed:", productId);
+        console.log("Purchase Acknowledged:", isAcknowledgedAndroid);
+        console.log(
+          "Purchase has token:",
+          processedPurchases.current.has(purchaseToken)
+        );
         return;
       }
       processedPurchases.current.add(purchaseToken);
@@ -125,7 +131,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
         console.log(`Added ${coinsToAdd} coins`);
       }
 
-      if (Platform.OS === "android" && !acknowledged) {
+      if (Platform.OS === "android" && !isAcknowledgedAndroid) {
         await acknowledgePurchaseAndroid(purchaseToken);
         console.log("Purchase acknowledged");
       }
@@ -143,7 +149,8 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
       console.log("Attempting to purchase:", sku);
       const purchaseParams =
         Platform.OS === "android" ? { skus: [sku] } : { sku };
-      await requestPurchase(purchaseParams);
+      const purchaseData = await requestPurchase(purchaseParams);
+      console.log("Purchase Data:", purchaseData);
     } catch (error) {
       console.error("Purchase request failed:", error);
     }
