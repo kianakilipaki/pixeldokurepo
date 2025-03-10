@@ -3,7 +3,7 @@
     "platforms": ["android"],
     "name": "pixeldoku",
     "slug": "pixeldoku",
-    "version": "3.0.3",
+    "version": "3.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
