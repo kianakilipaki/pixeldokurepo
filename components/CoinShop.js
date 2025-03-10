@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,14 +7,7 @@ import {
   Platform,
   StyleSheet,
 } from "react-native";
-import {
-  useIAP,
-  initConnection,
-  getAvailablePurchases,
-  requestPurchase,
-  acknowledgePurchaseAndroid,
-  finishTransaction,
-} from "react-native-iap";
+import { useIAP, requestPurchase, initConnection } from "react-native-iap";
 import ModalTemplate from "./ModalTemplate";
 import { useCoins } from "../utils/coinContext";
 import { useRewardedAd } from "./Ad";
@@ -26,133 +19,107 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const {
     connected,
     products,
+    getProducts,
+    finishTransaction,
     currentPurchase,
     currentPurchaseError,
-    getProducts,
   } = useIAP();
 
-  const [isError, setIsError] = useState(false);
-  const processedPurchases = useRef(new Set());
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  // Initialize In-App Purchases (IAP) on component mount
-  useEffect(() => {
-    const initializeIAP = async () => {
-      try {
-        console.log("Initializing IAP connection...");
-        await initConnection();
-        console.log("IAP connection initialized.");
-        setIsInitialized(true);
-      } catch (error) {
-        console.error("IAP Initialization Error:", error);
-      }
-    };
-    initializeIAP();
-  }, []);
-
-  // Fetch products and check for unfinished purchases when connected
-  useEffect(() => {
-    if (!connected || !isInitialized) return;
-
-    const checkUnfinishedPurchases = async () => {
-      try {
-        console.log("Checking for unfinished purchases...");
-        const purchases = await getAvailablePurchases();
-
-        for (const purchase of purchases) {
-          if (!purchase.acknowledged) {
-            console.log("Unacknowledged purchase found:", purchase.productId);
-
-            if (Platform.OS === "android") {
-              await acknowledgePurchaseAndroid(purchase.purchaseToken);
-            }
-            await finishTransaction({ purchase, isConsumable: true });
-            console.log("Unacknowledged purchase handled.");
-          }
-        }
-      } catch (error) {
-        console.error("Error processing unfinished purchases:", error);
-      }
-    };
-
-    getProducts({
-      skus: ["500_coins", "1000_coins", "2000_coins", "4000_coins"],
-    })
-      .then(() => console.log("Products retrieved successfully"))
-      .catch((error) => {
-        console.error("Error fetching products:", error);
-        setIsError(true);
-      });
-
-    checkUnfinishedPurchases();
-  }, [connected, isInitialized]);
+  console.log("PixelDokuLogs: Component rendered");
 
   // Reward user with coins if they watched an ad
   useEffect(() => {
     if (rewardAmount > 0) {
-      console.log("Reward received:", rewardAmount);
+      console.log("PixelDokuLogs: Reward received:", rewardAmount);
       addCoins(rewardAmount);
       setIsCoinShopVisible(false);
     }
   }, [rewardAmount]);
 
+  const itemSKUs = Platform.select({
+    android: ["500_coins", "1000_coins", "2000_coins", "4000_coins"],
+  });
+
+  // Connect and Get products from play store.
   useEffect(() => {
-    if (currentPurchaseError) {
-      console.error("Purchase Error:", currentPurchaseError);
-      setIsError(true);
-    }
-
-    if (currentPurchase) {
-      console.log("Current Purchase Data:", currentPurchase);
-      processPurchase(currentPurchase);
-      setIsError(false);
-    }
-  }, [currentPurchaseError, currentPurchase]);
-
-  // Complete transaction of in-app purchase request
-  const processPurchase = async (purchase) => {
-    try {
-      const { productId, purchaseToken, isAcknowledgedAndroid } = purchase;
-      if (!purchaseToken || processedPurchases.current.has(purchaseToken)) {
-        console.log("Purchase already processed:", productId);
-        console.log("Purchase Acknowledged:", isAcknowledgedAndroid);
-        console.log(
-          "Purchase has token:",
-          processedPurchases.current.has(purchaseToken)
-        );
-        return;
+    const fetchProducts = async () => {
+      if (connected) {
+        try {
+          console.log("PixelDokuLogs: Getting products...");
+          await getProducts({ skus: itemSKUs });
+        } catch (error) {
+          console.error("PixelDokuLogs: IAP Initialization Error:", error);
+          setErrorMsg(`IAP Initialization Error: ${error.message}`);
+        }
+      } else {
+        try {
+          console.error("PixelDokuLogs: IAP Initializing...");
+          await initConnection();
+        } catch (error) {
+          console.error("PixelDokuLogs: IAP Initialization Error:", error);
+          setErrorMsg(`IAP Initialization Error: ${error.message}`);
+        }
       }
-      processedPurchases.current.add(purchaseToken);
+      console.log("PixelDokuLogs: connected", connected);
+      console.log("PixelDokuLogs: products", products);
+    };
 
-      const coinsToAdd = parseInt(productId.split("_")[0], 10) || 0; // Safer parsing
+    fetchProducts();
+  }, [connected]);
+
+  // currentPurchase will change when the requestPurchase function is called. The purchase then needs to be checked and the purchase acknowledged so Google knows we have awarded the user the in-app product.
+  useEffect(() => {
+    const checkCurrentPurchase = async () => {
+      if (!currentPurchase) return;
+
+      const { transactionReceipt, productId } = currentPurchase;
+      if (!transactionReceipt || !productId) return;
+
+      const coinsToAdd = parseInt(productId.split("_")[0], 10) || 0;
       if (coinsToAdd > 0) {
         addCoins(coinsToAdd);
         setIsCoinShopVisible(false);
-        console.log(`Added ${coinsToAdd} coins`);
+        console.log(`PixelDokuLogs: Added ${coinsToAdd} coins`);
       }
 
-      if (Platform.OS === "android" && !isAcknowledgedAndroid) {
-        await acknowledgePurchaseAndroid(purchaseToken);
-        console.log("Purchase acknowledged");
+      try {
+        await finishTransaction(currentPurchase, false);
+        console.log("PixelDokuLogs: Transaction finished successfully.");
+      } catch (ackErr) {
+        console.error("PixelDokuLogs: ackError:", ackErr);
+        setErrorMsg(`Transaction Error: ${ackErr.message}`);
       }
+    };
 
-      await finishTransaction({ purchase, isConsumable: true });
-      console.log("Transaction finished");
-    } catch (error) {
-      console.error("Error finishing transaction:", error);
+    checkCurrentPurchase();
+  }, [currentPurchase]);
+
+  useEffect(() => {
+    if (currentPurchaseError) {
+      console.log("PixelDokuLogs: Purchase Error: ", currentPurchaseError);
+      setErrorMsg(`Purchase request failed: ${error.message}`);
     }
-  };
+  }, [currentPurchaseError]);
 
   // Handles in-app purchase request
   const handlePurchase = async (sku) => {
     try {
-      console.log("Attempting to purchase:", sku);
+      if (!connected) {
+        setErrorMsg("Please check your internet connection");
+      }
+      console.log("PixelDokuLogs: Attempting to purchase:", sku);
       const purchaseParams =
         Platform.OS === "android" ? { skus: [sku] } : { sku };
-      const purchaseData = await requestPurchase(purchaseParams);
-      console.log("Purchase Data:", purchaseData);
+      await requestPurchase(purchaseParams).then((purchaseData) => {
+        console.log(
+          "PixelDokuLogs: Purchase Data:",
+          JSON.stringify(purchaseData, null, 2)
+        );
+      });
     } catch (error) {
-      console.error("Purchase request failed:", error);
+      setErrorMsg(`Purchase request failed: ${error.message}`);
     }
   };
 
@@ -166,11 +133,8 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   // Modal content displaying available purchases
   const modalBody = () => (
     <>
-      {isError && (
-        <Text style={styles.errorText}>
-          Something went wrong. Please try again later.
-        </Text>
-      )}
+      {errorMsg && <Text style={styles.errorText}>{errorMsg}</Text>}
+
       <View style={styles.coinContainer}>
         <Image
           source={require("../assets/icons/coin.png")}

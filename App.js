@@ -51,49 +51,51 @@ const App = () => {
   }
 
   return (
-    <ThemeProvider>
-      <MusicProvider>
-        <GameProvider>
-          <HighScoreProvider>
-            <CoinProvider>
-              <NavigationContainer>
-                <Stack.Navigator initialRouteName="Home">
-                  <Stack.Screen
-                    name="Home"
-                    component={HomeScreen}
-                    options={{ headerShown: false }} // Hide header if needed
-                  />
-                  <Stack.Screen
-                    name="SudokuScreen"
-                    component={SudokuScreen}
-                    options={({ route, navigation }) => ({
-                      header: () => (
-                        <Header
-                          title={route.params?.theme?.title || "Sudoku"}
-                          onBackPress={() => navigation.goBack()}
-                        />
-                      ),
-                    })}
-                  />
-                  <Stack.Screen
-                    name="NotFound"
-                    component={NotFoundScreen}
-                    options={{
-                      header: ({ navigation }) => (
-                        <Header
-                          title="Page Not Found"
-                          onBackPress={() => navigation.goBack()}
-                        />
-                      ),
-                    }}
-                  />
-                </Stack.Navigator>
-              </NavigationContainer>
-            </CoinProvider>
-          </HighScoreProvider>
-        </GameProvider>
-      </MusicProvider>
-    </ThemeProvider>
+    <React.StrictMode>
+      <ThemeProvider>
+        <MusicProvider>
+          <GameProvider>
+            <HighScoreProvider>
+              <CoinProvider>
+                <NavigationContainer>
+                  <Stack.Navigator initialRouteName="Home">
+                    <Stack.Screen
+                      name="Home"
+                      component={HomeScreen}
+                      options={{ headerShown: false }} // Hide header if needed
+                    />
+                    <Stack.Screen
+                      name="SudokuScreen"
+                      component={SudokuScreen}
+                      options={({ route, navigation }) => ({
+                        header: () => (
+                          <Header
+                            title={route.params?.theme?.title || "Sudoku"}
+                            onBackPress={() => navigation.goBack()}
+                          />
+                        ),
+                      })}
+                    />
+                    <Stack.Screen
+                      name="NotFound"
+                      component={NotFoundScreen}
+                      options={{
+                        header: ({ navigation }) => (
+                          <Header
+                            title="Page Not Found"
+                            onBackPress={() => navigation.goBack()}
+                          />
+                        ),
+                      }}
+                    />
+                  </Stack.Navigator>
+                </NavigationContainer>
+              </CoinProvider>
+            </HighScoreProvider>
+          </GameProvider>
+        </MusicProvider>
+      </ThemeProvider>
+    </React.StrictMode>
   );
 };
 
