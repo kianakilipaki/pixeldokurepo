@@ -4,8 +4,9 @@ import Cell from "./Cell";
 import { getCellBorderStyles } from "../../utils/GeneratePuzzle";
 import { useGame } from "../../utils/gameContext";
 
-const Board = ({ selectedCell, onCellSelect }) => {
-  const { theme, board, initialBoard } = useGame();
+const Board = () => {
+  const { theme, board, initialBoard, selectedCell, setSelectedCell } =
+    useGame();
 
   return (
     <View style={styles.board}>
@@ -18,7 +19,7 @@ const Board = ({ selectedCell, onCellSelect }) => {
               currentCell={[rowIndex, colIndex, value]}
               selectedCell={selectedCell}
               isEditable={initialBoard[rowIndex][colIndex] === 0}
-              onSelect={() => onCellSelect([rowIndex, colIndex, value])}
+              onSelect={() => setSelectedCell([rowIndex, colIndex, value])}
               style={getCellBorderStyles(rowIndex, colIndex)}
             />
           ))}

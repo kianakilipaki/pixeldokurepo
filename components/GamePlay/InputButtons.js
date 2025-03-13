@@ -4,8 +4,8 @@ import { spriteMapLG, cellSizeLG, isTablet } from "../../utils/assetsMap";
 import { useGame } from "../../utils/gameContext";
 import themeStyles from "../../utils/themeStyles";
 
-const InputButtons = ({ onPress, deselect }) => {
-  const { theme, board } = useGame();
+const InputButtons = () => {
+  const { theme, board, setSelectedCell, updateBoard } = useGame();
   const [clearedValues, setClearedValues] = useState([]);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const InputButtons = ({ onPress, deselect }) => {
             accessibilityRole="button"
             key={value}
             style={[styles.cellContainer, isCleared && styles.darken]}
-            onPress={() => onPress(parseInt(value, 10))}
+            onPress={() => updateBoard(parseInt(value, 10))}
           >
             <Image
               source={theme.source}
@@ -56,7 +56,7 @@ const InputButtons = ({ onPress, deselect }) => {
         accessibilityLabel={`deselect cell`}
         accessibilityRole="button"
         style={styles.cellContainer}
-        onPress={deselect}
+        onPress={() => setSelectedCell(null)}
       >
         <Image
           source={require("../../assets/icons/clear.png")}

@@ -4,17 +4,17 @@ import { useGame } from "../../utils/gameContext";
 import themeStyles from "../../utils/themeStyles";
 import { useRewardedAd } from "../Ad";
 
-const ActionButtons = ({ selectedCell, onCellSelect, onPause }) => {
+const ActionButtons = ({ onPause }) => {
   const {
     board,
-    setBoard,
     initialBoard,
     solutionBoard,
+    selectedCell,
+    updateBoard,
     hints,
     setHints,
     isPencilIn,
     setIsPencilIn,
-    saveProgress,
   } = useGame();
 
   const { watchAd, rewardAmount, setRewardAmount } = useRewardedAd();
@@ -27,11 +27,7 @@ const ActionButtons = ({ selectedCell, onCellSelect, onPause }) => {
     if (selectedCell) {
       const [rowIndex, colIndex] = selectedCell;
       if (initialBoard[rowIndex][colIndex] === 0) {
-        setBoard((prevBoard) => {
-          const newBoard = prevBoard.map((row) => [...row]);
-          newBoard[rowIndex][colIndex] = 0;
-          return newBoard;
-        });
+        updateBoard(0);
       }
     }
   };
@@ -45,18 +41,11 @@ const ActionButtons = ({ selectedCell, onCellSelect, onPause }) => {
     });
 
     if (emptyCells.length > 0) {
-      setHints((prevHints) => prevHints - 1); // Reduce hints count
-
       const randomCell =
         emptyCells[Math.floor(Math.random() * emptyCells.length)];
       const [rowIndex, colIndex] = randomCell;
-      onCellSelect([rowIndex, colIndex]);
-      setBoard((prevBoard) => {
-        const newBoard = prevBoard.map((row) => [...row]);
-        newBoard[rowIndex][colIndex] = solutionBoard[rowIndex][colIndex];
-        saveProgress(newBoard);
-        return newBoard;
-      });
+      updateBoard([rowIndex, colIndex, solutionBoard[rowIndex][colIndex]]);
+      setHints((prevHints) => prevHints - 1); // Reduce hints count
     }
   };
 
