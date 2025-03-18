@@ -74,7 +74,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require("../assets/meadow-bg.png")}
+      source={require("../assets/themes/MntForest-bg.png")}
       style={styles.background}
       resizeMode="cover"
     >

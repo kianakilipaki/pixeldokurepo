@@ -53,8 +53,7 @@ export const spriteMapLG = {
 export const defaultThemes = {
   birds: {
     title: "BirdDoku",
-    srcName: "Winter-Birds",
-    source: require("../assets/themes/Winter-Birds.png"),
+    source: require("../assets/themes/mnt-birds.png"),
     bgSource: require("../assets/themes/MntForest-bg.png"),
     bgSound: require("../assets/themes/forest-guitar-lofi-161108.mp3"),
     locked: false,
