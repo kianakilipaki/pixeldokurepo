@@ -29,8 +29,8 @@ const CompletionModal = ({
     board,
     solutionBoard,
     timer,
-    retryCounter,
-    setRetryCounter,
+    mistakeCounter,
+    setMistakeCounter,
   } = useGame();
   const { saveHighScore } = useHighScore();
 
@@ -69,7 +69,7 @@ const CompletionModal = ({
         medium: 20,
         hard: 30,
       }[difficulty.toLowerCase()] || 0;
-    const totalCoins = coinReward + retryCounter * 2;
+    const totalCoins = coinReward + mistakeCounter * 2;
     setCoinsAwarded(totalCoins);
     addCoins(totalCoins);
     saveHighScore(theme.themeKey, difficulty, timer);
@@ -92,11 +92,11 @@ const CompletionModal = ({
     if (isCorrect) {
       setModalType("success");
       handleComplete();
-    } else if (retryCounter > 1) {
-      setRetryCounter((prev) => Math.max(prev - 1, 0));
+    } else if (mistakeCounter > 1) {
+      setMistakeCounter((prev) => Math.max(prev - 1, 0));
       setModalType("retry");
       setCoinsAwarded(null);
-    } else if (retryCounter === 1) {
+    } else if (mistakeCounter === 1) {
       setModalType("failure");
       setCoinsAwarded(null);
     }
@@ -120,15 +120,15 @@ const CompletionModal = ({
           {/* Header Section */}
           <View style={styles.starContainer}>
             <Image
-              source={retryCounter >= 1 ? star : grayStar}
+              source={mistakeCounter >= 1 ? star : grayStar}
               style={styles.star1}
             />
             <Image
-              source={retryCounter >= 2 ? star : grayStar}
+              source={mistakeCounter >= 2 ? star : grayStar}
               style={styles.star2}
             />
             <Image
-              source={retryCounter == 3 ? star : grayStar}
+              source={mistakeCounter == 3 ? star : grayStar}
               style={styles.star3}
             />
           </View>

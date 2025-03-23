@@ -6,13 +6,13 @@ import themeStyles from "../../utils/themeStyles";
 import { isTablet } from "../../utils/assetsMap";
 
 const TopBar = ({ isPaused }) => {
-  const { difficulty, retryCounter } = useGame();
+  const { difficulty, mistakeCounter } = useGame();
 
   return (
     <View style={styles.topBar}>
       {/* Retry Counter */}
       <View style={styles.retryContainer}>
-        {Array.from({ length: retryCounter }, (_, i) => (
+        {Array.from({ length: mistakeCounter }, (_, i) => (
           <Image
             source={require("../../assets/icons/heart.png")}
             key={i}

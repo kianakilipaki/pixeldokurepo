@@ -15,7 +15,7 @@ export const GameProvider = ({ children }) => {
   const [board, setBoard] = useState([]);
   const [initialBoard, setInitialBoard] = useState([]);
   const [solutionBoard, setSolutionBoard] = useState([]);
-  const [retryCounter, setRetryCounter] = useState(3);
+  const [mistakeCounter, setMistakeCounter] = useState(3);
   const [hints, setHints] = useState(3);
   const [timer, setTimer] = useState(0);
   const [isPencilIn, setIsPencilIn] = useState(false);
@@ -30,7 +30,7 @@ export const GameProvider = ({ children }) => {
         board: newBoard || board,
         initialBoard,
         solutionBoard,
-        retryCounter,
+        mistakeCounter,
         timer,
         hints,
       };
@@ -53,7 +53,7 @@ export const GameProvider = ({ children }) => {
         setBoard(progress.board);
         setInitialBoard(progress.initialBoard);
         setSolutionBoard(progress.solutionBoard);
-        setRetryCounter(progress.retryCounter);
+        setMistakeCounter(progress.mistakeCounter);
         setTimer(progress.timer);
         setHints(progress.hints);
         setSelectedCell(null);
@@ -73,7 +73,7 @@ export const GameProvider = ({ children }) => {
       setInitialBoard(puzzle);
       setSolutionBoard(solution);
       setTimer(0);
-      setRetryCounter(3);
+      setMistakeCounter(3);
       setHints(3);
       setIsPencilIn(false);
       setSelectedCell(null);
@@ -135,8 +135,8 @@ export const GameProvider = ({ children }) => {
         setSolutionBoard,
         selectedCell,
         setSelectedCell,
-        retryCounter,
-        setRetryCounter,
+        mistakeCounter,
+        setMistakeCounter,
         timer,
         setTimer,
         hints,
