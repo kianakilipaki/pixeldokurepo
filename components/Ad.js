@@ -57,5 +57,5 @@ export const useRewardedAd = () => {
     }
   };
 
-  return { watchAd, rewardAmount, setRewardAmount };
+  return { watchAd, rewardAmount, setRewardAmount, loaded };
 };

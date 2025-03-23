@@ -1,5 +1,12 @@
 import React, { useEffect } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import ModalTemplate from "./ModalTemplate";
 import { useCoins } from "../utils/coinContext";
 import { useRewardedAd } from "./Ad";
@@ -13,13 +20,14 @@ if (!__DEV__) {
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
-  const { watchAd, rewardAmount, isEarnedReward, reward } = useRewardedAd();
+  const { watchAd, rewardAmount, setRewardAmount, loaded } = useRewardedAd();
 
   useEffect(() => {
     if (rewardAmount > 0) {
-      console.log("Reward received:", rewardAmount, isEarnedReward, reward);
+      console.log("Reward received:", rewardAmount);
       addCoins(rewardAmount);
       setIsCoinShopVisible(false);
+      setRewardAmount(0);
     }
   }, [rewardAmount]);
 
@@ -47,8 +55,16 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
         />
         <Text style={styles.coinText}>100 Coins</Text>
         <Text style={styles.costText}>AD</Text>
-        <TouchableOpacity onPress={watchAd} style={styles.buyButton}>
-          <Text style={styles.buyButtonText}>Free</Text>
+        <TouchableOpacity
+          onPress={watchAd}
+          style={[styles.buyButton, !loaded && styles.disabledButton]}
+          disabled={!loaded}
+        >
+          {loaded ? (
+            <Text style={styles.buyButtonText}>Free</Text>
+          ) : (
+            <ActivityIndicator size="small" color="white" />
+          )}
         </TouchableOpacity>
       </View>
       {!__DEV__ &&
