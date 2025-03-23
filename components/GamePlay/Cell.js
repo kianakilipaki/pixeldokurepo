@@ -1,5 +1,12 @@
-import React, { Fragment } from "react";
-import { View, StyleSheet, Image, Dimensions } from "react-native";
+import React, { useState, Fragment } from "react";
+import {
+  View,
+  StyleSheet,
+  Image,
+  Dimensions,
+  Text,
+  Pressable,
+} from "react-native";
 import {
   spriteMap,
   cellSize,
@@ -17,7 +24,19 @@ const Cell = ({
   isEditable,
   onSelect,
   style,
+  onHold,
+  heldCell,
 }) => {
+  const cellValue = currentCell[2];
+
+  const isHeld =
+    selectedCell &&
+    heldCell &&
+    heldCell[0] === currentCell[0] &&
+    heldCell[1] === currentCell[1] &&
+    currentCell[0] === selectedCell[0] &&
+    currentCell[1] === selectedCell[1];
+
   const isCellSelected = () => {
     if (!selectedCell) return false;
     if (selectedCell[0] === null && selectedCell[1] === null) return false;
@@ -41,7 +60,6 @@ const Cell = ({
     const sameRow = rowIndex === selectedRow;
     const sameCol = colIndex === selectedCol;
 
-    // Check if cell is in the same 3x3 section as the selected cell
     const sectionRowStart = Math.floor(selectedRow / 3) * 3;
     const sectionColStart = Math.floor(selectedCol / 3) * 3;
     const sameSection =
@@ -58,32 +76,43 @@ const Cell = ({
       : null;
   };
 
-  const cellValue = currentCell[2];
-
   return (
-    <View
+    <Pressable
+      onLongPress={onHold} // Holding sets the cell as held
       style={[
         styles.cellContainer,
         style,
         !isEditable && styles.notEditable,
         isCellHinted(),
         isCellSelected() && styles.selectedCell,
+        cellValue && isHeld && styles.enlargedCell,
       ]}
     >
       <View
         accessibilityLabel={`${theme.themeKey}${cellValue}`}
         accessibilityRole="button"
-        style={[styles.innerContainer, isCellSame() && styles.highlightedCell]}
+        style={[
+          styles.innerContainer,
+          isCellSame() && styles.highlightedCell,
+          cellValue &&
+            (Array.isArray(cellValue)
+              ? isHeld && styles.enlargedInnerContainer
+              : isHeld && styles.single),
+        ]}
         onStartShouldSetResponder={onSelect}
       >
         {Array.isArray(cellValue) ? (
           cellValue.map((arrayValue, index) => (
             <Fragment key={index}>
               <View style={styles.miniInnerContainer}>
-                <Image
-                  source={theme.source}
-                  style={[styles.miniSpriteImage, miniSpriteMap[arrayValue]]}
-                />
+                {!isHeld && cellValue.length > 4 && index === 3 ? (
+                  <Text style={styles.plus}>+</Text>
+                ) : (
+                  <Image
+                    source={theme.source}
+                    style={[styles.miniSpriteImage, miniSpriteMap[arrayValue]]}
+                  />
+                )}
               </View>
             </Fragment>
           ))
@@ -94,7 +123,7 @@ const Cell = ({
           />
         ) : null}
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -137,6 +166,12 @@ const styles = StyleSheet.create({
     width: miniCellSize * 3,
     height: miniCellSize * 3,
   },
+  plus: {
+    fontSize: themeStyles.fonts.regularFontSize,
+    position: "absolute",
+    top: -3,
+    right: 3,
+  },
   hintedCell: {
     backgroundColor: themeStyles.colors.highlight2,
   },
@@ -151,6 +186,26 @@ const styles = StyleSheet.create({
   },
   notEditable: {
     backgroundColor: themeStyles.colors.gray2,
+  },
+  enlargedCell: {
+    aspectRatio: 1,
+
+    transform: [{ scale: 2 }],
+    zIndex: 200,
+  },
+  enlargedInnerContainer: {
+    aspectRatio: 1,
+
+    backgroundColor: themeStyles.colors.white,
+    transform: [{ scale: 1.3 }],
+    width: cellSize * 1.7,
+    height: cellSize * 1.7,
+  },
+  single: {
+    aspectRatio: 1,
+
+    transform: [{ scale: 1.3 }],
+    backgroundColor: themeStyles.colors.white,
   },
 });
 

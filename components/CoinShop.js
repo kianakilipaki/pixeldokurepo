@@ -13,11 +13,11 @@ if (!__DEV__) {
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
-  const { watchAd, rewardAmount } = useRewardedAd();
+  const { watchAd, rewardAmount, isEarnedReward, reward } = useRewardedAd();
 
   useEffect(() => {
     if (rewardAmount > 0) {
-      console.log("Reward received:", rewardAmount);
+      console.log("Reward received:", rewardAmount, isEarnedReward, reward);
       addCoins(rewardAmount);
       setIsCoinShopVisible(false);
     }

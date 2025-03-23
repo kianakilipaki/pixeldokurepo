@@ -8,6 +8,7 @@ const isTablet = width > 765;
 const themeStyles = {
   colors: {
     black1: "#000",
+    white: "#e5e5e5",
     gray: "#9b9b9b",
     gray1: "#d8d8d892",
     gray2: "#989797b0",
