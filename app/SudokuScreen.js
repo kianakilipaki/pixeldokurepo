@@ -1,5 +1,10 @@
 import React, { useEffect, useCallback, useState } from "react";
-import { View, StyleSheet, ImageBackground } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  TouchableWithoutFeedback,
+} from "react-native";
 import CompletionModal from "../components/GamePlay/CompletionModal";
 import LoadingIndicator from "../components/loadingIcon";
 import TopBar from "../components/GamePlay/TopBar";
@@ -23,6 +28,7 @@ const SudokuScreen = ({ route }) => {
     setBoard,
     initialBoard,
     resetProgress,
+    setSelectedCell,
   } = useGame();
 
   const { playBackgroundMusic } = useMusic();
@@ -57,30 +63,32 @@ const SudokuScreen = ({ route }) => {
     }
   }, [route.params]);
 
-  if (isLoading || !theme) {
+  if (isLoading || !theme.bgSource) {
     return <LoadingIndicator />;
   }
 
   return (
-    <ImageBackground
-      source={theme.bgSource}
-      resizeMode="cover"
-      style={styles.image}
-    >
-      <View style={styles.container}>
-        <TopBar isPaused={isPaused || isModalVisible} />
-        {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} />}
-        <Board />
-        <ActionButtons onPause={() => setIsPaused(true)} />
-        <InputButtons />
-        <CompletionModal
-          setIsModalVisible={setIsModalVisible}
-          isModalVisible={isModalVisible}
-          onNextPuzzle={() => startNewGame(theme, difficulty)}
-          onRetry={() => setBoard(initialBoard)}
-        />
-      </View>
-    </ImageBackground>
+    <TouchableWithoutFeedback onPress={() => setSelectedCell(null)}>
+      <ImageBackground
+        source={theme.bgSource}
+        resizeMode="cover"
+        style={styles.image}
+      >
+        <View style={styles.container}>
+          <TopBar isPaused={isPaused || isModalVisible} />
+          {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} />}
+          <Board />
+          <ActionButtons onPause={() => setIsPaused(true)} />
+          <InputButtons />
+          <CompletionModal
+            setIsModalVisible={setIsModalVisible}
+            isModalVisible={isModalVisible}
+            onNextPuzzle={() => startNewGame(theme, difficulty)}
+            onRetry={() => setBoard(initialBoard)}
+          />
+        </View>
+      </ImageBackground>
+    </TouchableWithoutFeedback>
   );
 };
 
