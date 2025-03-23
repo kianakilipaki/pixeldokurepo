@@ -20,6 +20,7 @@ const { width } = Dimensions.get("window");
 const CompletionModal = ({
   onNextPuzzle,
   onRetry,
+  goHome,
   setIsModalVisible,
   isModalVisible,
 }) => {
@@ -43,8 +44,8 @@ const CompletionModal = ({
       title: "Congrats!",
       message: `You completed the puzzle in ${formatTime(timer)}!`,
       buttons: [
-        { title: "Restart", onPress: onRetry },
-        { title: "Next Puzzle", onPress: onNextPuzzle },
+        { title: "Home", onPress: goHome },
+        { title: "Next", onPress: onNextPuzzle },
       ],
     },
     retry: {
@@ -57,8 +58,11 @@ const CompletionModal = ({
     },
     failure: {
       title: "Game Over!",
-      message: "You have exceeded the retry limit. Try a new puzzle?",
-      buttons: [{ title: "New Puzzle", onPress: onNextPuzzle }],
+      message: "You have exceeded the mistakes limit. Try a new puzzle?",
+      buttons: [
+        { title: "Home", onPress: goHome },
+        { title: "New Puzzle", onPress: onNextPuzzle },
+      ],
     },
   };
 

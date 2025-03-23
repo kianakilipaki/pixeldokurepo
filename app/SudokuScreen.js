@@ -19,7 +19,7 @@ import InputButtons from "../components/GamePlay/InputButtons";
 
 const { width } = Dimensions.get("window");
 
-const SudokuScreen = ({ route }) => {
+const SudokuScreen = ({ route, navigation }) => {
   const {
     theme,
     setTheme,
@@ -83,6 +83,7 @@ const SudokuScreen = ({ route }) => {
           <CompletionModal
             setIsModalVisible={setIsModalVisible}
             isModalVisible={isModalVisible}
+            goHome={() => navigation.navigate("Home")}
             onNextPuzzle={() => startNewGame(theme, difficulty)}
             onRetry={() => setBoard(initialBoard)}
           />
