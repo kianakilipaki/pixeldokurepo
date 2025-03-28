@@ -53,8 +53,8 @@ const App = () => {
   return (
     <React.StrictMode>
       <ThemeProvider>
-        <MusicProvider>
-          <GameProvider>
+        <GameProvider>
+          <MusicProvider>
             <HighScoreProvider>
               <CoinProvider>
                 <NavigationContainer>
@@ -92,8 +92,8 @@ const App = () => {
                 </NavigationContainer>
               </CoinProvider>
             </HighScoreProvider>
-          </GameProvider>
-        </MusicProvider>
+          </MusicProvider>
+        </GameProvider>
       </ThemeProvider>
     </React.StrictMode>
   );

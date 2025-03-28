@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Image } from "react-native";
+import themeStyles from "../utils/themeStyles";
 
 export default function LoadingIndicator() {
   return (
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: themeStyles.colors.white,
   },
   gif: {
     width: 100, // Adjust size as needed

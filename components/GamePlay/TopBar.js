@@ -45,15 +45,21 @@ const styles = StyleSheet.create({
   retryContainer: {
     flexDirection: "row",
     justifyContent: "flex-start",
-  },
-  timerContainer: {
-    alignItems: "flex-end",
+    flexShrink: 0, // Prevent shrinking when other elements change
+    width: 80, // Set a fixed width to avoid movement
   },
   difficultyText: {
     fontFamily: themeStyles.fonts.fontFamily,
     fontSize: themeStyles.fonts.largeFontSize,
     color: themeStyles.colors.black1,
-    marginTop: 3,
+    textAlign: "center",
+    flexShrink: 0, // Prevent resizing
+    width: 100, // Set a fixed width so it doesn't move
+  },
+  timerContainer: {
+    alignItems: "flex-end",
+    flexShrink: 0, // Prevent resizing
+    width: 80, // Set a fixed width
   },
 });
 

@@ -90,8 +90,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: themeStyles.colors.black1,
     marginBottom: 10,
-    textShadowColor: "#fff",
-    textShadowRadius: 2,
   },
 });
 
