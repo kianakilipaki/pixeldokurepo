@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Animated,
   FlatList,
@@ -16,10 +16,19 @@ const ThemeListContainer = ({ slideAnimation, navigation, toggle }) => {
   const screenHeight = Dimensions.get("window").height;
   const { themes } = useThemes();
   const [expandedTheme, setExpandedTheme] = useState(null); // Track the expanded theme key
+  const scrollToRef = useRef(null);
 
-  const toggleTheme = (key) => {
-    // Expand the theme if not expanded, or collapse if already expanded
-    setExpandedTheme(expandedTheme === key ? null : key);
+  const toggleTheme = (key, index) => {
+    const newExpanded = expandedTheme === key ? null : key;
+    setExpandedTheme(newExpanded);
+
+    if (newExpanded && scrollToRef.current) {
+      scrollToRef.current.scrollToIndex({
+        index,
+        animated: true,
+        viewPosition: 0.5, // Center the expanded theme
+      });
+    }
   };
 
   if (!themes) {
@@ -53,20 +62,27 @@ const ThemeListContainer = ({ slideAnimation, navigation, toggle }) => {
 
       {Object.keys(themes).length > 0 ? (
         <FlatList
-          data={Object.keys(themes).map((key) => ({
+          ref={scrollToRef}
+          data={Object.keys(themes).map((key, index) => ({
             themeKey: key,
+            index,
             ...themes[key],
           }))}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <ThemeList
               item={item}
               themeKey={item.themeKey}
-              expandedTheme={expandedTheme} // Pass the expandedTheme state as a prop
-              toggleTheme={toggleTheme} // Pass the toggleTheme function as a prop
+              expandedTheme={expandedTheme}
+              toggleTheme={() => toggleTheme(item.themeKey, index)}
               navigation={navigation}
             />
           )}
           keyExtractor={(item) => item.themeKey}
+          getItemLayout={(data, index) => ({
+            length: 150, // Approximate item height
+            offset: 150 * index,
+            index,
+          })}
         />
       ) : (
         <Text style={{ color: "red", textAlign: "center" }}>
