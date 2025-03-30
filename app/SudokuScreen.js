@@ -12,7 +12,6 @@ import { useGame } from "../utils/gameContext";
 import PlayOverlay from "../components/GamePlay/PlayOverlay";
 import { Dimensions } from "react-native";
 import { isTablet } from "../utils/assetsMap";
-import { useMusic } from "../utils/musicContext";
 import Board from "../components/GamePlay/Board";
 import ActionButtons from "../components/GamePlay/ActionButtons";
 import InputButtons from "../components/GamePlay/InputButtons";
@@ -25,13 +24,10 @@ const SudokuScreen = ({ route, navigation }) => {
     setTheme,
     difficulty,
     setDifficulty,
-    setBoard,
-    initialBoard,
+    resetProgressSame,
     resetProgress,
     setSelectedCell,
   } = useGame();
-
-  const { playBackgroundMusic } = useMusic();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -56,10 +52,8 @@ const SudokuScreen = ({ route, navigation }) => {
     const { theme, difficulty, isNewGame } = route.params;
     if (isNewGame) {
       startNewGame(theme, difficulty);
-      playBackgroundMusic(theme.bgSound);
     } else {
       setIsLoading(false);
-      playBackgroundMusic(theme.bgSound);
     }
   }, [route.params]);
 
@@ -85,7 +79,7 @@ const SudokuScreen = ({ route, navigation }) => {
             isModalVisible={isModalVisible}
             goHome={() => navigation.navigate("Home")}
             onNextPuzzle={() => startNewGame(theme, difficulty)}
-            onRetry={() => setBoard(initialBoard)}
+            onRetry={() => resetProgressSame()}
           />
         </View>
       </ImageBackground>

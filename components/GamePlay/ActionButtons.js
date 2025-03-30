@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
 import { useGame } from "../../utils/gameContext";
 import themeStyles from "../../utils/themeStyles";
 import { useRewardedAd } from "../Ad";
+import { useMusic } from "../../utils/musicContext";
 
 const ActionButtons = ({ onPause }) => {
   const {
@@ -18,6 +19,7 @@ const ActionButtons = ({ onPause }) => {
   } = useGame();
 
   const { watchAd, rewardAmount, setRewardAmount } = useRewardedAd();
+  const { playSoundEffect } = useMusic();
 
   const handlePencilIn = () => {
     setIsPencilIn(!isPencilIn);
@@ -39,6 +41,7 @@ const ActionButtons = ({ onPause }) => {
         if (value === 0) emptyCells.push([rowIndex, colIndex]);
       });
     });
+    playSoundEffect("hint");
 
     if (emptyCells.length > 0) {
       const randomCell =

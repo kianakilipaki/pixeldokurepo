@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   generateSudoku,
@@ -10,7 +10,7 @@ const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
   // Game State
-  const [theme, setTheme] = useState(null);
+  const [theme, setTheme] = useState("birds");
   const [difficulty, setDifficulty] = useState(null);
   const [board, setBoard] = useState([]);
   const [initialBoard, setInitialBoard] = useState([]);
@@ -20,6 +20,7 @@ export const GameProvider = ({ children }) => {
   const [timer, setTimer] = useState(0);
   const [isPencilIn, setIsPencilIn] = useState(false);
   const [selectedCell, setSelectedCell] = useState([]);
+  const [errorCell, setErrorCell] = useState(null);
 
   // Save progress function
   const saveProgress = async (newBoard) => {
@@ -31,6 +32,7 @@ export const GameProvider = ({ children }) => {
         initialBoard,
         solutionBoard,
         mistakeCounter,
+        errorCell,
         timer,
         hints,
       };
@@ -57,6 +59,7 @@ export const GameProvider = ({ children }) => {
         setTimer(progress.timer);
         setHints(progress.hints);
         setSelectedCell(null);
+        setErrorCell(progress.errorCell);
         console.log("Progress loaded:", progress);
         return progress;
       }
@@ -65,7 +68,7 @@ export const GameProvider = ({ children }) => {
     }
   };
 
-  // Reset progress function
+  // Reset progress: new board function
   const resetProgress = async (difficulty) => {
     try {
       const { puzzle, solution } = generateSudoku(difficulty);
@@ -77,6 +80,26 @@ export const GameProvider = ({ children }) => {
       setHints(3);
       setIsPencilIn(false);
       setSelectedCell(null);
+      setErrorCell([]);
+    } catch (error) {
+      console.error("Error starting new game:", error);
+    } finally {
+      saveProgress();
+    }
+  };
+
+  // Reset progress: same board function
+  const resetProgressSame = () => {
+    try {
+      setBoard(initialBoard);
+      setInitialBoard(initialBoard);
+      setSolutionBoard(solutionBoard);
+      setTimer(0);
+      setMistakeCounter(3);
+      setHints(3);
+      setIsPencilIn(false);
+      setSelectedCell(null);
+      setErrorCell([]);
     } catch (error) {
       console.error("Error starting new game:", error);
     } finally {
@@ -106,19 +129,34 @@ export const GameProvider = ({ children }) => {
         // If it's not in pencil mode, remove the value from other cells in the same row, column, and section
         if (!pencilIn) {
           const removedBoard = removePencilMarks(newBoard, row, col, newValue);
-          saveProgress(removedBoard);
           return removedBoard;
         } else {
-          saveProgress(newBoard);
           return newBoard;
         }
       });
 
+      // Check for mistake **after** updating the board
+      if (!pencilIn) {
+        if (newValue !== solutionBoard[row][col] && newValue !== 0) {
+          // If incorrect, add to errorCell (ensure it doesn’t duplicate)
+          setErrorCell((prev) => [...prev, [row, col, newValue]]);
+          setMistakeCounter((prev) => Math.max(prev - 1, 0)); // Reduce mistake counter
+        } else {
+          // If correct, remove only the matching error, not all
+          setErrorCell((prev) =>
+            prev.filter(([r, c, v]) => !(r === row && c === col))
+          );
+        }
+      }
       setSelectedCell([row, col, newValue]);
     } else {
       setSelectedCell([null, null, newValue]);
     }
   };
+
+  useEffect(() => {
+    saveProgress();
+  }, [board, mistakeCounter, errorCell]);
 
   return (
     <GameContext.Provider
@@ -143,10 +181,13 @@ export const GameProvider = ({ children }) => {
         setHints,
         isPencilIn,
         setIsPencilIn,
+        errorCell,
+        setErrorCell,
         updateBoard,
         saveProgress,
         loadProgress,
         resetProgress,
+        resetProgressSame,
       }}
     >
       {children}

@@ -5,8 +5,7 @@ import { getCellBorderStyles } from "../../utils/GeneratePuzzle";
 import { useGame } from "../../utils/gameContext";
 
 const Board = () => {
-  const { theme, board, initialBoard, selectedCell, setSelectedCell } =
-    useGame();
+  const { board, initialBoard, setSelectedCell } = useGame();
   const [heldCell, setHeldCell] = useState(null); // Track the currently held cell
 
   return (
@@ -18,10 +17,8 @@ const Board = () => {
 
             return (
               <Cell
-                theme={theme}
                 key={`${rowIndex}-${colIndex}`}
                 currentCell={currentCell}
-                selectedCell={selectedCell}
                 isEditable={initialBoard[rowIndex][colIndex] === 0}
                 onSelect={() => {
                   setSelectedCell(currentCell);

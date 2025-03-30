@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { Fragment } from "react";
 import {
   View,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   Dimensions,
   Text,
   Pressable,
+  Animated,
 } from "react-native";
 import {
   spriteMap,
@@ -14,86 +15,86 @@ import {
   miniCellSize,
 } from "../../utils/assetsMap";
 import themeStyles from "../../utils/themeStyles";
+import { useGame } from "../../utils/gameContext";
+import useMistakeAnimation from "../../utils/mistakeAnimationHook";
 
 const { width } = Dimensions.get("window");
 
 const Cell = ({
-  theme,
   currentCell,
-  selectedCell,
   isEditable,
   onSelect,
   style,
   onHold,
   heldCell,
 }) => {
-  const cellValue = currentCell[2];
+  const { theme, selectedCell, errorCell } = useGame();
 
+  const cellValue = currentCell[2];
+  const cellRow = currentCell[0];
+  const cellCol = currentCell[1];
+
+  // State checks
   const isHeld =
     selectedCell &&
     heldCell &&
-    heldCell[0] === currentCell[0] &&
-    heldCell[1] === currentCell[1] &&
-    currentCell[0] === selectedCell[0] &&
-    currentCell[1] === selectedCell[1];
+    heldCell[0] === cellRow &&
+    heldCell[1] === cellCol;
 
-  const isCellSelected = () => {
-    if (!selectedCell) return false;
-    if (selectedCell[0] === null && selectedCell[1] === null) return false;
-    return (
-      currentCell[0] === selectedCell[0] && currentCell[1] === selectedCell[1]
-    );
-  };
+  const isErrorCell =
+    errorCell?.some(([row, col]) => row === cellRow && col === cellCol) ??
+    false;
 
-  const isCellSame = () => {
-    if (!selectedCell) return false;
-    if (selectedCell[2] === 0) return false;
-    return currentCell[2] === selectedCell[2];
-  };
+  const mistakeAnimation = useMistakeAnimation(isErrorCell);
+
+  const isCellSelected =
+    selectedCell &&
+    selectedCell[0] === cellRow &&
+    selectedCell[1] === cellCol &&
+    !(selectedCell[0] === null);
+
+  const isCellSame =
+    selectedCell && selectedCell[2] !== 0 && selectedCell[2] === cellValue;
 
   const isCellHinted = () => {
-    if (!selectedCell) return false;
-    if (selectedCell[0] === null && selectedCell[1] === null) return false;
-
-    const [rowIndex, colIndex] = currentCell;
+    if (!selectedCell || selectedCell[0] === null) return null;
     const [selectedRow, selectedCol] = selectedCell;
-    const sameRow = rowIndex === selectedRow;
-    const sameCol = colIndex === selectedCol;
-
+    const sameRow = cellRow === selectedRow;
+    const sameCol = cellCol === selectedCol;
     const sectionRowStart = Math.floor(selectedRow / 3) * 3;
     const sectionColStart = Math.floor(selectedCol / 3) * 3;
     const sameSection =
-      rowIndex >= sectionRowStart &&
-      rowIndex < sectionRowStart + 3 &&
-      colIndex >= sectionColStart &&
-      colIndex < sectionColStart + 3;
+      cellRow >= sectionRowStart &&
+      cellRow < sectionRowStart + 3 &&
+      cellCol >= sectionColStart &&
+      cellCol < sectionColStart + 3;
 
-    const same = sameRow || sameCol || sameSection;
-    return same && !isEditable
-      ? styles.hintedCell2
-      : same && isEditable
-      ? styles.hintedCell
+    return sameRow || sameCol || sameSection
+      ? isEditable
+        ? styles.hintedCell
+        : styles.hintedCell2
       : null;
   };
 
   return (
     <Pressable
-      onLongPress={onHold} // Holding sets the cell as held
       style={[
         styles.cellContainer,
         style,
         !isEditable && styles.notEditable,
         isCellHinted(),
-        isCellSelected() && styles.selectedCell,
+        isCellSelected && styles.selectedCell,
         cellValue && isHeld && styles.enlargedCell,
       ]}
+      onLongPress={onHold}
     >
-      <View
+      <Animated.View
         accessibilityLabel={`${theme.themeKey}${cellValue}`}
         accessibilityRole="button"
         style={[
+          isErrorCell && mistakeAnimation,
           styles.innerContainer,
-          isCellSame() && styles.highlightedCell,
+          isCellSame && styles.highlightedCell,
           cellValue &&
             (Array.isArray(cellValue)
               ? isHeld && styles.enlargedInnerContainer
@@ -122,7 +123,7 @@ const Cell = ({
             style={[styles.spriteImage, spriteMap[cellValue]]}
           />
         ) : null}
-      </View>
+      </Animated.View>
     </Pressable>
   );
 };
@@ -137,12 +138,12 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     zIndex: 100,
-    width: cellSize * 1.2,
-    height: cellSize * 1.2,
-    borderTopWidth: width * 0.01,
-    borderLeftWidth: width * 0.01,
-    borderBottomWidth: width * 0.01,
-    borderRightWidth: width * 0.01,
+    width: cellSize * 1.2 - 2,
+    height: cellSize * 1.2 - 2,
+    borderTopWidth: width * 0.007,
+    borderLeftWidth: width * 0.007,
+    borderBottomWidth: width * 0.007,
+    borderRightWidth: width * 0.007,
     borderColor: "transparent",
     flexDirection: "row",
     flexWrap: "wrap",
@@ -172,38 +173,19 @@ const styles = StyleSheet.create({
     top: -3,
     right: 3,
   },
-  hintedCell: {
-    backgroundColor: themeStyles.colors.highlight2,
-  },
-  hintedCell2: {
-    backgroundColor: themeStyles.colors.highlight3,
-  },
-  selectedCell: {
-    backgroundColor: themeStyles.colors.highlight1,
-  },
-  highlightedCell: {
-    borderColor: themeStyles.colors.red,
-  },
-  notEditable: {
-    backgroundColor: themeStyles.colors.gray2,
-  },
-  enlargedCell: {
-    aspectRatio: 1,
-
-    transform: [{ scale: 2 }],
-    zIndex: 200,
-  },
+  hintedCell: { backgroundColor: themeStyles.colors.highlight2 },
+  hintedCell2: { backgroundColor: themeStyles.colors.highlight3 },
+  selectedCell: { backgroundColor: themeStyles.colors.highlight1 },
+  highlightedCell: { borderColor: themeStyles.colors.blue },
+  notEditable: { backgroundColor: themeStyles.colors.gray2 },
+  enlargedCell: { transform: [{ scale: 2 }], zIndex: 200 },
   enlargedInnerContainer: {
-    aspectRatio: 1,
-
-    backgroundColor: themeStyles.colors.white,
     transform: [{ scale: 1.3 }],
-    width: cellSize * 1.7,
-    height: cellSize * 1.7,
+    backgroundColor: themeStyles.colors.white,
+    width: cellSize * 1.6,
+    height: cellSize * 1.6,
   },
   single: {
-    aspectRatio: 1,
-
     transform: [{ scale: 1.3 }],
     backgroundColor: themeStyles.colors.white,
   },

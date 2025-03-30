@@ -14,6 +14,7 @@ import { useHighScore } from "../../utils/highscoreContext";
 import themeStyles from "../../utils/themeStyles";
 import { Dimensions } from "react-native";
 import { formatTime } from "../../utils/GeneratePuzzle";
+import { useMusic } from "../../utils/musicContext";
 
 const { width } = Dimensions.get("window");
 
@@ -24,33 +25,33 @@ const CompletionModal = ({
   setIsModalVisible,
   isModalVisible,
 }) => {
-  const {
-    theme,
-    difficulty,
-    board,
-    solutionBoard,
-    timer,
-    mistakeCounter,
-    setMistakeCounter,
-  } = useGame();
-  const { saveHighScore } = useHighScore();
+  const { theme, difficulty, board, solutionBoard, timer, mistakeCounter } =
+    useGame();
+  const { saveHighScore, HighScore } = useHighScore();
 
   const { addCoins } = useCoins();
   const [modalType, setModalType] = useState(null);
   const [coinsAwarded, setCoinsAwarded] = useState(null);
+  const [newHighScore, setNewHighScore] = useState(false);
+
+  const { playSoundEffect } = useMusic();
 
   const modalContent = {
     success: {
       title: "Congrats!",
-      message: `You completed the puzzle in ${formatTime(timer)}!`,
+      message: `You completed the puzzle in ${formatTime(timer)}! ${
+        newHighScore ? "That's your best time yet!" : ""
+      }`,
       buttons: [
         { title: "Home", onPress: goHome },
         { title: "Next", onPress: onNextPuzzle },
       ],
     },
     retry: {
-      title: "Try Again",
-      message: `Some cells are incorrect. Would you like to retry?`,
+      title: "Congrats!",
+      message: `You finished in ${formatTime(timer)}. ${
+        newHighScore ? "Best time yet! " : ""
+      }Some mistakes were made. Retry for a better score?`,
       buttons: [
         { title: "Retry", onPress: onRetry },
         { title: "New Puzzle", onPress: onNextPuzzle },
@@ -76,37 +77,50 @@ const CompletionModal = ({
     const totalCoins = coinReward + mistakeCounter * 2;
     setCoinsAwarded(totalCoins);
     addCoins(totalCoins);
-    saveHighScore(theme.themeKey, difficulty, timer);
+
+    const highscore = HighScore[theme.themeKey]
+      ? HighScore[theme.themeKey][difficulty]
+      : 0;
+    if (highscore === 0 || highscore > timer) {
+      setNewHighScore(true);
+      saveHighScore(theme.themeKey, difficulty, timer);
+    }
   };
 
   useEffect(() => {
     if (!board || board.length === 0 || !solutionBoard) return;
 
-    // Check if all cells are filled and are single numbers (not arrays)
-    const isComplete = board
-      .flat()
-      .every((cell) => typeof cell === "number" && cell !== 0);
-    if (!isComplete) return;
-
-    // Check if board matches the solution
-    const isCorrect = board
-      .flat()
-      .every((num, idx) => num === solutionBoard.flat()[idx]);
-
-    if (isCorrect) {
-      setModalType("success");
-      handleComplete();
-    } else if (mistakeCounter > 1) {
-      setMistakeCounter((prev) => Math.max(prev - 1, 0));
-      setModalType("retry");
-      setCoinsAwarded(null);
-    } else if (mistakeCounter === 1) {
+    if (mistakeCounter === 0) {
       setModalType("failure");
       setCoinsAwarded(null);
+    } else {
+      // Check if all cells are filled and are single numbers (not arrays)
+      const isComplete = board
+        .flat()
+        .every((cell) => typeof cell === "number" && cell !== 0);
+      if (!isComplete) return;
+
+      // Check if board matches the solution
+      const isCorrect = board
+        .flat()
+        .every((num, idx) => num === solutionBoard.flat()[idx]);
+
+      if (isCorrect && mistakeCounter === 3) {
+        setModalType("success");
+        playSoundEffect("success");
+        handleComplete();
+      } else if (isCorrect && mistakeCounter < 3) {
+        setModalType("retry");
+        playSoundEffect("success");
+        handleComplete();
+      } else {
+        setModalType("failure");
+        setCoinsAwarded(null);
+      }
     }
 
     setIsModalVisible(true);
-  }, [board]);
+  }, [board, mistakeCounter]);
 
   const { title, message, buttons } = modalContent[modalType] || {};
   const star = require("../../assets/icons/star.png");

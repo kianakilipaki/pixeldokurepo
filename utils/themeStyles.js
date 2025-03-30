@@ -18,6 +18,7 @@ const themeStyles = {
     highlight3: "#663600ad",
     gold: "#eec027",
     red: "#b80d0d",
+    red2: "#b80d0dad",
     blue: "#1986e0",
   },
   fonts: {
