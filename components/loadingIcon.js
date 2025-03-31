@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     backgroundColor: themeStyles.colors.white,
   },
   gif: {
-    width: 100, // Adjust size as needed
-    height: 70,
+    width: 192, // Adjust size as needed
+    height: 128,
   },
 });

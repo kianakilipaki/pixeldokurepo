@@ -44,7 +44,7 @@ const getThemes = async () => {
 
 // ThemeProvider component to manage theme state
 export const ThemeProvider = ({ children }) => {
-  const [themes, setThemes] = useState(null);
+  const [themes, setThemes] = useState("birds");
 
   //resetThemes();
   // Load themes when the provider mounts
