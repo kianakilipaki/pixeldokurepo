@@ -10,7 +10,7 @@ const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
   // Game State
-  const [theme, setTheme] = useState("birds");
+  const [theme, setTheme] = useState(null);
   const [difficulty, setDifficulty] = useState(null);
   const [board, setBoard] = useState([]);
   const [initialBoard, setInitialBoard] = useState([]);
@@ -68,19 +68,30 @@ export const GameProvider = ({ children }) => {
     }
   };
 
-  // Reset progress: new board function
-  const resetProgress = async (difficulty) => {
+  // Reset progress
+  const resetProgress = async (theme, difficulty, sameBoard = false) => {
     try {
-      const { puzzle, solution } = generateSudoku(difficulty);
-      setBoard(puzzle);
-      setInitialBoard(puzzle);
-      setSolutionBoard(solution);
-      setTimer(0);
-      setMistakeCounter(3);
-      setHints(3);
-      setIsPencilIn(false);
-      setSelectedCell(null);
-      setErrorCell([]);
+      const init = initialBoard;
+      const solution = solutionBoard;
+
+      clearProgress();
+
+      if (theme) {
+        setTheme(theme);
+        setDifficulty(difficulty);
+      }
+      if (sameBoard) {
+        // reset progress with same board
+        setBoard(init);
+        setInitialBoard(init);
+        setSolutionBoard(solution);
+      } else if (!sameBoard) {
+        // reset progress with new board
+        const { puzzle, solution } = generateSudoku(difficulty);
+        setBoard(puzzle);
+        setInitialBoard(puzzle);
+        setSolutionBoard(solution);
+      }
     } catch (error) {
       console.error("Error starting new game:", error);
     } finally {
@@ -88,23 +99,18 @@ export const GameProvider = ({ children }) => {
     }
   };
 
-  // Reset progress: same board function
-  const resetProgressSame = () => {
-    try {
-      setBoard(initialBoard);
-      setInitialBoard(initialBoard);
-      setSolutionBoard(solutionBoard);
-      setTimer(0);
-      setMistakeCounter(3);
-      setHints(3);
-      setIsPencilIn(false);
-      setSelectedCell(null);
-      setErrorCell([]);
-    } catch (error) {
-      console.error("Error starting new game:", error);
-    } finally {
-      saveProgress();
-    }
+  const clearProgress = () => {
+    setTheme(null);
+    setDifficulty(null);
+    setBoard([]);
+    setInitialBoard([]);
+    setSolutionBoard([]);
+    setTimer(0);
+    setMistakeCounter(3);
+    setHints(3);
+    setIsPencilIn(false);
+    setSelectedCell(null);
+    setErrorCell([]);
   };
 
   const updateBoard = (value) => {
@@ -187,7 +193,6 @@ export const GameProvider = ({ children }) => {
         saveProgress,
         loadProgress,
         resetProgress,
-        resetProgressSame,
       }}
     >
       {children}

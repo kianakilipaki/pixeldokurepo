@@ -24,10 +24,10 @@ const SudokuScreen = ({ route, navigation }) => {
     setTheme,
     difficulty,
     setDifficulty,
-    resetProgressSame,
     resetProgress,
     setSelectedCell,
   } = useGame();
+  const { playBackgroundMusic } = useMusic();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -36,9 +36,7 @@ const SudokuScreen = ({ route, navigation }) => {
   const startNewGame = useCallback(
     (theme, difficulty) => {
       try {
-        setTheme(theme);
-        setDifficulty(difficulty);
-        resetProgress(difficulty);
+        resetProgress(theme, difficulty, false);
       } catch (error) {
         console.error("Error loading game:", error);
       } finally {
@@ -50,11 +48,16 @@ const SudokuScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     const { theme, difficulty, isNewGame } = route.params;
+    setTheme(theme);
+    setDifficulty(difficulty);
+
     if (isNewGame) {
       startNewGame(theme, difficulty);
     } else {
       setIsLoading(false);
     }
+
+    playBackgroundMusic(theme.bgSound);
   }, [route.params]);
 
   if (isLoading || !theme.bgSource) {
@@ -77,9 +80,13 @@ const SudokuScreen = ({ route, navigation }) => {
           <CompletionModal
             setIsModalVisible={setIsModalVisible}
             isModalVisible={isModalVisible}
-            goHome={() => navigation.navigate("Home")}
+            goHome={() => {
+              stopMusic();
+              navigation.navigate("Home");
+              resetProgress();
+            }}
             onNextPuzzle={() => startNewGame(theme, difficulty)}
-            onRetry={() => resetProgressSame()}
+            onRetry={() => resetProgress(theme, difficulty, true)}
           />
         </View>
       </ImageBackground>
