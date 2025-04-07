@@ -10,7 +10,7 @@ const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
   // Game State
-  const [theme, setTheme] = useState(null);
+  const [theme, setTheme] = useState("birds");
   const [difficulty, setDifficulty] = useState(null);
   const [board, setBoard] = useState([]);
   const [initialBoard, setInitialBoard] = useState([]);
@@ -100,7 +100,7 @@ export const GameProvider = ({ children }) => {
   };
 
   const clearProgress = () => {
-    setTheme(null);
+    setTheme("birds");
     setDifficulty(null);
     setBoard([]);
     setInitialBoard([]);

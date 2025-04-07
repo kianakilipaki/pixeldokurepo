@@ -7,10 +7,7 @@ import React, {
 } from "react";
 import { Audio } from "expo-av";
 import { AppState } from "react-native";
-import { defaultThemes } from "./assetsMap";
-import { useGame } from "./gameContext";
 
-// Import sound effects
 const soundEffects = {
   error: require("../assets/sounds/error-8-206492.mp3"),
   success: require("../assets/sounds/open-new-level-143027.mp3"),
@@ -20,133 +17,99 @@ const soundEffects = {
 const MusicContext = createContext();
 
 export const MusicProvider = ({ children }) => {
-  const { theme } = useGame(); // Get theme from gameContext
   const sound = useRef(null);
-  const soundAssets = useRef({}); // Store preloaded theme music
-  const sfxAssets = useRef({}); // Store sound effects
+  const sfx = useRef(null);
   const [isMuted, setIsMuted] = useState(false);
 
-  // Preload sound assets (theme music & sound effects)
-  const loadSoundAssets = async () => {
+  const playThemeMusic = async (theme) => {
     try {
-      // Load theme sounds
-      for (const key in defaultThemes) {
-        const themeSound = defaultThemes[key].bgSound;
+      const themeMusic = theme?.bgSound;
+      if (!themeMusic) return;
 
-        if (!themeSound) continue; // Skip if no sound is defined
-
-        const { sound } = await Audio.Sound.createAsync(themeSound, {
-          volume: isMuted ? 0 : 0.8,
-        });
-        soundAssets.current[key] = sound;
-      }
-
-      // Load sound effects
-      for (const key in soundEffects) {
-        if (!soundEffects[key]) continue; // Skip if sound effect is missing
-
-        const { sound } = await Audio.Sound.createAsync(soundEffects[key]);
-        sfxAssets.current[key] = sound; // Correctly store the sound object
-      }
-
-      console.log(
-        "Sound effects loaded successfully:",
-        Object.keys(sfxAssets.current)
-      );
-    } catch (error) {
-      console.error("Error loading sound assets:", error);
-    }
-  };
-
-  // Play theme background music when theme changes
-  const playThemeMusic = async () => {
-    try {
-      console.log("asset sound is: ", soundAssets.current[theme.themeKey]);
-
-      if (!theme || !soundAssets.current[theme.themeKey]) return; // Ensure theme exists
-
+      // Unload previous sound if it exists
       if (sound.current) {
-        await sound.current.stopAsync();
-        await sound.current.unloadAsync();
-      }
-
-      sound.current = soundAssets.current[theme.themeKey];
-      await sound.current.setIsLoopingAsync(true);
-      await sound.current.setVolumeAsync(isMuted ? 0 : 0.8);
-      await sound.current.playAsync();
-    } catch (error) {
-      console.error("Error playing theme music:", error);
-    }
-  };
-
-  // Stop currently playing music
-  const stopMusic = async () => {
-    if (sound.current) {
-      try {
-        await sound.current.stopAsync();
+        console.log("Unloading previous theme music");
         await sound.current.unloadAsync();
         sound.current = null;
-      } catch (error) {
-        console.error("Error stopping music:", error);
       }
+
+      const { sound: loadedSound } = await Audio.Sound.createAsync(themeMusic);
+      sound.current = loadedSound;
+
+      await loadedSound.setIsLoopingAsync(true);
+      await loadedSound.setVolumeAsync(isMuted ? 0 : 0.8);
+      await loadedSound.playAsync();
+
+      console.log(`Playing theme: ${theme?.themeKey}`);
+    } catch (err) {
+      console.error("Error playing theme music:", err);
     }
   };
 
-  // Play sound effect (mistake/success/hint)
   const playSoundEffect = async (effect) => {
-    console.log("Attempting to play sound effect:", effect);
-
-    const sfx = sfxAssets.current[effect]; // Correct reference
-
-    if (sfx) {
-      try {
-        await sfx.setVolumeAsync(1);
-        await sfx.replayAsync(); // Restart the sound effect
-        console.log(`${effect} sound effect played successfully`);
-      } catch (error) {
-        console.error(`Error playing ${effect} sound effect:`, error);
-      }
-    } else {
-      console.warn(`Sound effect "${effect}" not found in preloaded assets.`);
+    try {
+      const sfxSound = sfx.current?.[effect];
+      if (!sfxSound) return;
+      await sfxSound.setPositionAsync(0); // reset to beginning
+      await sfxSound.playAsync();
+      console.log(`Playing sound effect: ${effect}`);
+    } catch (err) {
+      console.error(`Error playing "${effect}" sound effect:`, err);
     }
   };
 
-  // Automatically play the correct theme music when theme changes
-  useEffect(() => {
-    console.log("sound theme: ", theme);
-    playThemeMusic();
-  }, [theme]); // <- Runs whenever `theme` updates
+  const stopMusic = async () => {
+    if (sound.current) {
+      await sound.current.unloadAsync();
+      sound.current = null;
+      console.log(`Stopping music`);
+    }
+  };
 
-  // Load sound assets on mount
   useEffect(() => {
-    loadSoundAssets();
-
-    const subscription = AppState.addEventListener("change", (nextAppState) => {
-      if (nextAppState === "active" && !isMuted) {
-        sound.current?.playAsync();
-      } else {
-        sound.current?.pauseAsync();
+    const subscription = AppState.addEventListener("change", (state) => {
+      if (state === "active" && sound.current && !isMuted) {
+        console.log(`Replaying music: ${sound.current}`);
+        sound.current
+          .playAsync()
+          .catch((err) => console.warn("Playback error:", err));
       }
     });
+    const loadSfx = async () => {
+      const loaded = {};
+      for (const key in soundEffects) {
+        const { sound } = await Audio.Sound.createAsync(soundEffects[key]);
+        loaded[key] = sound;
+      }
+      console.log(`Loaded sound effects: ${Object.keys(loaded).join(", ")}`);
+      sfx.current = loaded;
+    };
+
+    loadSfx();
 
     return () => {
       subscription.remove();
-      Object.values(soundAssets.current).forEach((s) => s.unloadAsync());
-      Object.values(sfxAssets.current).forEach((s) => s.unloadAsync());
+      stopMusic();
+      if (sfx.current) {
+        Object.values(sfx.current).forEach((s) => s.unloadAsync());
+      }
     };
   }, []);
 
   return (
     <MusicContext.Provider
       value={{
-        playSoundEffect, // Function to play sound effects
+        playThemeMusic,
+        playSoundEffect,
         muteMusic: async () => {
           if (sound.current) await sound.current.setVolumeAsync(0);
           setIsMuted(true);
+          console.log(`Mute music`);
         },
         unmuteMusic: async () => {
-          if (sound.current) await sound.current.setVolumeAsync(1);
+          if (sound.current) await sound.current.setVolumeAsync(0.8);
           setIsMuted(false);
+          console.log(`UnMute music`);
         },
         stopMusic,
         isMuted,

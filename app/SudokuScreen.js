@@ -15,6 +15,7 @@ import { isTablet } from "../utils/assetsMap";
 import Board from "../components/GamePlay/Board";
 import ActionButtons from "../components/GamePlay/ActionButtons";
 import InputButtons from "../components/GamePlay/InputButtons";
+import { useMusic } from "../utils/musicContext";
 
 const { width } = Dimensions.get("window");
 
@@ -27,7 +28,7 @@ const SudokuScreen = ({ route, navigation }) => {
     resetProgress,
     setSelectedCell,
   } = useGame();
-  const { playBackgroundMusic } = useMusic();
+  const { playThemeMusic, stopMusic } = useMusic();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -57,7 +58,7 @@ const SudokuScreen = ({ route, navigation }) => {
       setIsLoading(false);
     }
 
-    playBackgroundMusic(theme.bgSound);
+    playThemeMusic(theme);
   }, [route.params]);
 
   if (isLoading || !theme.bgSource) {
@@ -66,30 +67,34 @@ const SudokuScreen = ({ route, navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={() => setSelectedCell(null)}>
-      <ImageBackground
-        source={theme.bgSource}
-        resizeMode="cover"
-        style={styles.image}
-      >
-        <View style={styles.container}>
-          <TopBar isPaused={isPaused || isModalVisible} />
-          {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} />}
-          <Board />
-          <ActionButtons onPause={() => setIsPaused(true)} />
-          <InputButtons />
-          <CompletionModal
-            setIsModalVisible={setIsModalVisible}
-            isModalVisible={isModalVisible}
-            goHome={() => {
-              stopMusic();
-              navigation.navigate("Home");
-              resetProgress();
-            }}
-            onNextPuzzle={() => startNewGame(theme, difficulty)}
-            onRetry={() => resetProgress(theme, difficulty, true)}
-          />
-        </View>
-      </ImageBackground>
+      {isLoading || !theme.bgSource ? (
+        <LoadingIndicator />
+      ) : (
+        <ImageBackground
+          source={theme?.bgSource}
+          resizeMode="cover"
+          style={styles.image}
+        >
+          <View style={styles.container}>
+            <TopBar isPaused={isPaused || isModalVisible} />
+            {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} />}
+            <Board />
+            <ActionButtons onPause={() => setIsPaused(true)} />
+            <InputButtons />
+            <CompletionModal
+              setIsModalVisible={setIsModalVisible}
+              isModalVisible={isModalVisible}
+              goHome={() => {
+                stopMusic();
+                navigation.navigate("Home");
+                resetProgress();
+              }}
+              onNextPuzzle={() => startNewGame(theme, difficulty)}
+              onRetry={() => resetProgress(theme, difficulty, true)}
+            />
+          </View>
+        </ImageBackground>
+      )}
     </TouchableWithoutFeedback>
   );
 };
