@@ -86,6 +86,13 @@ export const defaultThemes = {
     bgSound: require("../assets/sounds/whispering-vinyl-loops-lofi-beats-281193.mp3"),
     locked: true,
   },
+  swamp: {
+    title: "SwampDoku",
+    source: require("../assets/themes/amphibians.png"),
+    bgSource: require("../assets/themes/swamp.png"),
+    bgSound: require("../assets/sounds/hip-hoprock-bayou-cheifin-blues-191536.mp3"),
+    locked: true,
+  },
   unknown1: {
     title: "Coming Soon",
     bgSource: require("../assets/gradient.png"),
