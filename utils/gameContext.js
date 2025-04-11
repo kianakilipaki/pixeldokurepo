@@ -45,11 +45,9 @@ export const GameProvider = ({ children }) => {
   };
 
   // Load progress function
-  const loadProgress = async () => {
+  const loadProgress = async (progress) => {
     try {
-      const progressString = await AsyncStorage.getItem("gameProgress");
-      if (progressString) {
-        const progress = JSON.parse(progressString);
+      if (progress) {
         setTheme(progress.theme);
         setDifficulty(progress.difficulty);
         setBoard(progress.board);

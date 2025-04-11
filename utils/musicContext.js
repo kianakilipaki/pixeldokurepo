@@ -96,6 +96,21 @@ export const MusicProvider = ({ children }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const setAudioMode = async () => {
+      await Audio.setAudioModeAsync({
+        interruptionModeIOS: isMuted
+          ? Audio.INTERRUPTION_MODE_IOS_MIX_WITH_OTHERS
+          : Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+        interruptionModeAndroid: isMuted
+          ? Audio.INTERRUPTION_MODE_ANDROID_MIX_WITH_OTHERS
+          : Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+        shouldDuckAndroid: !isMuted,
+      });
+    };
+    setAudioMode();
+  }, [isMuted]);
+
   return (
     <MusicContext.Provider
       value={{

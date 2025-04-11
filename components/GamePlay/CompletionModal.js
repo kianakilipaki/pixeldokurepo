@@ -81,7 +81,7 @@ const CompletionModal = ({
     const highscore = HighScore[theme.themeKey]
       ? HighScore[theme.themeKey][difficulty]
       : 0;
-    if (highscore === 0 || highscore > timer) {
+    if (highscore === null || highscore > timer) {
       setNewHighScore(true);
       saveHighScore(theme.themeKey, difficulty, timer);
     }

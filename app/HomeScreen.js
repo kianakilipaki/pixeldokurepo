@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   ImageBackground,
   Animated,
@@ -19,34 +19,39 @@ import themeStyles from "../utils/themeStyles";
 import { useTutorial } from "../utils/useTutorial";
 import TutorialModal from "../components/TutorialModal";
 import Coins from "../components/Coins";
+import { useFocusEffect } from "@react-navigation/native";
 
 const HomeScreen = ({ navigation }) => {
   const { loadProgress } = useGame();
   const { themes } = useThemes();
-  const [savedGame, setSavedGame] = useState(false);
+  const [savedGame, setSavedGame] = useState(null);
   const { slideAnimation, fadeAnimation, toggleExpansion } =
     useThemeAnimation();
   const { showTutorial, completeTutorial } = useTutorial();
 
-  useEffect(() => {
-    const checkProgress = async () => {
-      try {
-        const stringProgress = await AsyncStorage.getItem("gameProgress");
-        const progress = JSON.parse(stringProgress);
-        if (progress?.difficulty) {
-          setSavedGame(true);
+  useFocusEffect(
+    useCallback(() => {
+      const checkProgress = async () => {
+        try {
+          console.log("checking progress...");
+          const stringProgress = await AsyncStorage.getItem("gameProgress");
+          const progress = JSON.parse(stringProgress);
+          if (progress?.difficulty) {
+            setSavedGame(progress);
+          } else {
+            setSavedGame(null);
+          }
+        } catch (error) {
+          console.error("Failed to load saved game progress:", error);
         }
-      } catch (error) {
-        console.error("Failed to load saved game progress:", error);
-      }
-    };
-
-    checkProgress();
-  }, []);
+      };
+      checkProgress();
+    }, [])
+  );
 
   const handleContinue = async () => {
     if (savedGame) {
-      const game = await loadProgress();
+      const game = await loadProgress(savedGame);
       navigation.navigate("SudokuScreen", {
         theme: game.theme,
         difficulty: game.difficulty,
