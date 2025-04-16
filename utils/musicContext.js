@@ -48,8 +48,14 @@ export const MusicProvider = ({ children }) => {
 
   const playSoundEffect = async (effect) => {
     try {
+      if (AppState.currentState !== "active") {
+        console.warn(`Skipped "${effect}" because app is not active`);
+        return;
+      }
+
       const sfxSound = sfx.current?.[effect];
       if (!sfxSound) return;
+
       await sfxSound.setPositionAsync(0); // reset to beginning
       await sfxSound.playAsync();
       console.log(`Playing sound effect: ${effect}`);

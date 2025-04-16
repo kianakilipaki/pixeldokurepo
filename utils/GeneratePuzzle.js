@@ -229,6 +229,7 @@ export const removePencilMarks = (board, row, col, value) => {
 
 // Helper to update a cell with pencil-in logic
 export const updateCell = (cell, value, isPencilIn) => {
+  if (value === 0) return value;
   if (isPencilIn) {
     if (cell === 0) {
       return [value]; // Convert 0 to an array with the value

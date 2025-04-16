@@ -21,6 +21,7 @@ const MusicToggleButton = () => {
       accessibilityLabel={isMuted ? "mute" : "unmute"}
       accessibilityRole="button"
       onPress={handleToggle}
+      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
     >
       <Image
         source={isMuted ? mute : unmute}
