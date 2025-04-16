@@ -16,7 +16,7 @@ android
 *.p12
 *.key
 *.mobileprovision
-
+.idea/
 # Metro
 .metro-health-check*
 
