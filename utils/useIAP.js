@@ -1,85 +1,91 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { Platform } from "react-native";
 import {
   initConnection,
-  purchaseErrorListener,
   purchaseUpdatedListener,
   flushFailedPurchasesCachedAsPendingAndroid,
   finishTransaction,
   requestPurchase,
   getProducts,
+  endConnection,
+  clearTransactionIOS,
 } from "react-native-iap";
 
 const useIAP = (onPurchaseSuccess) => {
   const [products, setProducts] = useState([]);
-  const lastOrderIdRef = useRef("");
   const itemSKUs = ["500_coins", "1000_coins", "2000_coins", "4000_coins"];
 
+  const sortProducts = async () => {
+    if (products.length === 0) {
+      const fetchedProducts = await getProducts({ skus: itemSKUs });
+      const sortedProducts = [...fetchedProducts].sort(
+        (a, b) =>
+          parseInt(a.productId.replace("_coins", "")) -
+          parseInt(b.productId.replace("_coins", ""))
+      );
+      setProducts(sortedProducts);
+    }
+  };
+
   useEffect(() => {
-    let purchaseUpdateSubscription;
-    let purchaseErrorSubscription;
-
-    const initializeIAP = async () => {
-      try {
-        await initConnection();
-        await flushFailedPurchasesCachedAsPendingAndroid().catch(() => {});
-
-        // Fetch available products
-        if (products.length === 0) {
-          const fetchedProducts = await getProducts({ skus: itemSKUs });
-          const sortedProducts = [...fetchedProducts].sort(
-            (a, b) =>
-              parseInt(a.productId.replace("_coins", "")) -
-              parseInt(b.productId.replace("_coins", ""))
-          );
-          setProducts(sortedProducts);
-        }
-        purchaseUpdateSubscription = purchaseUpdatedListener(
-          async (purchase) => {
-            const orderId = purchase.transactionReceipt.orderId;
-
-            if (orderId && orderId !== lastOrderIdRef.current) {
-              lastOrderIdRef.current = orderId; // Store last receipt without re-rendering
-              try {
-                console.log("PixelDokuLogs: Purchase updated:", orderId);
-
-                await finishTransaction({ purchase, isConsumable: true }); // Mark as complete
-                // Callback to update app state
-                onPurchaseSuccess(purchase.productId);
-              } catch (error) {
-                console.error(
-                  "PixelDokuLogs: Error processing purchase:",
-                  error
-                );
+    const initIAP = async () => {
+      await initConnection()
+        .then(() => {
+          if (Platform.OS == "android") {
+            flushFailedPurchasesCachedAsPendingAndroid();
+          } else {
+            clearTransactionIOS();
+          }
+          sortProducts();
+        })
+        .catch((error) => {
+          console.log("PixelDokuLogs: Error initializing IAP: ", error);
+        })
+        .then(() => {
+          const subscriptionListener = purchaseUpdatedListener(
+            async (purchase) => {
+              if (purchase.transactionReceipt) {
+                await new Promise((res) => setTimeout(res, 300));
+                await finishTransaction({
+                  purchase,
+                  isConsumable: true,
+                  purchaseToken: purchase.purchaseToken,
+                  productId: purchase.productId,
+                })
+                  .then(() => {
+                    onPurchaseSuccess(purchase.productId);
+                    return;
+                  })
+                  .catch((error) => {
+                    console.log(
+                      "PixelDokuLogs: Error finishing transaction: ",
+                      error
+                    );
+                  });
               }
             }
-          }
-        );
-
-        purchaseErrorSubscription = purchaseErrorListener((error) => {
-          console.warn("PixelDokuLogs: Purchase error:", error);
+          );
+          return () => {
+            subscriptionListener.remove();
+          };
         });
-      } catch (error) {
-        console.error("PixelDokuLogs: IAP initialization error:", error);
-      }
     };
 
-    initializeIAP();
+    initIAP();
 
     return () => {
-      if (purchaseUpdateSubscription) {
-        purchaseUpdateSubscription.remove();
-      }
-      if (purchaseErrorSubscription) {
-        purchaseErrorSubscription.remove();
-      }
+      endConnection();
     };
-  }, [onPurchaseSuccess]);
+  }, []);
 
-  // Function to trigger a purchase
   const buyProduct = async (sku) => {
     try {
-      console.log(`PixelDokuLogs: Attempting to purchase: ${sku}`);
-      await requestPurchase({ skus: [sku] }); // For Android
+      const params =
+        Platform.OS === "android"
+          ? { skus: [sku] }
+          : { sku, andDangerouslyFinishTransactionAutomaticallyIOS: false };
+
+      await requestPurchase(params);
     } catch (error) {
       console.error("PixelDokuLogs: Purchase request failed:", error);
     }

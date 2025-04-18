@@ -32,7 +32,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   }, [rewardAmount]);
 
   const handlePurchaseSuccess = (productId) => {
-    console.log(`Purchase complete for: ${productId}`);
+    console.log(`PixelDokuLogs: Adding coins for: ${productId}`);
     const coinsToAdd = parseInt(productId.split("_")[0], 10) || 0;
     if (coinsToAdd > 0) {
       addCoins(coinsToAdd);
