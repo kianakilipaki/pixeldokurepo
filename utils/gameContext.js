@@ -72,28 +72,29 @@ export const GameProvider = ({ children }) => {
       const init = initialBoard;
       const solution = solutionBoard;
 
+      console.log("Clear progress...");
       clearProgress();
 
       if (theme) {
-        setTheme(theme);
-        setDifficulty(difficulty);
-      }
-      if (sameBoard) {
-        // reset progress with same board
-        setBoard(init);
-        setInitialBoard(init);
-        setSolutionBoard(solution);
-      } else if (!sameBoard) {
-        // reset progress with new board
-        const { puzzle, solution } = generateSudoku(difficulty);
-        setBoard(puzzle);
-        setInitialBoard(puzzle);
-        setSolutionBoard(solution);
+        if (!sameBoard) {
+          // reset progress with new board
+          setTheme(theme);
+          setDifficulty(difficulty);
+          const { puzzle, solution } = generateSudoku(difficulty);
+          setBoard(puzzle);
+          setInitialBoard(puzzle);
+          setSolutionBoard(solution);
+        } else {
+          // reset progress with same board
+          setTheme(theme);
+          setDifficulty(difficulty);
+          setBoard(init);
+          setInitialBoard(init);
+          setSolutionBoard(solution);
+        }
       }
     } catch (error) {
       console.error("Error starting new game:", error);
-    } finally {
-      saveProgress();
     }
   };
 

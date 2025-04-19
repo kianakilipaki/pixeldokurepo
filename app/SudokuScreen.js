@@ -47,6 +47,12 @@ const SudokuScreen = ({ route, navigation }) => {
     [difficulty]
   );
 
+  const goHome = async () => {
+    stopMusic();
+    await resetProgress();
+    navigation.navigate("Home");
+  };
+
   useEffect(() => {
     const { theme, difficulty, isNewGame } = route.params;
     setTheme(theme);
@@ -84,11 +90,7 @@ const SudokuScreen = ({ route, navigation }) => {
             <CompletionModal
               setIsModalVisible={setIsModalVisible}
               isModalVisible={isModalVisible}
-              goHome={() => {
-                stopMusic();
-                navigation.navigate("Home");
-                resetProgress();
-              }}
+              goHome={goHome}
               onNextPuzzle={() => startNewGame(theme, difficulty)}
               onRetry={() => resetProgress(theme, difficulty, true)}
             />

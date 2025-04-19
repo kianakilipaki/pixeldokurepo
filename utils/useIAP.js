@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Platform } from "react-native";
+import { AppState, Platform } from "react-native";
 import {
   initConnection,
   purchaseUpdatedListener,
@@ -29,46 +29,48 @@ const useIAP = (onPurchaseSuccess) => {
 
   useEffect(() => {
     const initIAP = async () => {
-      await initConnection()
-        .then(() => {
-          if (Platform.OS == "android") {
-            flushFailedPurchasesCachedAsPendingAndroid();
-          } else {
-            clearTransactionIOS();
-          }
-          sortProducts();
-        })
-        .catch((error) => {
-          console.log("PixelDokuLogs: Error initializing IAP: ", error);
-        })
-        .then(() => {
-          const subscriptionListener = purchaseUpdatedListener(
-            async (purchase) => {
-              if (purchase.transactionReceipt) {
-                await new Promise((res) => setTimeout(res, 300));
-                await finishTransaction({
-                  purchase,
-                  isConsumable: true,
-                  purchaseToken: purchase.purchaseToken,
-                  productId: purchase.productId,
-                })
-                  .then(() => {
-                    onPurchaseSuccess(purchase.productId);
-                    return;
-                  })
-                  .catch((error) => {
-                    console.log(
-                      "PixelDokuLogs: Error finishing transaction: ",
-                      error
-                    );
-                  });
-              }
+      if (AppState.currentState === "active") {
+        await initConnection()
+          .then(() => {
+            if (Platform.OS == "android") {
+              flushFailedPurchasesCachedAsPendingAndroid();
+            } else {
+              clearTransactionIOS();
             }
-          );
-          return () => {
-            subscriptionListener.remove();
-          };
-        });
+            sortProducts();
+          })
+          .catch((error) => {
+            console.log("PixelDokuLogs: Error initializing IAP: ", error);
+          })
+          .then(() => {
+            const subscriptionListener = purchaseUpdatedListener(
+              async (purchase) => {
+                if (purchase.transactionReceipt) {
+                  await new Promise((res) => setTimeout(res, 300));
+                  await finishTransaction({
+                    purchase,
+                    isConsumable: true,
+                    purchaseToken: purchase.purchaseToken,
+                    productId: purchase.productId,
+                  })
+                    .then(() => {
+                      onPurchaseSuccess(purchase.productId);
+                      return;
+                    })
+                    .catch((error) => {
+                      console.log(
+                        "PixelDokuLogs: Error finishing transaction: ",
+                        error
+                      );
+                    });
+                }
+              }
+            );
+            return () => {
+              subscriptionListener.remove();
+            };
+          });
+      }
     };
 
     initIAP();
