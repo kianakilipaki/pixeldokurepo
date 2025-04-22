@@ -68,10 +68,6 @@ const HomeScreen = ({ navigation }) => {
           backgroundColor={themeStyles.colors.blue}
           translucent={false}
         />
-        <View style={styles.coinContainer}>
-          {/* Coins */}
-          <Coins />
-        </View>
         <LoadingIndicator />
       </>
     );

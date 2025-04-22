@@ -11,12 +11,7 @@ import ModalTemplate from "./ModalTemplate";
 import { useCoins } from "../utils/coinContext";
 import { useRewardedAd } from "./Ad";
 import themeStyles from "../utils/themeStyles";
-
-// Conditionally import useIAP only in production
-let useIAP;
-if (!__DEV__) {
-  useIAP = require("../utils/useIAP").default;
-}
+import useIAP from "../utils/useIAP";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
@@ -41,12 +36,12 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   };
 
   // Initialize IAP only in production
-  const iapProps = !__DEV__ && useIAP ? useIAP(handlePurchaseSuccess) : {};
-
-  const { buyProduct, products, errorMsg } = iapProps || {};
+  const { buyProduct, products, isLoading, errorMsg } =
+    useIAP(handlePurchaseSuccess) || {};
 
   const modalBody = () => (
     <>
+      {isLoading && <ActivityIndicator size="large" color="black" />}
       {errorMsg && <Text style={styles.errorText}>{errorMsg}</Text>}
       <View style={styles.coinContainer}>
         <Image
@@ -67,25 +62,24 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
           )}
         </TouchableOpacity>
       </View>
-      {!__DEV__ &&
-        products?.map((product) => (
-          <View style={styles.coinContainer} key={product.productId}>
-            <Image
-              source={require("../assets/icons/coin.png")}
-              style={themeStyles.icons.iconSizeMedium}
-            />
-            <Text style={styles.coinText}>
-              {product.title.replace("(PixelDoku)", "")}
-            </Text>
-            <Text style={styles.costText}>{product.price}</Text>
-            <TouchableOpacity
-              onPress={() => buyProduct(product.productId)}
-              style={styles.buyButton}
-            >
-              <Text style={styles.buyButtonText}>Buy</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
+      {products?.map((product) => (
+        <View style={styles.coinContainer} key={product.productId}>
+          <Image
+            source={require("../assets/icons/coin.png")}
+            style={themeStyles.icons.iconSizeMedium}
+          />
+          <Text style={styles.coinText}>
+            {product.title.replace("(PixelDoku)", "")}
+          </Text>
+          <Text style={styles.costText}>{product.price}</Text>
+          <TouchableOpacity
+            onPress={() => buyProduct(product.productId)}
+            style={styles.buyButton}
+          >
+            <Text style={styles.buyButtonText}>Buy</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
     </>
   );
 
