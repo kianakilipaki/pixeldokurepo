@@ -35,9 +35,9 @@ const SudokuScreen = ({ route, navigation }) => {
   const [isPaused, setIsPaused] = useState(false);
 
   const startNewGame = useCallback(
-    (theme, difficulty) => {
+    async (theme, difficulty) => {
       try {
-        resetProgress(theme, difficulty, false);
+        await resetProgress(theme, difficulty, false);
       } catch (error) {
         console.error("Error loading game:", error);
       } finally {
@@ -92,7 +92,7 @@ const SudokuScreen = ({ route, navigation }) => {
               isModalVisible={isModalVisible}
               goHome={goHome}
               onNextPuzzle={() => startNewGame(theme, difficulty)}
-              onRetry={() => resetProgress(theme, difficulty, true)}
+              onRetry={async () => await resetProgress(theme, difficulty, true)}
             />
           </View>
         </ImageBackground>

@@ -12,7 +12,6 @@ import {
 import ThemeListContainer from "../components/ThemesContainer";
 import useThemeAnimation from "../utils/animationHook";
 import { useGame } from "../utils/gameContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingIndicator from "../components/loadingIcon";
 import { useThemes } from "../utils/themeContext";
 import themeStyles from "../utils/themeStyles";
@@ -34,8 +33,7 @@ const HomeScreen = ({ navigation }) => {
       const checkProgress = async () => {
         try {
           console.log("checking progress...");
-          const stringProgress = await AsyncStorage.getItem("gameProgress");
-          const progress = JSON.parse(stringProgress);
+          const progress = await loadProgress(savedGame);
           if (progress?.difficulty) {
             setSavedGame(progress);
           } else {
@@ -51,10 +49,9 @@ const HomeScreen = ({ navigation }) => {
 
   const handleContinue = async () => {
     if (savedGame) {
-      const game = await loadProgress(savedGame);
       navigation.navigate("SudokuScreen", {
-        theme: game.theme,
-        difficulty: game.difficulty,
+        theme: savedGame.theme,
+        difficulty: savedGame.difficulty,
         isNewGame: false,
       });
     }

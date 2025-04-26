@@ -3,7 +3,6 @@ import { Alert } from "react-native";
 import {
   RewardedAd,
   RewardedAdEventType,
-  TestIds,
 } from "react-native-google-mobile-ads";
 
 const adUnitId = "ca-app-pub-6358927901907597/2631763735";

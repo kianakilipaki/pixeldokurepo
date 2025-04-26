@@ -1,4 +1,10 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   generateSudoku,
@@ -20,7 +26,7 @@ export const GameProvider = ({ children }) => {
   const [timer, setTimer] = useState(0);
   const [isPencilIn, setIsPencilIn] = useState(false);
   const [selectedCell, setSelectedCell] = useState([]);
-  const [errorCell, setErrorCell] = useState(null);
+  const [errorCell, setErrorCell] = useState([]);
 
   // Save progress function
   const saveProgress = async (newBoard) => {
@@ -45,8 +51,10 @@ export const GameProvider = ({ children }) => {
   };
 
   // Load progress function
-  const loadProgress = async (progress) => {
+  const loadProgress = async () => {
     try {
+      const stringProgress = await AsyncStorage.getItem("gameProgress");
+      const progress = stringProgress ? JSON.parse(stringProgress) : null;
       if (progress) {
         setTheme(progress.theme);
         setDifficulty(progress.difficulty);
@@ -59,8 +67,8 @@ export const GameProvider = ({ children }) => {
         setSelectedCell(null);
         setErrorCell(progress.errorCell);
         console.log("Progress loaded:", progress);
-        return progress;
       }
+      return progress;
     } catch (error) {
       console.error("Error loading progress:", error);
     }
@@ -69,133 +77,152 @@ export const GameProvider = ({ children }) => {
   // Reset progress
   const resetProgress = async (theme, difficulty, sameBoard = false) => {
     try {
-      const init = initialBoard;
-      const solution = solutionBoard;
-
-      console.log("Clear progress...");
-      clearProgress();
-
       if (theme) {
+        setTheme(theme);
+        setDifficulty(difficulty);
         if (!sameBoard) {
           // reset progress with new board
-          setTheme(theme);
-          setDifficulty(difficulty);
+          console.log("Preparing new board...");
           const { puzzle, solution } = generateSudoku(difficulty);
           setBoard(puzzle);
           setInitialBoard(puzzle);
           setSolutionBoard(solution);
         } else {
           // reset progress with same board
-          setTheme(theme);
-          setDifficulty(difficulty);
-          setBoard(init);
-          setInitialBoard(init);
-          setSolutionBoard(solution);
+          console.log("Resetting board...");
+          setBoard(initialBoard);
+          setInitialBoard(initialBoard);
+          setSolutionBoard(solutionBoard);
         }
+      } else {
+        // reset progress with no board
+        console.log("Clearing board...");
+        setTheme("birds");
+        setDifficulty(null);
+        setBoard([]);
+        setInitialBoard([]);
+        setSolutionBoard([]);
       }
+      // Reset other game states
+      setTimer(0);
+      setMistakeCounter(3);
+      setHints(3);
+      setIsPencilIn(false);
+      setSelectedCell(null);
+      setErrorCell([]);
     } catch (error) {
       console.error("Error starting new game:", error);
     }
   };
 
-  const clearProgress = () => {
-    setTheme("birds");
-    setDifficulty(null);
-    setBoard([]);
-    setInitialBoard([]);
-    setSolutionBoard([]);
-    setTimer(0);
-    setMistakeCounter(3);
-    setHints(3);
-    setIsPencilIn(false);
-    setSelectedCell(null);
-    setErrorCell([]);
-  };
-
+  // Update board on cell changes
   const updateBoard = (value) => {
-    let row, col, newValue, pencilIn;
+    try {
+      let row, col, newValue, pencilIn;
 
-    if (Array.isArray(value)) {
-      [row, col, newValue] = value;
-      pencilIn = false;
-    } else {
-      [row, col] = selectedCell || [];
-      newValue = value;
-      pencilIn = isPencilIn;
-    }
-
-    if (row != null && col != null && initialBoard[row][col] === 0) {
-      setBoard((prevBoard) => {
-        const newBoard = prevBoard.map((r, i) => (i === row ? [...r] : r));
-
-        // Update the selected cell using helper function
-        newBoard[row][col] = updateCell(newBoard[row][col], newValue, pencilIn);
-
-        // If it's not in pencil mode, remove the value from other cells in the same row, column, and section
-        if (!pencilIn) {
-          const removedBoard = removePencilMarks(newBoard, row, col, newValue);
-          return removedBoard;
-        } else {
-          return newBoard;
-        }
-      });
-
-      // Check for mistake **after** updating the board
-      if (!pencilIn) {
-        if (newValue !== solutionBoard[row][col] && newValue !== 0) {
-          // If incorrect, add to errorCell (ensure it doesn’t duplicate)
-          setErrorCell((prev) => [...prev, [row, col, newValue]]);
-          setMistakeCounter((prev) => Math.max(prev - 1, 0)); // Reduce mistake counter
-        } else {
-          // If correct, remove only the matching error, not all
-          setErrorCell((prev) =>
-            prev.filter(([r, c, v]) => !(r === row && c === col))
-          );
-        }
+      if (Array.isArray(value)) {
+        [row, col, newValue] = value;
+        pencilIn = false;
+      } else {
+        [row, col] = selectedCell || [];
+        newValue = value;
+        pencilIn = isPencilIn;
       }
-      setSelectedCell([row, col, newValue]);
-    } else {
-      setSelectedCell([null, null, newValue]);
+
+      if (
+        row < 0 ||
+        row >= board.length ||
+        col < 0 ||
+        col >= board[0].length ||
+        typeof newValue !== "number"
+      ) {
+        console.error("Invalid input for updateBoard:", { row, col, newValue });
+        return;
+      }
+
+      if (row != null && col != null && initialBoard[row][col] === 0) {
+        setBoard((prevBoard) => {
+          const newBoard = JSON.parse(JSON.stringify(prevBoard));
+          newBoard[row][col] = updateCell(
+            newBoard[row][col],
+            newValue,
+            pencilIn
+          );
+
+          if (!pencilIn) {
+            return removePencilMarks(newBoard, row, col, newValue);
+          }
+          return newBoard;
+        });
+
+        if (!pencilIn) {
+          if (newValue !== solutionBoard[row][col] && newValue !== 0) {
+            setErrorCell((prev) => [...prev, [row, col, newValue]]);
+            setMistakeCounter((prev) => Math.max(prev - 1, 0));
+          } else {
+            setErrorCell((prev) =>
+              prev?.filter(([r, c, v]) => !(r === row && c === col))
+            );
+          }
+        }
+        setSelectedCell([row, col, newValue]);
+      } else {
+        setSelectedCell([null, null, newValue]);
+      }
+    } catch (error) {
+      console.error("Error updating board:", error);
     }
   };
 
   useEffect(() => {
-    saveProgress();
+    saveProgress(board);
   }, [board, mistakeCounter, errorCell]);
 
+  const contextValue = useMemo(
+    () => ({
+      theme,
+      setTheme,
+      difficulty,
+      setDifficulty,
+      board,
+      setBoard,
+      initialBoard,
+      setInitialBoard,
+      solutionBoard,
+      setSolutionBoard,
+      selectedCell,
+      setSelectedCell,
+      mistakeCounter,
+      setMistakeCounter,
+      timer,
+      setTimer,
+      hints,
+      setHints,
+      isPencilIn,
+      setIsPencilIn,
+      errorCell,
+      setErrorCell,
+      updateBoard,
+      loadProgress,
+      resetProgress,
+    }),
+    [
+      theme,
+      difficulty,
+      board,
+      initialBoard,
+      solutionBoard,
+      selectedCell,
+      mistakeCounter,
+      timer,
+      hints,
+      isPencilIn,
+      errorCell,
+    ]
+  );
+
   return (
-    <GameContext.Provider
-      value={{
-        theme,
-        setTheme,
-        difficulty,
-        setDifficulty,
-        board,
-        setBoard,
-        initialBoard,
-        setInitialBoard,
-        solutionBoard,
-        setSolutionBoard,
-        selectedCell,
-        setSelectedCell,
-        mistakeCounter,
-        setMistakeCounter,
-        timer,
-        setTimer,
-        hints,
-        setHints,
-        isPencilIn,
-        setIsPencilIn,
-        errorCell,
-        setErrorCell,
-        updateBoard,
-        saveProgress,
-        loadProgress,
-        resetProgress,
-      }}
-    >
-      {children}
-    </GameContext.Provider>
+    <GameContext.Provider value={contextValue}>{children}</GameContext.Provider>
   );
 };
 

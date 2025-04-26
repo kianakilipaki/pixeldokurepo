@@ -104,16 +104,17 @@ export const MusicProvider = ({ children }) => {
 
   useEffect(() => {
     const setAudioMode = async () => {
-      await Audio.setAudioModeAsync({
-        interruptionModeIOS: isMuted
-          ? Audio.INTERRUPTION_MODE_IOS_MIX_WITH_OTHERS
-          : Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-        interruptionModeAndroid: isMuted
-          ? Audio.INTERRUPTION_MODE_ANDROID_MIX_WITH_OTHERS
-          : Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-        shouldDuckAndroid: !isMuted,
-      });
+      try {
+        await Audio.setAudioModeAsync({
+          interruptionModeIOS: isMuted ? 0 : 1, // 0: mix with others, 1: do not mix
+          interruptionModeAndroid: isMuted ? 2 : 1, // 2: mix with others, 1: do not mix
+          shouldDuckAndroid: !isMuted,
+        });
+      } catch (error) {
+        console.error("Error setting audio mode:", error);
+      }
     };
+
     setAudioMode();
   }, [isMuted]);
 
