@@ -66,6 +66,7 @@ jest.mock("@react-navigation/native", () => {
       reset: jest.fn(),
       setParams: jest.fn(),
     }),
+    useFocusEffect: jest.fn((callback) => callback()),
   };
 });
 

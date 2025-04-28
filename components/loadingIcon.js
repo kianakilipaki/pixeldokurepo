@@ -4,7 +4,7 @@ import themeStyles from "../utils/themeStyles";
 
 export default function LoadingIndicator() {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="loading-indicator">
       <Image source={require("../assets/fox_running.gif")} style={styles.gif} />
     </View>
   );
