@@ -5,7 +5,7 @@ import {
   RewardedAdEventType,
 } from "react-native-google-mobile-ads";
 
-const adUnitId = "ca-app-pub-6358927901907597/2631763735";
+const adUnitId = "ca-app-pub-6358927901907597/7024526588";
 
 export const useRewardedAd = () => {
   const [loaded, setLoaded] = useState(false);
