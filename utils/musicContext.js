@@ -75,7 +75,7 @@ export const MusicProvider = ({ children }) => {
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (state) => {
       if (state === "active" && sound.current && !isMuted) {
-        console.log(`Replaying music: ${sound.current}`);
+        console.log(`Replaying music: ${sound.current._key}`);
         sound.current
           .playAsync()
           .catch((err) => console.warn("Playback error:", err));

@@ -37,7 +37,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   };
 
   // Initialize IAP only in production
-  const { buyProduct, products, isLoading, errorMsg } =
+  const { buyProduct, products, isLoading, errorMsg, isPurchasing } =
     useIAP(handlePurchaseSuccess) || {};
 
   const modalBody = () => (
@@ -75,9 +75,14 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
           <Text style={styles.costText}>{product.price}</Text>
           <TouchableOpacity
             onPress={() => buyProduct(product.productId)}
-            style={styles.buyButton}
+            style={[styles.buyButton, isPurchasing && styles.disabledButton]}
+            disabled={isPurchasing}
           >
-            <Text style={styles.buyButtonText}>Buy</Text>
+            {isPurchasing ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text style={styles.buyButtonText}>Buy</Text>
+            )}
           </TouchableOpacity>
         </View>
       ))}
@@ -117,6 +122,9 @@ const styles = StyleSheet.create({
     color: "#555",
     marginHorizontal: 10,
     textAlign: "center",
+  },
+  disabledButton: {
+    backgroundColor: "#aaa",
   },
   buyButton: {
     minHeight: 48,

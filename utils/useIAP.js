@@ -43,6 +43,7 @@ const useIAP = (onPurchaseSuccess) => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [isPurchasing, setIsPurchasing] = useState(false);
 
   const purchaseListenerRef = useRef(null);
   const connectionInitializedRef = useRef(false);
@@ -72,6 +73,8 @@ const useIAP = (onPurchaseSuccess) => {
           }
         } catch (err) {
           return;
+        } finally {
+          setIsPurchasing(false); // <- here
         }
       }
     });
@@ -84,7 +87,7 @@ const useIAP = (onPurchaseSuccess) => {
         setProducts(mockProducts);
         return;
       }
-
+      setIsLoading(true);
       const fetchedProducts = await getProducts({ skus: itemSKUs });
       const sortedProducts = [...fetchedProducts].sort((a, b) => {
         const aValue = parseInt(a.productId.replace("_coins", ""));
@@ -93,6 +96,7 @@ const useIAP = (onPurchaseSuccess) => {
       });
       setProducts(sortedProducts);
       setErrorMsg(null);
+      setIsLoading(false);
     } catch (err) {
       console.log("PixelDokuLogs: Error fetching products:", err);
       if (!__DEV__) {
@@ -170,11 +174,14 @@ const useIAP = (onPurchaseSuccess) => {
   );
 
   const buyProduct = async (sku) => {
+    if (isPurchasing) return; // Prevent multiple taps
+    setIsPurchasing(true);
     try {
       if (__DEV__) {
         // Simulate successful purchase in development
         setTimeout(() => {
           onPurchaseSuccess(sku);
+          setIsPurchasing(false);
         }, 500);
         return;
       }
@@ -195,10 +202,11 @@ const useIAP = (onPurchaseSuccess) => {
     } catch (err) {
       if (err.code === "E_USER_CANCELLED") {
         console.log("PixelDokuLogs: Purchase cancelled by user");
-        return;
+      } else {
+        console.error("PixelDokuLogs: Purchase request failed:", err);
+        setErrorMsg("Purchase failed. Please try again.");
       }
-      console.error("PixelDokuLogs: Purchase request failed:", err);
-      setErrorMsg("Purchase failed. Please try again.");
+      setIsPurchasing(false);
     }
   };
 
@@ -206,6 +214,7 @@ const useIAP = (onPurchaseSuccess) => {
     buyProduct,
     products,
     isLoading,
+    isPurchasing,
     errorMsg,
   };
 };
