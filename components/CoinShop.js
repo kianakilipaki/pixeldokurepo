@@ -9,13 +9,14 @@ import {
 } from "react-native";
 import ModalTemplate from "./ModalTemplate";
 import { useCoins } from "../utils/coinContext";
-import { useRewardedAd } from "./Ad";
+import { useCoinShopRewardedAd } from "./CoinShopAd";
 import themeStyles from "../utils/themeStyles";
 import useIAP from "../utils/useIAP";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins } = useCoins();
-  const { watchAd, rewardAmount, setRewardAmount, loaded } = useRewardedAd();
+  const { watchAd, rewardAmount, setRewardAmount, loaded } =
+    useCoinShopRewardedAd();
 
   useEffect(() => {
     if (rewardAmount > 0) {

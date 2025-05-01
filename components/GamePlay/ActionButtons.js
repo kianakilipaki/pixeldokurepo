@@ -1,8 +1,15 @@
 import React, { useEffect } from "react";
-import { View, TouchableOpacity, StyleSheet, Image, Text } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import { useGame } from "../../utils/gameContext";
 import themeStyles from "../../utils/themeStyles";
-import { useRewardedAd } from "../Ad";
+import { useHintRewardedAd } from "./HintAd";
 import { useMusic } from "../../utils/musicContext";
 
 const ActionButtons = ({ onPause }) => {
@@ -18,7 +25,8 @@ const ActionButtons = ({ onPause }) => {
     setIsPencilIn,
   } = useGame();
 
-  const { watchAd, rewardAmount, setRewardAmount } = useRewardedAd();
+  const { watchAd, rewardAmount, setRewardAmount, loaded } =
+    useHintRewardedAd();
   const { playSoundEffect } = useMusic();
 
   const handlePencilIn = () => {
@@ -54,8 +62,10 @@ const ActionButtons = ({ onPause }) => {
 
   useEffect(() => {
     if (rewardAmount > 0) {
-      onHint();
-      setRewardAmount(0);
+      setTimeout(() => {
+        onHint();
+        setRewardAmount(0);
+      }, 1000); // Delay to allow ad to finish
     }
   }, [rewardAmount]);
 
@@ -100,12 +110,16 @@ const ActionButtons = ({ onPause }) => {
       >
         <View style={styles.hintIndicator}>
           {hints > 0 && <Text style={styles.hintText}>{hints}</Text>}
-          {hints <= 0 && (
-            <Image
-              source={require("../../assets/icons/ad.png")}
-              style={themeStyles.icons.iconSizeSmall}
-            />
-          )}
+          {hints <= 0 ? (
+            loaded ? (
+              <Image
+                source={require("../../assets/icons/ad.png")}
+                style={themeStyles.icons.iconSizeSmall}
+              />
+            ) : (
+              <ActivityIndicator size="small" color="white" />
+            )
+          ) : null}
         </View>
         <Image
           source={require("../../assets/icons/hint.png")}

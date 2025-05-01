@@ -5,9 +5,9 @@ import {
   RewardedAdEventType,
 } from "react-native-google-mobile-ads";
 
-const adUnitId = "ca-app-pub-6358927901907597/7024526588";
+const adUnitId = "ca-app-pub-6358927901907597/4751686655";
 
-export const useRewardedAd = () => {
+export const useHintRewardedAd = () => {
   const [loaded, setLoaded] = useState(false);
   const [rewardAmount, setRewardAmount] = useState(0);
   const [rewarded, setRewarded] = useState(() =>
@@ -24,7 +24,7 @@ export const useRewardedAd = () => {
     rewardedAd.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       (reward) => {
-        console.log("User earned reward of ", reward);
+        console.log("User earned hint reward");
         setRewardAmount(reward.amount);
       }
     );
