@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "692361959163",
+    "project_id": "pixeldoku-cloud-458622",
+    "storage_bucket": "pixeldoku-cloud-458622.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:692361959163:android:1ea5e7f131ce4c2006825e",
+        "android_client_info": {
+          "package_name": "com.alanilyon.pixeldoku"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkn34-E5PlJ8cboQvBlt8c-8T2LhIrO5A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
