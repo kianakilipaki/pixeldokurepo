@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { loadFromLocal, saveToLocal } from "./gameDataService";
+import { loadFromLocal, saveToLocal } from "./playerDataService";
 import { defaultThemes } from "./assetsMap";
 
 const PlayerDataContext = createContext();

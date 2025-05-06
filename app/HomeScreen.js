@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import ThemeListContainer from "../components/ThemesContainer";
-import useThemeAnimation from "../utils/animationHook";
+import useThemeAnimation from "../utils/themeAnimationHook";
 import { useGame } from "../utils/gameContext";
 import LoadingIndicator from "../components/loadingIcon";
 import themeStyles from "../utils/themeStyles";

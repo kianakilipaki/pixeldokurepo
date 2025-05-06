@@ -10,7 +10,7 @@ import {
   Image,
 } from "react-native";
 import { useGoogleAuth } from "../utils/auth";
-import { syncFromCloud } from "../utils/gameDataService";
+import { syncFromCloud } from "../utils/playerDataService";
 import themeStyles from "../utils/themeStyles";
 import LoadingIndicator from "../components/loadingIcon";
 import { AntDesign } from "@expo/vector-icons";

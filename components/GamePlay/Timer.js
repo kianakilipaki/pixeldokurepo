@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { useGame } from "../../utils/gameContext";
 import themeStyles from "../../utils/themeStyles";
-import { formatTime } from "../../utils/GeneratePuzzle";
+import { formatTime } from "../../utils/generatePuzzle";
 
 const Timer = ({ isPaused }) => {
   const { timer, setTimer } = useGame();

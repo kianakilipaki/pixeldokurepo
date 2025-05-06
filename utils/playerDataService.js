@@ -1,4 +1,4 @@
-// gameDataService.js
+// playerDataService.js
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { doc, setDoc, getDoc } from "firebase/firestore";

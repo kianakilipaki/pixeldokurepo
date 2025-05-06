@@ -10,7 +10,7 @@ import {
   generateSudoku,
   removePencilMarks,
   updateCell,
-} from "./GeneratePuzzle";
+} from "./generatePuzzle";
 
 const GameContext = createContext();
 

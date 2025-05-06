@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import Cell from "./Cell";
-import { getCellBorderStyles } from "../../utils/GeneratePuzzle";
+import { getCellBorderStyles } from "../../utils/generatePuzzle";
 import { useGame } from "../../utils/gameContext";
 
 const Board = () => {

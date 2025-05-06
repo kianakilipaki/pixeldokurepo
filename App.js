@@ -12,7 +12,7 @@ import LoadingIndicator from "./components/loadingIcon";
 import Header from "./components/Header";
 import mobileAds from "react-native-google-mobile-ads";
 import { withIAPContext } from "react-native-iap";
-import { migrateLocalGameData } from "./utils/gameDataService";
+import { migrateLocalGameData } from "./utils/playerDataService";
 import { PlayerDataProvider } from "./utils/playerDataContext";
 import { GameProvider } from "./utils/gameContext";
 import { MusicProvider } from "./utils/musicContext";

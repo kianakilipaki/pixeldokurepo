@@ -11,7 +11,7 @@ import {
 import { useGame } from "../../utils/gameContext";
 import themeStyles from "../../utils/themeStyles";
 import { Dimensions } from "react-native";
-import { formatTime } from "../../utils/GeneratePuzzle";
+import { formatTime } from "../../utils/generatePuzzle";
 import { useMusic } from "../../utils/musicContext";
 import { usePlayerData } from "../../utils/playerDataContext";
 

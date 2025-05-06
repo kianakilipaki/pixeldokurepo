@@ -39,7 +39,7 @@ jest.mock("../utils/highscoreContext", () => ({
   })),
 }));
 
-jest.mock("../utils/animationHook", () => {
+jest.mock("../utils/themeAnimationHook", () => {
   return {
     __esModule: true,
     default: () => ({

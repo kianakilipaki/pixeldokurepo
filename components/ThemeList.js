@@ -13,7 +13,7 @@ import LockOverlay from "./LockOverlay";
 import PurchaseModal from "./PurchaseModal";
 import themeStyles from "../utils/themeStyles";
 import { Dimensions } from "react-native";
-import { formatTime } from "../utils/GeneratePuzzle";
+import { formatTime } from "../utils/generatePuzzle";
 import { usePlayerData } from "../utils/playerDataContext";
 
 const { width } = Dimensions.get("window");

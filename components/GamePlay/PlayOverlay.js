@@ -10,7 +10,7 @@ import {
 import { Dimensions } from "react-native";
 import themeStyles from "../../utils/themeStyles";
 import { useGame } from "../../utils/gameContext";
-import { formatTime } from "../../utils/GeneratePuzzle";
+import { formatTime } from "../../utils/generatePuzzle";
 
 const { width } = Dimensions.get("window");
 
