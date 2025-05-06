@@ -8,13 +8,13 @@ import {
   ActivityIndicator,
 } from "react-native";
 import ModalTemplate from "./ModalTemplate";
-import { useCoins } from "../utils/coinContext";
 import { useCoinShopRewardedAd } from "./CoinShopAd";
 import themeStyles from "../utils/themeStyles";
 import useIAP from "../utils/useIAP";
+import { usePlayerData } from "../utils/playerDataContext";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
-  const { addCoins } = useCoins();
+  const { addCoins } = usePlayerData();
   const { watchAd, rewardAmount, setRewardAmount, loaded } =
     useCoinShopRewardedAd();
 

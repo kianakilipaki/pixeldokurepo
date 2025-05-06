@@ -8,13 +8,13 @@ import {
   StyleSheet,
   Animated,
 } from "react-native";
-import { useHighScore } from "../utils/highscoreContext";
 import { spriteMapLG, cellSizeLG } from "../utils/assetsMap";
 import LockOverlay from "./LockOverlay";
 import PurchaseModal from "./PurchaseModal";
 import themeStyles from "../utils/themeStyles";
 import { Dimensions } from "react-native";
 import { formatTime } from "../utils/GeneratePuzzle";
+import { usePlayerData } from "../utils/playerDataContext";
 
 const { width } = Dimensions.get("window");
 
@@ -25,10 +25,11 @@ const ThemeList = ({
   toggleTheme,
   navigation,
 }) => {
-  const { HighScore } = useHighScore();
+  const { highscores } = usePlayerData();
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const Scores = HighScore[themeKey] || { Easy: 0, Medium: 0, Hard: 0 };
+  const Scores = highscores
+    ? highscores[themeKey] || { Easy: 0, Medium: 0, Hard: 0 }
+    : { Easy: 0, Medium: 0, Hard: 0 };
 
   const openModal = () => {
     if (item.title === "Coming Soon") return;
@@ -36,7 +37,7 @@ const ThemeList = ({
   };
 
   const navigateToSudoku = (difficulty) => {
-    navigation.navigate("SudokuScreen", {
+    navigation.navigate("Sudoku", {
       theme: item,
       difficulty,
       isNewGame: true,

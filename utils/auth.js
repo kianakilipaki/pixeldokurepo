@@ -1,11 +1,13 @@
 import { initializeApp } from "firebase/app";
 import {
-  getAuth,
+  initializeAuth,
+  getReactNativePersistence,
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithCredential,
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Google from "expo-auth-session/providers/google";
 import { useEffect, useState } from "react";
 
@@ -21,8 +23,12 @@ const firebaseConfig = {
 // Initialize Firebase app
 const app = initializeApp(firebaseConfig);
 
-// Firebase services
-const auth = getAuth(app);
+// ✅ Use initializeAuth with AsyncStorage persistence
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage),
+});
+
+// Initialize Firestore
 const db = getFirestore(app);
 
 // Custom hook for Google Authentication

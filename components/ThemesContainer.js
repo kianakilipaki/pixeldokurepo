@@ -10,11 +10,11 @@ import {
 import ThemeList from "./ThemeList";
 import themeStyles from "../utils/themeStyles";
 import LoadingIndicator from "./loadingIcon";
-import { useThemes } from "../utils/themeContext";
+import { usePlayerData } from "../utils/playerDataContext";
 
 const ThemeListContainer = ({ slideAnimation, navigation, toggle }) => {
   const screenHeight = Dimensions.get("window").height;
-  const { themes } = useThemes();
+  const { themes } = usePlayerData();
   const [expandedTheme, setExpandedTheme] = useState(null); // Track the expanded theme key
   const scrollToRef = useRef(null);
 

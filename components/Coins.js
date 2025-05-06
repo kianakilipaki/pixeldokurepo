@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { TouchableOpacity, StyleSheet, Image, Text } from "react-native";
-import { useCoins } from "../utils/coinContext";
 import themeStyles from "../utils/themeStyles";
 import CoinShop from "./CoinShop";
+import { usePlayerData } from "../utils/playerDataContext";
 
 const Coins = () => {
-  const { coins } = useCoins();
+  const { coins } = usePlayerData();
   const [isCoinShopVisible, setIsCoinShopVisible] = useState(false);
   const openShop = () => {
     setIsCoinShopVisible(true);

@@ -8,13 +8,12 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
-import { useCoins } from "../../utils/coinContext";
 import { useGame } from "../../utils/gameContext";
-import { useHighScore } from "../../utils/highscoreContext";
 import themeStyles from "../../utils/themeStyles";
 import { Dimensions } from "react-native";
 import { formatTime } from "../../utils/GeneratePuzzle";
 import { useMusic } from "../../utils/musicContext";
+import { usePlayerData } from "../../utils/playerDataContext";
 
 const { width } = Dimensions.get("window");
 
@@ -27,9 +26,8 @@ const CompletionModal = ({
 }) => {
   const { theme, difficulty, board, solutionBoard, timer, mistakeCounter } =
     useGame();
-  const { saveHighScore, HighScore } = useHighScore();
+  const { saveHighScore, highscores, addCoins } = usePlayerData();
 
-  const { addCoins } = useCoins();
   const [modalType, setModalType] = useState(null);
   const [coinsAwarded, setCoinsAwarded] = useState(null);
   const [newHighScore, setNewHighScore] = useState(false);
@@ -67,7 +65,7 @@ const CompletionModal = ({
     },
   };
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     const coinReward =
       {
         easy: 10,
@@ -76,14 +74,14 @@ const CompletionModal = ({
       }[difficulty.toLowerCase()] || 0;
     const totalCoins = coinReward + mistakeCounter * 2;
     setCoinsAwarded(totalCoins);
-    addCoins(totalCoins);
+    await addCoins(totalCoins);
 
-    const highscore = HighScore[theme.themeKey]
-      ? HighScore[theme.themeKey][difficulty]
+    const highscore = highscores[theme.themeKey]
+      ? highscores[theme.themeKey][difficulty]
       : 0;
     if (highscore === 0 || highscore === null || highscore > timer) {
       setNewHighScore(true);
-      saveHighScore(theme.themeKey, difficulty, timer);
+      await saveHighScore(theme.themeKey, difficulty, timer);
     }
   };
 

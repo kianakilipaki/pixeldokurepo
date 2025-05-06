@@ -13,20 +13,18 @@ import ThemeListContainer from "../components/ThemesContainer";
 import useThemeAnimation from "../utils/animationHook";
 import { useGame } from "../utils/gameContext";
 import LoadingIndicator from "../components/loadingIcon";
-import { useThemes } from "../utils/themeContext";
 import themeStyles from "../utils/themeStyles";
-import { useTutorial } from "../utils/useTutorial";
 import TutorialModal from "../components/TutorialModal";
 import Coins from "../components/Coins";
 import { useFocusEffect } from "@react-navigation/native";
+import { usePlayerData } from "../utils/playerDataContext";
 
 const HomeScreen = ({ navigation }) => {
   const { loadProgress } = useGame();
-  const { themes } = useThemes();
+  const { themes, showTutorial, completeTutorial } = usePlayerData();
   const [savedGame, setSavedGame] = useState(null);
   const { slideAnimation, fadeAnimation, toggleExpansion } =
     useThemeAnimation();
-  const { showTutorial, completeTutorial } = useTutorial();
 
   useFocusEffect(
     useCallback(() => {
@@ -49,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
 
   const handleContinue = async () => {
     if (savedGame) {
-      navigation.navigate("SudokuScreen", {
+      navigation.navigate("Sudoku", {
         theme: savedGame.theme,
         difficulty: savedGame.difficulty,
         isNewGame: false,

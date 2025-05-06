@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ImageBackground,
   Text,
@@ -7,19 +7,22 @@ import {
   View,
   Alert,
   StatusBar,
+  Image,
 } from "react-native";
 import { useGoogleAuth } from "../utils/auth";
 import { syncFromCloud } from "../utils/gameDataService";
 import themeStyles from "../utils/themeStyles";
 import LoadingIndicator from "../components/loadingIcon";
+import { AntDesign } from "@expo/vector-icons";
 
 const LoginScreen = ({ navigation }) => {
   const { user, isLoading, promptAsync } = useGoogleAuth();
+  const [isSyncing, setIsSyncing] = useState(false);
 
-  // Sync game data after login
   useEffect(() => {
     const syncGameDataAfterLogin = async () => {
       if (user) {
+        setIsSyncing(true);
         try {
           console.log("Syncing game data for user:", user.uid);
           await syncFromCloud(user.uid);
@@ -31,6 +34,8 @@ const LoginScreen = ({ navigation }) => {
             "Sync Error",
             "There was an error syncing your game data. Please try again later."
           );
+        } finally {
+          setIsSyncing(false);
         }
       }
     };
@@ -53,7 +58,7 @@ const LoginScreen = ({ navigation }) => {
     );
   };
 
-  if (isLoading) {
+  if (isLoading || isSyncing) {
     return (
       <ImageBackground
         source={require("../assets/themes/MntForest-bg.png")}
@@ -63,7 +68,6 @@ const LoginScreen = ({ navigation }) => {
         <StatusBar
           barStyle="light-content"
           backgroundColor={themeStyles.colors.blue}
-          translucent={false}
         />
         <LoadingIndicator />
       </ImageBackground>
@@ -79,21 +83,22 @@ const LoginScreen = ({ navigation }) => {
       <StatusBar
         barStyle="light-content"
         backgroundColor={themeStyles.colors.blue}
-        translucent={false}
       />
       <View style={styles.container}>
-        <Text style={styles.title}>Welcome to PixelDoku</Text>
+        <Image source={require("../assets/icon-bg.png")} style={styles.logo} />
+        <Text style={styles.header}>Welcome to</Text>
+        <Text style={styles.title}>PixelDoku</Text>
+
         <TouchableOpacity
-          style={[styles.button, styles.googleButton]}
+          style={styles.googleButton}
           onPress={() => promptAsync()}
         >
-          <Text style={styles.buttonText}>Login with Google</Text>
+          <AntDesign name="google" size={20} color="#fff" style={styles.icon} />
+          <Text style={styles.googleText}>Sign in with Google</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, styles.guestButton]}
-          onPress={handleGuestLogin}
-        >
-          <Text style={styles.buttonText}>Continue as Guest</Text>
+
+        <TouchableOpacity onPress={handleGuestLogin}>
+          <Text style={styles.guestText}>Continue as Guest</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>
@@ -102,11 +107,7 @@ const LoginScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   background: {
-    position: "absolute",
-    overflow: "hidden",
-    top: 0,
-    width: "100%",
-    height: "100%",
+    flex: 1,
   },
   container: {
     flex: 1,
@@ -114,36 +115,59 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
   },
-  title: {
+  logo: {
+    width: 200,
+    height: 200,
+  },
+  header: {
     fontFamily: themeStyles.fonts.fontFamily,
     fontSize: 36,
     textAlign: "center",
     color: themeStyles.colors.black1,
-    marginBottom: 40,
   },
-  button: {
-    width: "70%",
-    minHeight: 48,
-    paddingVertical: 15,
-    borderRadius: 10,
-    marginVertical: 10,
+  title: {
+    fontFamily: themeStyles.fonts.fontFamily,
+    fontSize: 48,
+    marginBottom: 20,
+    color: themeStyles.colors.red,
+    transform: [{ scaleY: 2 }],
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 2,
+  },
+  googleButton: {
+    flexDirection: "row",
     alignItems: "center",
+    backgroundColor: "#4285F4",
+    marginTop: 40,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 6,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 5,
   },
-  googleButton: {
-    backgroundColor: themeStyles.colors.red,
+  icon: {
+    marginRight: 10,
   },
-  guestButton: {
-    backgroundColor: themeStyles.colors.blue,
-  },
-  buttonText: {
-    color: "white",
+  googleText: {
+    color: "#fff",
+    fontSize: 16,
     fontFamily: themeStyles.fonts.fontFamily,
-    fontSize: themeStyles.fonts.headerFontSize,
+  },
+  guestText: {
+    marginTop: 20,
+    fontSize: 14,
+    color: themeStyles.colors.white,
+    textDecorationLine: "underline",
+    fontFamily: themeStyles.fonts.fontFamily,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 4,
+    overflow: "hidden",
   },
 });
 

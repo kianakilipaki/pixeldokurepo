@@ -1,30 +1,28 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { useCoins } from "../utils/coinContext";
-import { isTablet, spriteMap } from "../utils/assetsMap";
+import { isTablet } from "../utils/assetsMap";
 import CoinShop from "./CoinShop";
 import themeStyles from "../utils/themeStyles";
 import { Dimensions } from "react-native";
-import { useThemes } from "../utils/themeContext";
 import ModalTemplate from "./ModalTemplate";
+import { usePlayerData } from "../utils/playerDataContext";
 
 const { width } = Dimensions.get("window");
 
 const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
-  const { coins, removeCoins } = useCoins();
-  const { unlockTheme } = useThemes();
+  const { coins, removeCoins, unlockTheme } = usePlayerData();
 
   const [isWarningVisible, setIsWarningVisible] = useState(false);
   const [isCoinShopVisible, setIsCoinShopVisible] = useState(false);
 
-  const purchaseTheme = () => {
+  const purchaseTheme = async () => {
     if (coins < 500) {
       setIsWarningVisible(true);
       return;
     } else {
       setIsWarningVisible(false);
-      removeCoins(500);
-      unlockTheme(theme.themeKey);
+      await removeCoins(500);
+      await unlockTheme(theme.themeKey);
       setIsModalVisible(false);
     }
   };

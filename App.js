@@ -12,7 +12,10 @@ import LoadingIndicator from "./components/loadingIcon";
 import Header from "./components/Header";
 import mobileAds from "react-native-google-mobile-ads";
 import { withIAPContext } from "react-native-iap";
-import Providers from "./Providers";
+import { migrateLocalGameData } from "./utils/gameDataService";
+import { PlayerDataProvider } from "./utils/playerDataContext";
+import { GameProvider } from "./utils/gameContext";
+import { MusicProvider } from "./utils/musicContext";
 
 const Stack = createStackNavigator();
 
@@ -45,51 +48,66 @@ const App = () => {
     initializeAds();
   }, []);
 
-  if (!fontsLoaded) {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const runMigration = async () => {
+      await migrateLocalGameData();
+      setIsReady(true);
+    };
+
+    runMigration();
+  }, []);
+
+  if (!fontsLoaded || !isReady) {
     return <LoadingIndicator />;
   }
 
   return (
-    <Providers>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen
-            name="Login"
-            component={LoginScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Sudoku"
-            component={SudokuScreen}
-            options={({ route, navigation }) => ({
-              header: () => (
-                <Header
-                  title={route.params?.theme?.title || "Sudoku"}
-                  onBackPress={() => navigation.goBack()}
-                />
-              ),
-            })}
-          />
-          <Stack.Screen
-            name="NotFound"
-            component={NotFoundScreen}
-            options={{
-              header: ({ navigation }) => (
-                <Header
-                  title="Page Not Found"
-                  onBackPress={() => navigation.goBack()}
-                />
-              ),
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Providers>
+    <PlayerDataProvider>
+      <GameProvider>
+        <MusicProvider>
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName="Login">
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Sudoku"
+                component={SudokuScreen}
+                options={({ route, navigation }) => ({
+                  header: () => (
+                    <Header
+                      title={route.params?.theme?.title || "Sudoku"}
+                      onBackPress={() => navigation.goBack()}
+                    />
+                  ),
+                })}
+              />
+              <Stack.Screen
+                name="NotFound"
+                component={NotFoundScreen}
+                options={{
+                  header: ({ navigation }) => (
+                    <Header
+                      title="Page Not Found"
+                      onBackPress={() => navigation.goBack()}
+                    />
+                  ),
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </MusicProvider>
+      </GameProvider>
+    </PlayerDataProvider>
   );
 };
 
