@@ -77,7 +77,7 @@ const validateGameData = (data) => {
 };
 
 // Save game data to AsyncStorage
-export async function saveToLocal(update) {
+export async function saveToLocal(update, uid = null) {
   try {
     const prevData = await loadFromLocal();
 
@@ -93,6 +93,11 @@ export async function saveToLocal(update) {
 
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(dataWithTimestamp));
     console.log("[saveToLocal] Game data saved locally:", dataWithTimestamp);
+
+    // Optional: Also save to cloud if uid is passed
+    if (uid) {
+      await saveToCloud(uid, dataWithTimestamp);
+    }
   } catch (error) {
     console.error("[saveToLocal] Error:", error.message);
   }
@@ -118,14 +123,8 @@ export async function loadFromLocal() {
 // Save game data to Firestore
 export async function saveToCloud(uid, data) {
   try {
-    validateGameData(data);
-    const timestamp = new Date().toISOString();
-    const dataWithTimestamp = { ...data, lastUpdated: timestamp };
-    await setDoc(doc(db, "users", uid), dataWithTimestamp, { merge: true });
-    console.log(
-      "[saveToCloud] Game data saved to Firestore:",
-      dataWithTimestamp
-    );
+    await setDoc(doc(db, "users", uid), data, { merge: true });
+    console.log("[saveToCloud] Game data saved to Firestore:", data);
   } catch (error) {
     console.error("[saveToCloud] Error:", error.message);
   }
@@ -154,71 +153,65 @@ export async function syncFromCloud(uid) {
     const cloudData = await loadFromCloud(uid);
     const localData = await loadFromLocal();
 
-    if (cloudData) {
-      if (!localData || cloudData.lastUpdated > localData.lastUpdated) {
-        console.log("[syncFromCloud] Cloud data is newer. Saving locally.");
-        await saveToLocal(cloudData);
-        return cloudData;
-      } else {
-        console.log("[syncFromCloud] Local data is newer. Syncing to cloud.");
-        await saveToCloud(uid, localData);
-        return localData;
-      }
+    if (
+      cloudData &&
+      (!localData || cloudData.lastUpdated > localData.lastUpdated)
+    ) {
+      console.log("[syncFromCloud] Cloud data is newer. Saving locally.");
+      await saveToLocal(cloudData);
+      return cloudData;
     }
 
-    console.log("[syncFromCloud] No cloud data to sync. Returning local.");
-    return localData;
+    if (
+      cloudData &&
+      localData &&
+      cloudData.lastUpdated <= localData.lastUpdated
+    ) {
+      console.log("[syncFromCloud] Local data is newer. Syncing to cloud.");
+      await saveToCloud(uid, localData);
+      return localData;
+    }
+
+    if (!cloudData && localData && uid) {
+      console.log(
+        "[syncFromCloud] No cloud data, but local exists. Saving to cloud."
+      );
+      await saveToCloud(uid, localData);
+      return localData;
+    }
+
+    console.log("[syncFromCloud] No cloud or local data to sync.");
+    return null;
   } catch (error) {
     console.error("[syncFromCloud] Error:", error.message);
     return null;
   }
 }
 
-// Sync local to cloud
-export async function syncToCloud(uid) {
+export async function resetAndSeedOldGameData() {
   try {
-    const localData = await loadFromLocal();
-    if (localData) {
-      await saveToCloud(uid, localData);
-    } else {
-      console.log("[syncToCloud] No local data found.");
-    }
+    // Clear migrated and user data
+    await AsyncStorage.multiRemove([STORAGE_KEY, "user"]);
+
+    // Seed old format keys
+    await AsyncStorage.setItem("COINS", JSON.stringify(500));
+
+    await AsyncStorage.setItem("themesStatus", JSON.stringify(defaultThemes));
+
+    await AsyncStorage.setItem(
+      "HighScore",
+      JSON.stringify({
+        birds: { Easy: 120, Medium: null, Hard: null },
+        cats: { Easy: 110, Medium: null, Hard: null },
+      })
+    );
+
+    await AsyncStorage.setItem("sudokuTutorialSeen", JSON.stringify(true));
+    const keys = await AsyncStorage.getAllKeys();
+
+    console.log("✅ Reset and seeded old fake game data:", keys);
   } catch (error) {
-    console.error("[syncToCloud] Error:", error.message);
-  }
-}
-
-// Save to both local and cloud
-export async function saveGameData(uid, data) {
-  try {
-    const defaultGameData = {
-      coins: 0,
-      highscores: {},
-      themes: defaultThemes,
-      tutorialSeen: false,
-      lastUpdated: new Date().toISOString(),
-    };
-
-    const dataToSave = { ...defaultGameData, ...data };
-
-    console.log("[saveGameData] Saving game data to both local and cloud...");
-
-    await saveToLocal(dataToSave);
-    await saveToCloud(uid, dataToSave);
-  } catch (error) {
-    console.error("[saveGameData] Error:", error.message);
-  }
-}
-
-// Load and sync data
-export async function loadGameData(uid) {
-  try {
-    console.log("[loadGameData] Loading game data with sync.");
-    const syncedData = await syncFromCloud(uid);
-    return syncedData || (await loadFromLocal());
-  } catch (error) {
-    console.error("[loadGameData] Error:", error.message);
-    return null;
+    console.error("❌ Error during reset/seed:", error);
   }
 }
 

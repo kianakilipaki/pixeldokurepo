@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { loadFromLocal, saveToLocal } from "./playerDataService";
 import { defaultThemes } from "./assetsMap";
+import { useGoogleAuth } from "./auth";
 
 const PlayerDataContext = createContext();
 
 export const PlayerDataProvider = ({ children }) => {
+  const { user } = useGoogleAuth();
   const [coins, setCoins] = useState(0);
   const [highscores, setHighscores] = useState({});
   const [themes, setThemes] = useState({});
@@ -12,7 +14,7 @@ export const PlayerDataProvider = ({ children }) => {
 
   // Centralized save helper to avoid overwrites
   const savePlayerData = async (partial) => {
-    await saveToLocal((prev) => ({ ...prev, ...partial }));
+    await saveToLocal((prev) => ({ ...prev, ...partial }), user?.uid);
   };
 
   // Load everything from AsyncStorage once

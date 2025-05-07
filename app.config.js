@@ -17,9 +17,9 @@ export default ({ config }) => {
       userInterfaceStyle: "light",
       newArchEnabled: true,
       splash: {
-        image: "./assets/splash-icon.png",
+        image: "./assets/icon-bg.png",
         resizeMode: "contain",
-        backgroundColor: "#ffffff",
+        backgroundColor: "#1986e0",
       },
       android: {
         adaptiveIcon: {
