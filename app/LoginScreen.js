@@ -10,7 +10,10 @@ import {
   Image,
 } from "react-native";
 import { useGoogleAuth } from "../utils/auth";
-import { syncFromCloud } from "../utils/playerDataService";
+import {
+  migrateLocalGameData,
+  syncFromCloud,
+} from "../utils/playerDataService";
 import themeStyles from "../utils/themeStyles";
 import LoadingIndicator from "../components/loadingIcon";
 import { AntDesign } from "@expo/vector-icons";
@@ -24,12 +27,16 @@ const LoginScreen = ({ navigation }) => {
       if (user) {
         setIsSyncing(true);
         try {
-          console.log("Syncing game data for user:", user.uid);
+          console.log("PixelDokuLogs: Syncing game data for user:", user.uid);
+          await migrateLocalGameData();
           await syncFromCloud(user.uid);
-          console.log("Game data synced successfully.");
+          console.log("PixelDokuLogs: Game data synced successfully.");
           navigation.replace("Home");
         } catch (error) {
-          console.error("Error syncing game data:", error.message);
+          console.error(
+            "PixelDokuLogs: Error syncing game data:",
+            error.message
+          );
           Alert.alert(
             "Sync Error",
             "There was an error syncing your game data. Please try again later."
@@ -43,7 +50,8 @@ const LoginScreen = ({ navigation }) => {
     syncGameDataAfterLogin();
   }, [user]);
 
-  const handleGuestLogin = () => {
+  const handleGuestLogin = async () => {
+    await migrateLocalGameData();
     Alert.alert(
       "Continue as Guest",
       "Your progress will not be saved if you delete the game. Are you sure you want to continue?",

@@ -69,9 +69,12 @@ export function useGoogleAuth() {
       auth.signOut();
       setUser(null);
       navigation.navigate("Login");
-      console.log("[useGoogleAuth] User signed out.");
+      console.log("PixelDokuLogs: [useGoogleAuth] User signed out.");
     } catch (err) {
-      console.error("[useGoogleAuth] Sign-out error:", err.message);
+      console.error(
+        "PixelDokuLogs: [useGoogleAuth] Sign-out error:",
+        err.message
+      );
     }
   };
 

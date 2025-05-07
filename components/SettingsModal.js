@@ -15,7 +15,7 @@ const SettingsModal = ({ visible, onClose, navigation }) => {
       await signOut(navigation);
       onClose();
     } catch (error) {
-      console.error("Logout error:", error);
+      console.error("PixelDokuLogs: Logout error:", error);
     }
   };
 
@@ -24,7 +24,7 @@ const SettingsModal = ({ visible, onClose, navigation }) => {
       await promptAsync();
       onClose();
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("PixelDokuLogs: Login error:", error);
     }
   };
 

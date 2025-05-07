@@ -20,7 +20,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
 
   useEffect(() => {
     if (rewardAmount > 0) {
-      console.log("Reward received:", rewardAmount);
+      console.log("PixelDokuLogs: Reward received:", rewardAmount);
       addCoins(rewardAmount);
       setIsCoinShopVisible(false);
       setRewardAmount(0);

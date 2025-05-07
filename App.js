@@ -12,7 +12,6 @@ import LoadingIndicator from "./components/loadingIcon";
 import Header from "./components/Header";
 import mobileAds from "react-native-google-mobile-ads";
 import { withIAPContext } from "react-native-iap";
-import { migrateLocalGameData } from "./utils/playerDataService";
 import { PlayerDataProvider } from "./utils/playerDataContext";
 import { GameProvider } from "./utils/gameContext";
 import { MusicProvider } from "./utils/musicContext";
@@ -30,10 +29,10 @@ const App = () => {
           "Silkscreen-Regular": require("./assets/fonts/Silkscreen-Regular.ttf"),
           "Silkscreen-Bold": require("./assets/fonts/Silkscreen-Bold.ttf"),
         });
-        console.log("Fonts loaded successfully");
+        console.log("PixelDokuLogs: Fonts loaded successfully");
         setFontsLoaded(true);
       } catch (error) {
-        console.error("Error loading fonts:", error);
+        console.error("PixelDokuLogs: Error loading fonts:", error);
       }
     }
 
@@ -48,18 +47,7 @@ const App = () => {
     initializeAds();
   }, []);
 
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    const runMigration = async () => {
-      await migrateLocalGameData();
-      setIsReady(true);
-    };
-
-    runMigration();
-  }, []);
-
-  if (!fontsLoaded || !isReady) {
+  if (!fontsLoaded) {
     return <LoadingIndicator />;
   }
 

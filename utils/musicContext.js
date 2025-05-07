@@ -31,7 +31,7 @@ export const MusicProvider = ({ children }) => {
 
       // Unload previous sound if it exists
       if (sound.current) {
-        console.log("Unloading previous theme music");
+        console.log("PixelDokuLogs: Unloading previous theme music");
         await sound.current.unloadAsync();
         sound.current = null;
       }
@@ -45,7 +45,7 @@ export const MusicProvider = ({ children }) => {
 
       console.log(`Playing theme: ${theme?.themeKey}`);
     } catch (err) {
-      console.error("Error playing theme music:", err);
+      console.error("PixelDokuLogs: Error playing theme music:", err);
     }
   };
 
@@ -117,7 +117,7 @@ export const MusicProvider = ({ children }) => {
           shouldDuckAndroid: !isMuted,
         });
       } catch (error) {
-        console.error("Error setting audio mode:", error);
+        console.error("PixelDokuLogs: Error setting audio mode:", error);
       }
     };
 

@@ -39,7 +39,7 @@ const SudokuScreen = ({ route, navigation }) => {
       try {
         await resetProgress(theme, difficulty, false);
       } catch (error) {
-        console.error("Error loading game:", error);
+        console.error("PixelDokuLogs: Error loading game:", error);
       } finally {
         setIsLoading(false);
       }
