@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   googleButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#4285F4",
+    backgroundColor: themeStyles.colors.blue,
     marginTop: 40,
     paddingVertical: 12,
     paddingHorizontal: 24,

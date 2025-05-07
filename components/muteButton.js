@@ -2,9 +2,11 @@ import React from "react";
 import { TouchableOpacity, Image } from "react-native";
 import { useMusic } from "../utils/musicContext";
 import themeStyles from "../utils/themeStyles";
+import { usePlayerData } from "../utils/playerDataContext";
 
 const MusicToggleButton = () => {
   const { isMuted, muteMusic, unmuteMusic } = useMusic();
+  const { soundOn } = usePlayerData();
 
   const handleToggle = () => {
     if (isMuted) {
@@ -22,10 +24,14 @@ const MusicToggleButton = () => {
       accessibilityRole="button"
       onPress={handleToggle}
       hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+      disabled={!soundOn}
     >
       <Image
         source={isMuted ? mute : unmute}
-        style={[themeStyles.icons.iconSizeSmall, { marginRight: 20 }]}
+        style={[
+          themeStyles.icons.iconSizeSmall,
+          { marginRight: 20, opacity: soundOn ? 1 : 0.3 },
+        ]}
       />
     </TouchableOpacity>
   );

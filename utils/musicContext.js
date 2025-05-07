@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import { Audio } from "expo-av";
 import { AppState } from "react-native";
+import { usePlayerData } from "./playerDataContext";
 
 const soundEffects = {
   error: require("../assets/sounds/error-8-206492.mp3"),
@@ -17,12 +18,14 @@ const soundEffects = {
 const MusicContext = createContext();
 
 export const MusicProvider = ({ children }) => {
+  const { soundOn } = usePlayerData();
   const sound = useRef(null);
   const sfx = useRef(null);
   const [isMuted, setIsMuted] = useState(false);
 
   const playThemeMusic = async (theme) => {
     try {
+      if (!soundOn) return;
       const themeMusic = theme?.bgSound;
       if (!themeMusic) return;
 
@@ -48,6 +51,7 @@ export const MusicProvider = ({ children }) => {
 
   const playSoundEffect = async (effect) => {
     try {
+      if (!soundOn) return;
       if (AppState.currentState !== "active") {
         console.warn(`Skipped "${effect}" because app is not active`);
         return;
@@ -73,6 +77,7 @@ export const MusicProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    if (!soundOn) return;
     const subscription = AppState.addEventListener("change", (state) => {
       if (state === "active" && sound.current && !isMuted) {
         console.log(`Replaying music: ${sound.current._key}`);
@@ -103,6 +108,7 @@ export const MusicProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    if (!soundOn) return;
     const setAudioMode = async () => {
       try {
         await Audio.setAudioModeAsync({

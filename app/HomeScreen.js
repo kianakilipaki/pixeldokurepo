@@ -18,11 +18,14 @@ import TutorialModal from "../components/TutorialModal";
 import Coins from "../components/Coins";
 import { useFocusEffect } from "@react-navigation/native";
 import { usePlayerData } from "../utils/playerDataContext";
+import { Ionicons } from "@expo/vector-icons";
+import SettingsModal from "../components/SettingsModal";
 
 const HomeScreen = ({ navigation }) => {
   const { loadProgress } = useGame();
   const { themes, showTutorial, completeTutorial } = usePlayerData();
   const [savedGame, setSavedGame] = useState(null);
+  const [settingsVisible, setSettingsVisible] = useState(false);
   const { slideAnimation, fadeAnimation, toggleExpansion } =
     useThemeAnimation();
 
@@ -75,14 +78,25 @@ const HomeScreen = ({ navigation }) => {
       resizeMode="cover"
     >
       <StatusBar
-        barStyle="light-content" // Choose 'dark-content' or 'light-content'
+        barStyle="light-content"
         backgroundColor={themeStyles.colors.blue}
         translucent={false}
       />
+
+      {/* Settings Gear Icon */}
+      <TouchableOpacity
+        onPress={() => setSettingsVisible(true)}
+        style={styles.gearButton}
+      >
+        <Ionicons name="settings-outline" size={30} color="black" />
+      </TouchableOpacity>
+
+      {/* Coins */}
       <View style={styles.coinContainer}>
         {/* Coins */}
         <Coins />
       </View>
+
       {/* Title Page */}
       <Animated.View
         style={[styles.centerContainer, { opacity: fadeAnimation }]}
@@ -116,7 +130,16 @@ const HomeScreen = ({ navigation }) => {
         toggle={toggleExpansion}
         navigation={navigation}
       />
+
+      {/* Tutorial */}
       <TutorialModal visible={showTutorial} onClose={completeTutorial} />
+
+      {/* Settings Modal */}
+      <SettingsModal
+        navigation={navigation}
+        visible={settingsVisible}
+        onClose={() => setSettingsVisible(false)}
+      />
     </ImageBackground>
   );
 };
@@ -166,7 +189,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 5,
-    borderCollapse: "collapsed",
   },
   continueButton: {
     backgroundColor: themeStyles.colors.black1,
@@ -183,6 +205,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 10,
     top: 10,
+  },
+  gearButton: {
+    position: "absolute",
+    left: 10,
+    top: 10,
+    padding: 10,
+    zIndex: 10,
   },
 });
 

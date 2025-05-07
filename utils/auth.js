@@ -23,7 +23,7 @@ const firebaseConfig = {
 // Initialize Firebase app
 const app = initializeApp(firebaseConfig);
 
-// ✅ Use initializeAuth with AsyncStorage persistence
+// Use initializeAuth with AsyncStorage persistence
 const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
 });
@@ -63,11 +63,24 @@ export function useGoogleAuth() {
     }
   }, [response]);
 
+  // Add signOut method
+  const signOut = async (navigation) => {
+    try {
+      auth.signOut();
+      setUser(null);
+      navigation.navigate("Login");
+      console.log("[useGoogleAuth] User signed out.");
+    } catch (err) {
+      console.error("[useGoogleAuth] Sign-out error:", err.message);
+    }
+  };
+
   return {
     user,
     isLoading,
     promptAsync,
     request,
+    signOut,
   };
 }
 

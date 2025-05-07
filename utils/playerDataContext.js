@@ -11,6 +11,7 @@ export const PlayerDataProvider = ({ children }) => {
   const [highscores, setHighscores] = useState({});
   const [themes, setThemes] = useState({});
   const [showTutorial, setShowTutorial] = useState(false);
+  const [soundOn, setSoundOn] = useState(true);
 
   // Centralized save helper to avoid overwrites
   const savePlayerData = async (partial) => {
@@ -27,6 +28,7 @@ export const PlayerDataProvider = ({ children }) => {
         setHighscores(data.highscores || {});
         setThemes(await mergeThemes(data.themes));
         setShowTutorial(!data.tutorialSeen);
+        setSoundOn(data.soundOn !== false);
       } catch (error) {
         console.error("Error loading player data:", error);
       }
@@ -99,6 +101,13 @@ export const PlayerDataProvider = ({ children }) => {
     await savePlayerData({ tutorialSeen: true });
   };
 
+  // --- SOUND TOGGLE ---
+  const toggleSound = async () => {
+    const updatedSound = !soundOn;
+    setSoundOn(updatedSound);
+    await savePlayerData({ soundOn: updatedSound });
+  };
+
   return (
     <PlayerDataContext.Provider
       value={{
@@ -111,6 +120,8 @@ export const PlayerDataProvider = ({ children }) => {
         unlockTheme,
         showTutorial,
         completeTutorial,
+        soundOn,
+        toggleSound,
       }}
     >
       {children}
@@ -118,5 +129,4 @@ export const PlayerDataProvider = ({ children }) => {
   );
 };
 
-// Custom hook
 export const usePlayerData = () => useContext(PlayerDataContext);
