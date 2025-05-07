@@ -30,7 +30,7 @@ export const PlayerDataProvider = ({ children }) => {
         setShowTutorial(!data.tutorialSeen);
         setSoundOn(data.soundOn !== false);
       } catch (error) {
-        console.error("PixelDokuLogs: Error loading player data:", error);
+        console.error("[PixelDokuLogs] Error loading player data:", error);
       }
     };
 

@@ -31,7 +31,7 @@ export const MusicProvider = ({ children }) => {
 
       // Unload previous sound if it exists
       if (sound.current) {
-        console.log("PixelDokuLogs: Unloading previous theme music");
+        console.log("[PixelDokuLogs] Unloading previous theme music");
         await sound.current.unloadAsync();
         sound.current = null;
       }
@@ -43,9 +43,9 @@ export const MusicProvider = ({ children }) => {
       await loadedSound.setVolumeAsync(isMuted ? 0 : 0.8);
       await loadedSound.playAsync();
 
-      console.log(`Playing theme: ${theme?.themeKey}`);
+      console.log(`[PixelDokuLogs] Playing theme: ${theme?.themeKey}`);
     } catch (err) {
-      console.error("PixelDokuLogs: Error playing theme music:", err);
+      console.error("[PixelDokuLogs] Error playing theme music:", err);
     }
   };
 
@@ -62,9 +62,12 @@ export const MusicProvider = ({ children }) => {
 
       await sfxSound.setPositionAsync(0); // reset to beginning
       await sfxSound.playAsync();
-      console.log(`Playing sound effect: ${effect}`);
+      console.log(`[PixelDokuLogs] Playing sound effect: ${effect}`);
     } catch (err) {
-      console.error(`Error playing "${effect}" sound effect:`, err);
+      console.error(
+        `[PixelDokuLogs] Error playing "${effect}" sound effect:`,
+        err
+      );
     }
   };
 
@@ -72,7 +75,7 @@ export const MusicProvider = ({ children }) => {
     if (sound.current) {
       await sound.current.unloadAsync();
       sound.current = null;
-      console.log(`Stopping music`);
+      console.log(`[PixelDokuLogs] Stopping music`);
     }
   };
 
@@ -80,7 +83,7 @@ export const MusicProvider = ({ children }) => {
     if (!soundOn) return;
     const subscription = AppState.addEventListener("change", (state) => {
       if (state === "active" && sound.current && !isMuted) {
-        console.log(`Replaying music: ${sound.current._key}`);
+        console.log(`[PixelDokuLogs] Replaying music: ${sound.current._key}`);
         sound.current
           .playAsync()
           .catch((err) => console.warn("Playback error:", err));
@@ -92,7 +95,11 @@ export const MusicProvider = ({ children }) => {
         const { sound } = await Audio.Sound.createAsync(soundEffects[key]);
         loaded[key] = sound;
       }
-      console.log(`Loaded sound effects: ${Object.keys(loaded).join(", ")}`);
+      console.log(
+        `[PixelDokuLogs] Loaded sound effects: ${Object.keys(loaded).join(
+          ", "
+        )}`
+      );
       sfx.current = loaded;
     };
 
@@ -117,7 +124,7 @@ export const MusicProvider = ({ children }) => {
           shouldDuckAndroid: !isMuted,
         });
       } catch (error) {
-        console.error("PixelDokuLogs: Error setting audio mode:", error);
+        console.error("[PixelDokuLogs] Error setting audio mode:", error);
       }
     };
 
@@ -132,12 +139,12 @@ export const MusicProvider = ({ children }) => {
         muteMusic: async () => {
           if (sound.current) await sound.current.setVolumeAsync(0);
           setIsMuted(true);
-          console.log(`Mute music`);
+          console.log(`[PixelDokuLogs] Mute music`);
         },
         unmuteMusic: async () => {
           if (sound.current) await sound.current.setVolumeAsync(0.8);
           setIsMuted(false);
-          console.log(`UnMute music`);
+          console.log(`[PixelDokuLogs] UnMute music`);
         },
         stopMusic,
         isMuted,

@@ -33,7 +33,7 @@ const HomeScreen = ({ navigation }) => {
     useCallback(() => {
       const checkProgress = async () => {
         try {
-          console.log("PixelDokuLogs: checking progress...");
+          console.log("[PixelDokuLogs] checking progress...");
           const progress = await loadProgress(savedGame);
           if (progress?.difficulty) {
             setSavedGame(progress);
@@ -42,7 +42,7 @@ const HomeScreen = ({ navigation }) => {
           }
         } catch (error) {
           console.error(
-            "PixelDokuLogs: Failed to load saved game progress:",
+            "[PixelDokuLogs] Failed to load saved game progress:",
             error
           );
         }

@@ -29,10 +29,10 @@ const App = () => {
           "Silkscreen-Regular": require("./assets/fonts/Silkscreen-Regular.ttf"),
           "Silkscreen-Bold": require("./assets/fonts/Silkscreen-Bold.ttf"),
         });
-        console.log("PixelDokuLogs: Fonts loaded successfully");
+        console.log("[PixelDokuLogs] Fonts loaded successfully");
         setFontsLoaded(true);
       } catch (error) {
-        console.error("PixelDokuLogs: Error loading fonts:", error);
+        console.error("[PixelDokuLogs] Error loading fonts:", error);
       }
     }
 

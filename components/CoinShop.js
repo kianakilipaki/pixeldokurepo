@@ -20,7 +20,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
 
   useEffect(() => {
     if (rewardAmount > 0) {
-      console.log("PixelDokuLogs: Reward received:", rewardAmount);
+      console.log("[PixelDokuLogs] Reward received:", rewardAmount);
       addCoins(rewardAmount);
       setIsCoinShopVisible(false);
       setRewardAmount(0);
@@ -28,7 +28,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   }, [rewardAmount]);
 
   const handlePurchaseSuccess = (productId) => {
-    console.log(`PixelDokuLogs: Adding coins for: ${productId}`);
+    console.log(`[PixelDokuLogs] Adding coins for: ${productId}`);
     const coinsToAdd = parseInt(productId.split("_")[0], 10) || 0;
     if (coinsToAdd > 0) {
       addCoins(coinsToAdd);

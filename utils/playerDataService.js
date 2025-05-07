@@ -21,7 +21,7 @@ const validateGameData = (data) => {
 
   if (typeof highscores !== "object" || highscores === null) {
     console.error(
-      "PixelDokuLogs: [validateGameData] Invalid highscores:",
+      "[PixelDokuLogs] [validateGameData] Invalid highscores:",
       highscores
     );
     throw new Error("HighScores must be a valid object.");
@@ -68,7 +68,7 @@ const validateGameData = (data) => {
 
   if (typeof tutorialSeen !== "boolean") {
     console.error(
-      "PixelDokuLogs: [validateGameData] Invalid tutorialSeen:",
+      "[PixelDokuLogs] [validateGameData] Invalid tutorialSeen:",
       tutorialSeen
     );
     throw new Error("TutorialSeen must be a boolean.");
@@ -78,7 +78,7 @@ const validateGameData = (data) => {
     throw new Error("LastUpdated must be a valid ISO date string.");
   }
 
-  console.log("PixelDokuLogs: [validateGameData] Validation successful.");
+  console.log("[PixelDokuLogs] [validateGameData] Validation successful.");
   return true;
 };
 
@@ -99,8 +99,8 @@ export async function saveToLocal(update, uid = null) {
 
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(dataWithTimestamp));
     console.log(
-      "PixelDokuLogs: [saveToLocal] Game data saved locally:",
-      dataWithTimestamp
+      "[PixelDokuLogs] [saveToLocal] Game data saved locally:",
+      JSON.stringify(dataWithTimestamp)
     );
 
     // Optional: Also save to cloud if uid is passed
@@ -108,7 +108,7 @@ export async function saveToLocal(update, uid = null) {
       await saveToCloud(uid, dataWithTimestamp);
     }
   } catch (error) {
-    console.error("PixelDokuLogs: [saveToLocal] Error:", error.message);
+    console.error("[PixelDokuLogs] [saveToLocal] Error:", error.message);
   }
 }
 
@@ -118,13 +118,16 @@ export async function loadFromLocal() {
     const localData = await AsyncStorage.getItem(STORAGE_KEY);
     if (localData) {
       const parsed = JSON.parse(localData);
-      console.log("PixelDokuLogs: [loadFromLocal] Loaded local data:", parsed);
+      console.log(
+        "[PixelDokuLogs] [loadFromLocal] Loaded local data:",
+        localData
+      );
       return parsed;
     }
-    console.log("PixelDokuLogs: [loadFromLocal] No local data found.");
+    console.log("[PixelDokuLogs] [loadFromLocal] No local data found.");
     return null;
   } catch (error) {
-    console.error("PixelDokuLogs: [loadFromLocal] Error:", error.message);
+    console.error("[PixelDokuLogs] [loadFromLocal] Error:", error.message);
     return null;
   }
 }
@@ -134,11 +137,11 @@ export async function saveToCloud(uid, data) {
   try {
     await setDoc(doc(db, "users", uid), data, { merge: true });
     console.log(
-      "PixelDokuLogs: [saveToCloud] Game data saved to Firestore:",
-      data
+      "[PixelDokuLogs] [saveToCloud] Game data saved to Firestore:",
+      JSON.stringify(data, null, 2)
     );
   } catch (error) {
-    console.error("PixelDokuLogs: [saveToCloud] Error:", error.message);
+    console.error("[PixelDokuLogs] [saveToCloud] Error:", error.message);
   }
 }
 
@@ -148,13 +151,16 @@ export async function loadFromCloud(uid) {
     const userDoc = await getDoc(doc(db, "users", uid));
     if (userDoc.exists()) {
       const data = userDoc.data();
-      console.log("PixelDokuLogs: [loadFromCloud] Data from Firestore:", data);
+      console.log(
+        "[PixelDokuLogs] [loadFromCloud] Data from Firestore:",
+        JSON.stringify(data, null, 2)
+      );
       return data;
     }
-    console.log("PixelDokuLogs: [loadFromCloud] No cloud data found.");
+    console.log("[PixelDokuLogs] [loadFromCloud] No cloud data found.");
     return null;
   } catch (error) {
-    console.error("PixelDokuLogs: [loadFromCloud] Error:", error.message);
+    console.error("[PixelDokuLogs] [loadFromCloud] Error:", error.message);
     return null;
   }
 }
@@ -170,7 +176,7 @@ export async function syncFromCloud(uid) {
       (!localData || cloudData.lastUpdated > localData.lastUpdated)
     ) {
       console.log(
-        "PixelDokuLogs: [syncFromCloud] Cloud data is newer. Saving locally."
+        "[PixelDokuLogs] [syncFromCloud] Cloud data is newer. Saving locally."
       );
       await saveToLocal(cloudData);
       return cloudData;
@@ -182,7 +188,7 @@ export async function syncFromCloud(uid) {
       cloudData.lastUpdated <= localData.lastUpdated
     ) {
       console.log(
-        "PixelDokuLogs: [syncFromCloud] Local data is newer. Syncing to cloud."
+        "[PixelDokuLogs] [syncFromCloud] Local data is newer. Syncing to cloud."
       );
       await saveToCloud(uid, localData);
       return localData;
@@ -190,18 +196,18 @@ export async function syncFromCloud(uid) {
 
     if (!cloudData && localData && uid) {
       console.log(
-        "[syncFromCloud] No cloud data, but local exists. Saving to cloud."
+        "[PixelDokuLogs] [syncFromCloud] No cloud data, but local exists. Saving to cloud."
       );
       await saveToCloud(uid, localData);
       return localData;
     }
 
     console.log(
-      "PixelDokuLogs: [syncFromCloud] No cloud or local data to sync."
+      "[PixelDokuLogs] [syncFromCloud] No cloud or local data to sync."
     );
     return null;
   } catch (error) {
-    console.error("PixelDokuLogs: [syncFromCloud] Error:", error.message);
+    console.error("[PixelDokuLogs] [syncFromCloud] Error:", error.message);
     return null;
   }
 }
@@ -227,27 +233,29 @@ export async function resetAndSeedOldGameData() {
     await AsyncStorage.setItem("sudokuTutorialSeen", JSON.stringify(true));
     const keys = await AsyncStorage.getAllKeys();
 
-    console.log("PixelDokuLogs: ✅ Reset and seeded old fake game data:", keys);
+    console.log("[PixelDokuLogs] Reset and seeded old fake game data:", keys);
   } catch (error) {
-    console.error("PixelDokuLogs: ❌ Error during reset/seed:", error);
+    console.error("[PixelDokuLogs] Error during reset/seed:", error);
   }
 }
 
 // One-time migration to unified key
 export async function migrateLocalGameData(uid) {
   try {
-    console.log("PixelDokuLogs: [migrateLocalGameData] Starting migration...");
-    const loadFromCloud = await loadFromCloud(uid);
-    if (loadFromCloud) {
-      console.log(
-        "[migrateLocalGameData] Cloud data found. Skipping migration."
-      );
-      return;
+    console.log("[PixelDokuLogs] [migrateLocalGameData] Starting migration...");
+    if (uid) {
+      const loadFromCloud = await loadFromCloud(uid);
+      if (loadFromCloud) {
+        console.log(
+          "[PixelDokuLogs] [migrateLocalGameData] Cloud data found. Skipping migration."
+        );
+        return;
+      }
     }
-    const existingGameData = await AsyncStorage.getItem(STORAGE_KEY);
-    if (existingGameData) {
+    const loadFromLocal = await loadFromLocal();
+    if (loadFromLocal) {
       console.log(
-        "PixelDokuLogs: [migrateLocalGameData] Data already migrated. Skipping."
+        "[PixelDokuLogs] [migrateLocalGameData] Data already migrated. Skipping."
       );
       return;
     }
@@ -268,8 +276,8 @@ export async function migrateLocalGameData(uid) {
     };
 
     console.log(
-      "PixelDokuLogs: [migrateLocalGameData] Parsed gameData:",
-      parsedData
+      "[PixelDokuLogs] [migrateLocalGameData] Parsed gameData:",
+      JSON.stringify(parsedData, null, 2)
     );
 
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(parsedData));
@@ -280,10 +288,10 @@ export async function migrateLocalGameData(uid) {
       "sudokuTutorialSeen",
     ]);
 
-    console.log("PixelDokuLogs: [migrateLocalGameData] Migration successful.");
+    console.log("[PixelDokuLogs] [migrateLocalGameData] Migration successful.");
   } catch (error) {
     console.error(
-      "PixelDokuLogs: [migrateLocalGameData] Failed:",
+      "[PixelDokuLogs] [migrateLocalGameData] Failed:",
       error.message
     );
   }

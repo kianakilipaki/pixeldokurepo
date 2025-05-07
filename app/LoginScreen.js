@@ -27,14 +27,14 @@ const LoginScreen = ({ navigation }) => {
       if (user) {
         setIsSyncing(true);
         try {
-          console.log("PixelDokuLogs: Syncing game data for user:", user.uid);
-          await migrateLocalGameData();
+          console.log("[PixelDokuLogs] Syncing game data for user:", user.uid);
+          await migrateLocalGameData(user.uid);
           await syncFromCloud(user.uid);
-          console.log("PixelDokuLogs: Game data synced successfully.");
+          console.log("[PixelDokuLogs] Game data synced successfully.");
           navigation.replace("Home");
         } catch (error) {
           console.error(
-            "PixelDokuLogs: Error syncing game data:",
+            "[PixelDokuLogs] Error syncing game data:",
             error.message
           );
           Alert.alert(
