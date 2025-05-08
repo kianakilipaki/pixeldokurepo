@@ -138,7 +138,7 @@ export async function saveToCloud(uid, data) {
     await setDoc(doc(db, "users", uid), data, { merge: true });
     console.log(
       "[PixelDokuLogs] [saveToCloud] Game data saved to Firestore:",
-      JSON.stringify(data, null, 2)
+      JSON.stringify(data)
     );
   } catch (error) {
     console.error("[PixelDokuLogs] [saveToCloud] Error:", error.message);
@@ -153,7 +153,7 @@ export async function loadFromCloud(uid) {
       const data = userDoc.data();
       console.log(
         "[PixelDokuLogs] [loadFromCloud] Data from Firestore:",
-        JSON.stringify(data, null, 2)
+        JSON.stringify(data)
       );
       return data;
     }
@@ -244,16 +244,16 @@ export async function migrateLocalGameData(uid) {
   try {
     console.log("[PixelDokuLogs] [migrateLocalGameData] Starting migration...");
     if (uid) {
-      const loadFromCloud = await loadFromCloud(uid);
-      if (loadFromCloud) {
+      const cloudData = await loadFromCloud(uid);
+      if (cloudData) {
         console.log(
           "[PixelDokuLogs] [migrateLocalGameData] Cloud data found. Skipping migration."
         );
         return;
       }
     }
-    const loadFromLocal = await loadFromLocal();
-    if (loadFromLocal) {
+    const localData = await loadFromLocal();
+    if (localData) {
       console.log(
         "[PixelDokuLogs] [migrateLocalGameData] Data already migrated. Skipping."
       );
@@ -277,7 +277,7 @@ export async function migrateLocalGameData(uid) {
 
     console.log(
       "[PixelDokuLogs] [migrateLocalGameData] Parsed gameData:",
-      JSON.stringify(parsedData, null, 2)
+      JSON.stringify(parsedData)
     );
 
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(parsedData));
