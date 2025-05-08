@@ -44,7 +44,7 @@ export const GameProvider = ({ children }) => {
       };
       const progressString = JSON.stringify(progress);
       await AsyncStorage.setItem("gameProgress", progressString);
-      console.log("[PixelDokuLogs] Progress saved:", progress);
+      console.log("[PixelDokuLogs] Progress saved:", progressString);
     } catch (error) {
       console.error("[PixelDokuLogs] Error saving progress:", error);
     }
@@ -66,7 +66,7 @@ export const GameProvider = ({ children }) => {
         setHints(progress.hints);
         setSelectedCell(null);
         setErrorCell(progress.errorCell);
-        console.log("[PixelDokuLogs] Progress loaded:", progress);
+        console.log("[PixelDokuLogs] Progress loaded:", stringProgress);
       }
       return progress;
     } catch (error) {

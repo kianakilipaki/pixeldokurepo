@@ -17,9 +17,11 @@ import {
 import themeStyles from "../utils/themeStyles";
 import LoadingIndicator from "../components/loadingIcon";
 import { AntDesign } from "@expo/vector-icons";
+import { usePlayerData } from "../utils/playerDataContext";
 
 const LoginScreen = ({ navigation }) => {
   const { user, isLoading, promptAsync } = useGoogleAuth();
+  const { loadPlayerData } = usePlayerData();
   const [isSyncing, setIsSyncing] = useState(false);
 
   useEffect(() => {
@@ -30,6 +32,8 @@ const LoginScreen = ({ navigation }) => {
           console.log("[PixelDokuLogs] Syncing game data for user:", user.uid);
           await migrateLocalGameData(user.uid);
           await syncFromCloud(user.uid);
+          await loadPlayerData();
+
           navigation.replace("Home");
         } catch (error) {
           console.error(
@@ -50,8 +54,6 @@ const LoginScreen = ({ navigation }) => {
   }, [user]);
 
   const handleGuestLogin = async () => {
-    console.log("[PixelDokuLogs] Login as guest.");
-    await migrateLocalGameData();
     Alert.alert(
       "Continue as Guest",
       "Your progress will not be saved if you delete the game. Are you sure you want to continue?",
@@ -60,7 +62,12 @@ const LoginScreen = ({ navigation }) => {
         {
           text: "Continue",
           style: "destructive",
-          onPress: () => navigation.replace("Home"),
+          onPress: async () => {
+            console.log("[PixelDokuLogs] Login as guest.");
+            await migrateLocalGameData();
+            await loadPlayerData();
+            navigation.replace("Home");
+          },
         },
       ]
     );

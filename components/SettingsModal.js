@@ -5,9 +5,10 @@ import { usePlayerData } from "../utils/playerDataContext";
 import ModalTemplate from "./ModalTemplate";
 import { AntDesign } from "@expo/vector-icons";
 import themeStyles from "../utils/themeStyles";
+import { syncFromCloud } from "../utils/playerDataService";
 
 const SettingsModal = ({ visible, onClose, navigation }) => {
-  const { soundOn, toggleSound } = usePlayerData();
+  const { soundOn, toggleSound, loadPlayerData } = usePlayerData();
   const { user, signOut, promptAsync } = useGoogleAuth();
 
   const logout = async () => {
@@ -22,6 +23,8 @@ const SettingsModal = ({ visible, onClose, navigation }) => {
   const login = async () => {
     try {
       await promptAsync();
+      await syncFromCloud(user.uid);
+      await loadPlayerData();
       onClose();
     } catch (error) {
       console.error("[PixelDokuLogs] Login error:", error);

@@ -19,23 +19,20 @@ export const PlayerDataProvider = ({ children }) => {
   };
 
   // Load everything from AsyncStorage once
-  useEffect(() => {
-    const loadPlayerData = async () => {
-      try {
-        const data = await loadFromLocal();
+  const loadPlayerData = async () => {
+    try {
+      console.log("[PixelDokuLogs] Loading player data...");
+      const data = await loadFromLocal();
 
-        setCoins(data.coins || 0);
-        setHighscores(data.highscores || {});
-        setThemes(await mergeThemes(data.themes));
-        setShowTutorial(!data.tutorialSeen);
-        setSoundOn(data.soundOn !== false);
-      } catch (error) {
-        console.error("[PixelDokuLogs] Error loading player data:", error);
-      }
-    };
-
-    loadPlayerData();
-  }, []);
+      setCoins(data?.coins || 0);
+      setHighscores(data?.highscores || {});
+      setThemes((await mergeThemes(data?.themes)) || defaultThemes);
+      setShowTutorial(!data?.tutorialSeen || false);
+      setSoundOn(data?.soundOn !== false || true);
+    } catch (error) {
+      console.error("[PixelDokuLogs] Error loading player data:", error);
+    }
+  };
 
   // Merge stored themes with defaults
   const mergeThemes = async (storedThemes) => {
@@ -111,6 +108,7 @@ export const PlayerDataProvider = ({ children }) => {
   return (
     <PlayerDataContext.Provider
       value={{
+        loadPlayerData,
         coins,
         addCoins,
         removeCoins,

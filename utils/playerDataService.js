@@ -20,10 +20,6 @@ const validateGameData = (data) => {
   }
 
   if (typeof highscores !== "object" || highscores === null) {
-    console.error(
-      "[PixelDokuLogs] [validateGameData] Invalid highscores:",
-      highscores
-    );
     throw new Error("HighScores must be a valid object.");
   }
 
@@ -67,10 +63,6 @@ const validateGameData = (data) => {
   });
 
   if (typeof tutorialSeen !== "boolean") {
-    console.error(
-      "[PixelDokuLogs] [validateGameData] Invalid tutorialSeen:",
-      tutorialSeen
-    );
     throw new Error("TutorialSeen must be a boolean.");
   }
 
@@ -272,6 +264,7 @@ export async function migrateLocalGameData(uid) {
       themes: themes ? JSON.parse(themes) : defaultThemes,
       highscores: highscores ? JSON.parse(highscores) : {},
       tutorialSeen: tutorialSeen ? true : false,
+      soundOn: true,
       lastUpdated: new Date().toISOString(),
     };
 
