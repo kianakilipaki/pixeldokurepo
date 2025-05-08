@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Switch, StyleSheet, TouchableOpacity } from "react-native";
 import { useGoogleAuth } from "../utils/auth";
 import { usePlayerData } from "../utils/playerDataContext";
@@ -20,16 +20,30 @@ const SettingsModal = ({ visible, onClose, navigation }) => {
     }
   };
 
-  const login = async () => {
-    try {
-      await promptAsync();
-      await syncFromCloud(user.uid);
-      await loadPlayerData();
-      onClose();
-    } catch (error) {
-      console.error("[PixelDokuLogs] Login error:", error);
-    }
-  };
+  useEffect(() => {
+    const syncGameDataAfterLogin = async () => {
+      if (user) {
+        try {
+          console.log("[PixelDokuLogs] Syncing game data for user:", user.uid);
+          await syncFromCloud(user.uid);
+          await loadPlayerData();
+
+          onClose();
+        } catch (error) {
+          console.error(
+            "[PixelDokuLogs] Error syncing game data:",
+            error.message
+          );
+          Alert.alert(
+            "Sync Error",
+            "There was an error syncing your game data. Please try again later."
+          );
+        }
+      }
+    };
+
+    syncGameDataAfterLogin();
+  }, [user]);
 
   const modalBody = (
     <View style={styles.content}>
@@ -56,7 +70,7 @@ const SettingsModal = ({ visible, onClose, navigation }) => {
             <Text style={styles.logout}>Logout</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.button} onPress={login}>
+          <TouchableOpacity style={styles.button} onPress={() => promptAsync()}>
             <AntDesign
               name="google"
               size={20}
