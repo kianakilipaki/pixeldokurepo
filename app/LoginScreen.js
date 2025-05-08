@@ -30,7 +30,6 @@ const LoginScreen = ({ navigation }) => {
           console.log("[PixelDokuLogs] Syncing game data for user:", user.uid);
           await migrateLocalGameData(user.uid);
           await syncFromCloud(user.uid);
-          console.log("[PixelDokuLogs] Game data synced successfully.");
           navigation.replace("Home");
         } catch (error) {
           console.error(
@@ -51,6 +50,7 @@ const LoginScreen = ({ navigation }) => {
   }, [user]);
 
   const handleGuestLogin = async () => {
+    console.log("[PixelDokuLogs] Login as guest.");
     await migrateLocalGameData();
     Alert.alert(
       "Continue as Guest",

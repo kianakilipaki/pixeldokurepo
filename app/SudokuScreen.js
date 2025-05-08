@@ -59,8 +59,10 @@ const SudokuScreen = ({ route, navigation }) => {
     setDifficulty(difficulty);
 
     if (isNewGame) {
+      console.log("[PixelDokuLogs] Starting new game...");
       startNewGame(theme, difficulty);
     } else {
+      console.log("[PixelDokuLogs] Continuing saved game...");
       setIsLoading(false);
     }
 
