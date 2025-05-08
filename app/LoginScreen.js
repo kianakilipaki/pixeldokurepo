@@ -20,7 +20,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { usePlayerData } from "../utils/playerDataContext";
 
 const LoginScreen = ({ navigation }) => {
-  const { user, isLoading, promptAsync } = useGoogleAuth();
+  const { user, isLoading, promptAsync, justReconnected } = useGoogleAuth();
   const { loadPlayerData } = usePlayerData();
   const [isSyncing, setIsSyncing] = useState(false);
 
@@ -31,7 +31,7 @@ const LoginScreen = ({ navigation }) => {
         try {
           console.log("[PixelDokuLogs] Syncing game data for user:", user.uid);
           await migrateLocalGameData(user.uid);
-          await syncFromCloud(user.uid);
+          await syncFromCloud(user.uid, justReconnected);
           await loadPlayerData();
 
           navigation.replace("Home");

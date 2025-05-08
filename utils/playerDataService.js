@@ -158,42 +158,39 @@ export async function loadFromCloud(uid) {
 }
 
 // Sync cloud to local
-export async function syncFromCloud(uid) {
+export async function syncFromCloud(uid, justReconnected = false) {
   try {
     const cloudData = await loadFromCloud(uid);
     const localData = await loadFromLocal();
 
-    if (
-      cloudData &&
-      (!localData || cloudData.lastUpdated > localData.lastUpdated)
-    ) {
+    // 1. Just reconnected: prioritize local and push to cloud
+    if (justReconnected && localData) {
       console.log(
-        "[PixelDokuLogs] [syncFromCloud] Cloud data is newer. Saving locally."
+        "[PixelDokuLogs] [syncFromCloud] Just reconnected — prioritizing local data and updating cloud."
+      );
+      await saveToCloud(uid, localData);
+      return localData;
+    }
+
+    // 2. Cloud data exists (always preferred outside justReconnected)
+    if (cloudData) {
+      console.log(
+        "[PixelDokuLogs] [syncFromCloud] Cloud data found. Overwriting local data."
       );
       await saveToLocal(cloudData);
       return cloudData;
     }
 
-    if (
-      cloudData &&
-      localData &&
-      cloudData.lastUpdated <= localData.lastUpdated
-    ) {
-      console.log(
-        "[PixelDokuLogs] [syncFromCloud] Local data is newer. Syncing to cloud."
-      );
-      await saveToCloud(uid, localData);
-      return localData;
-    }
-
+    // 3. No cloud data, but local exists (first-time login or new device)
     if (!cloudData && localData && uid) {
       console.log(
-        "[PixelDokuLogs] [syncFromCloud] No cloud data, but local exists. Saving to cloud."
+        "[PixelDokuLogs] [syncFromCloud] No cloud data, using local and saving to cloud."
       );
       await saveToCloud(uid, localData);
       return localData;
     }
 
+    // 4. No data at all
     console.log(
       "[PixelDokuLogs] [syncFromCloud] No cloud or local data to sync."
     );

@@ -83,26 +83,27 @@ const ThemeList = ({
 
         {!item.locked && isExpanded && (
           <Animated.View style={styles.difficultyContainer}>
-            {Object.entries(Scores).map(([difficulty, time]) => (
-              <View key={difficulty}>
-                <TouchableOpacity
-                  accessibilityLabel={`Difficulty: ${difficulty} Best Time: ${formatTime(
-                    time
-                  )}`}
-                  accessibilityRole="button"
-                  style={styles.difficultyButton}
-                  onPress={() => navigateToSudoku(difficulty)}
-                >
-                  <Text style={styles.difficultyText}>
-                    {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
-                  </Text>
-                  <Text style={styles.ScoresText}>
-                    Best time {formatTime(time)}
-                  </Text>
-                </TouchableOpacity>
-                {difficulty !== "Hard" && <View style={styles.divider} />}
-              </View>
-            ))}
+            {["Easy", "Medium", "Hard"].map((difficulty) => {
+              const time = Scores[difficulty] || 0;
+              return (
+                <View key={difficulty}>
+                  <TouchableOpacity
+                    accessibilityLabel={`Difficulty: ${difficulty} Best Time: ${formatTime(
+                      time
+                    )}`}
+                    accessibilityRole="button"
+                    style={styles.difficultyButton}
+                    onPress={() => navigateToSudoku(difficulty)}
+                  >
+                    <Text style={styles.difficultyText}>{difficulty}</Text>
+                    <Text style={styles.ScoresText}>
+                      Best time {formatTime(time)}
+                    </Text>
+                  </TouchableOpacity>
+                  {difficulty !== "Hard" && <View style={styles.divider} />}
+                </View>
+              );
+            })}
           </Animated.View>
         )}
 

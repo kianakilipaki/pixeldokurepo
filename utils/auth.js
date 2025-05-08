@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 import {
   initializeAuth,
   getReactNativePersistence,
@@ -9,7 +9,8 @@ import {
 import { getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Google from "expo-auth-session/providers/google";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import NetInfo from "@react-native-community/netinfo";
 
 // Replace with your own Firebase config from the console
 const firebaseConfig = {
@@ -21,20 +22,27 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase app
-const app = initializeApp(firebaseConfig);
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
-// Use initializeAuth with AsyncStorage persistence
-const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage),
-});
+// Safe Auth initialization
+let auth;
+try {
+  auth = getAuth(app);
+} catch (e) {
+  auth = initializeAuth(app, {
+    persistence: getReactNativePersistence(AsyncStorage),
+  });
+}
 
-// Initialize Firestore
+// Firestore init
 const db = getFirestore(app);
 
 // Custom hook for Google Authentication
 export function useGoogleAuth() {
   const [user, setUser] = useState(null);
   const [isLoading, setLoading] = useState(true);
+  const hasAttemptedLogin = useRef(false);
+  const justReconnected = useRef(false);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId:
@@ -47,12 +55,46 @@ export function useGoogleAuth() {
   });
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-      setLoading(false);
+    const unsubscribeNetInfo = NetInfo.addEventListener(async (state) => {
+      if (state.isConnected && !user && !hasAttemptedLogin.current) {
+        justReconnected.current = true;
+        hasAttemptedLogin.current = true;
+
+        // Attempt silent login again
+        const unsub = onAuthStateChanged(auth, (firebaseUser) => {
+          if (firebaseUser) {
+            console.log("[PixelDokuLogs] Auth resumed on reconnect.");
+            setUser(firebaseUser);
+          }
+          setLoading(false);
+        });
+
+        return () => unsub();
+      }
     });
 
-    return unsub;
+    return () => unsubscribeNetInfo();
+  }, [user]);
+
+  useEffect(() => {
+    const checkInitialConnection = async () => {
+      const netInfo = await NetInfo.fetch();
+
+      if (!netInfo.isConnected) {
+        console.log("[PixelDokuLogs] Offline. Starting in guest mode.");
+        setLoading(false);
+        return;
+      }
+
+      const unsub = onAuthStateChanged(auth, (firebaseUser) => {
+        setUser(firebaseUser);
+        setLoading(false);
+      });
+
+      return unsub;
+    };
+
+    checkInitialConnection();
   }, []);
 
   useEffect(() => {
@@ -63,18 +105,14 @@ export function useGoogleAuth() {
     }
   }, [response]);
 
-  // Add signOut method
   const signOut = async (navigation) => {
     try {
-      auth.signOut();
+      await auth.signOut();
       setUser(null);
       navigation.navigate("Login");
-      console.log("[PixelDokuLogs] [useGoogleAuth] User signed out.");
+      console.log("[PixelDokuLogs] Signed out.");
     } catch (err) {
-      console.error(
-        "[PixelDokuLogs] [useGoogleAuth] Sign-out error:",
-        err.message
-      );
+      console.error("[PixelDokuLogs] Sign-out error:", err.message);
     }
   };
 
@@ -84,6 +122,7 @@ export function useGoogleAuth() {
     promptAsync,
     request,
     signOut,
+    justReconnected: justReconnected.current,
   };
 }
 
