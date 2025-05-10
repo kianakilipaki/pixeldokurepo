@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   ImageBackground,
   Text,
@@ -9,48 +8,23 @@ import {
   StatusBar,
   Image,
 } from "react-native";
-import { useGoogleAuth } from "../utils/auth";
+import { useGoogleAuth } from "../utils/authContext";
 import {
   migrateLocalGameData,
-  syncFromCloud,
+  resetAndSeedOldGameData,
 } from "../utils/playerDataService";
 import themeStyles from "../utils/themeStyles";
 import LoadingIndicator from "../components/loadingIcon";
 import { AntDesign } from "@expo/vector-icons";
 import { usePlayerData } from "../utils/playerDataContext";
+import { useEffect } from "react";
 
 const LoginScreen = ({ navigation }) => {
-  const { user, isLoading, promptAsync, justReconnected } = useGoogleAuth();
+  const { isLoading, signIn, user } = useGoogleAuth();
   const { loadPlayerData } = usePlayerData();
-  const [isSyncing, setIsSyncing] = useState(false);
 
   useEffect(() => {
-    const syncGameDataAfterLogin = async () => {
-      if (user) {
-        setIsSyncing(true);
-        try {
-          console.log("[PixelDokuLogs] Syncing game data for user:", user.uid);
-          await migrateLocalGameData(user.uid);
-          await syncFromCloud(user.uid, justReconnected);
-          await loadPlayerData();
-
-          navigation.replace("Home");
-        } catch (error) {
-          console.error(
-            "[PixelDokuLogs] Error syncing game data:",
-            error.message
-          );
-          Alert.alert(
-            "Sync Error",
-            "There was an error syncing your game data. Please try again later."
-          );
-        } finally {
-          setIsSyncing(false);
-        }
-      }
-    };
-
-    syncGameDataAfterLogin();
+    if (user) navigation.replace("Home");
   }, [user]);
 
   const handleGuestLogin = async () => {
@@ -63,7 +37,8 @@ const LoginScreen = ({ navigation }) => {
           text: "Continue",
           style: "destructive",
           onPress: async () => {
-            console.log("[PixelDokuLogs] Login as guest.");
+            console.log("[Pixeldokulogs] Login as guest. Initializing data...");
+            //await resetAndSeedOldGameData();
             await migrateLocalGameData();
             await loadPlayerData();
             navigation.replace("Home");
@@ -73,7 +48,7 @@ const LoginScreen = ({ navigation }) => {
     );
   };
 
-  if (isLoading || isSyncing) {
+  if (isLoading) {
     return (
       <ImageBackground
         source={require("../assets/themes/MntForest-bg.png")}
@@ -104,10 +79,7 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.header}>Welcome to</Text>
         <Text style={styles.title}>PixelDoku</Text>
 
-        <TouchableOpacity
-          style={styles.googleButton}
-          onPress={() => promptAsync()}
-        >
+        <TouchableOpacity style={styles.googleButton} onPress={signIn}>
           <AntDesign name="google" size={20} color="#fff" style={styles.icon} />
           <Text style={styles.googleText}>Sign in with Google</Text>
         </TouchableOpacity>

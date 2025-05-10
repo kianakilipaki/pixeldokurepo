@@ -24,7 +24,7 @@ export const useCoinShopRewardedAd = () => {
     rewardedAd.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       (reward) => {
-        console.log("[PixelDokuLogs] User earned reward of ", reward);
+        console.log("[Pixeldokulogs] User earned reward of ", reward);
         setRewardAmount(reward.amount);
       }
     );

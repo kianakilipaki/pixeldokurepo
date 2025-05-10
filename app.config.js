@@ -11,7 +11,7 @@ export default ({ config }) => {
       platforms: ["android"],
       name: "pixeldoku",
       slug: "pixeldoku",
-      version: "5.3.0",
+      version: "5.4.0",
       orientation: "portrait",
       icon: "./assets/icon.png",
       userInterfaceStyle: "light",

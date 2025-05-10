@@ -1,55 +1,33 @@
-import React, { useCallback } from "react";
 import { View, Text, Switch, StyleSheet, TouchableOpacity } from "react-native";
-import { useGoogleAuth } from "../utils/auth";
+import { useGoogleAuth } from "../utils/authContext";
 import { usePlayerData } from "../utils/playerDataContext";
 import ModalTemplate from "./ModalTemplate";
 import { AntDesign } from "@expo/vector-icons";
 import themeStyles from "../utils/themeStyles";
-import { syncFromCloud } from "../utils/playerDataService";
-import { useFocusEffect } from "@react-navigation/native";
 
 const SettingsModal = ({ visible, onClose, navigation }) => {
-  const { soundOn, toggleSound, loadPlayerData } = usePlayerData();
-  const { user, signOut, promptAsync } = useGoogleAuth();
+  const { soundOn, toggleSound } = usePlayerData();
+  const { user, signOut, signIn } = useGoogleAuth();
 
-  const logout = async () => {
+  const login = async () => {
     try {
-      await signOut(navigation);
+      console.log("[Pixeldokulogs] Sign-in with Google.");
+      await signIn();
       onClose();
     } catch (error) {
-      console.error("[PixelDokuLogs] Logout error:", error);
+      console.error("[Pixeldokulogs] Sign-in error:", error.message);
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      const syncGameDataAfterLogin = async () => {
-        if (user) {
-          try {
-            console.log(
-              "[PixelDokuLogs][Settings] Syncing game data for user:",
-              user.uid
-            );
-            await syncFromCloud(user.uid);
-            await loadPlayerData();
-
-            onClose();
-          } catch (error) {
-            console.error(
-              "[PixelDokuLogs][Settings] Error syncing game data:",
-              error.message
-            );
-            Alert.alert(
-              "Sync Error",
-              "There was an error syncing your game data. Please try again later."
-            );
-          }
-        }
-      };
-
-      syncGameDataAfterLogin();
-    }, [user])
-  );
+  const logout = async () => {
+    try {
+      await signOut();
+      navigation.navigate("Login");
+      onClose();
+    } catch (error) {
+      console.error("[Pixeldokulogs] Logout error:", error);
+    }
+  };
 
   const modalBody = (
     <View style={styles.content}>
@@ -76,7 +54,7 @@ const SettingsModal = ({ visible, onClose, navigation }) => {
             <Text style={styles.logout}>Logout</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.button} onPress={() => promptAsync()}>
+          <TouchableOpacity style={styles.button} onPress={login}>
             <AntDesign
               name="google"
               size={20}

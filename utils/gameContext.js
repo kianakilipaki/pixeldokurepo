@@ -44,9 +44,9 @@ export const GameProvider = ({ children }) => {
       };
       const progressString = JSON.stringify(progress);
       await AsyncStorage.setItem("gameProgress", progressString);
-      console.log("[PixelDokuLogs] Progress saved:", progressString);
+      console.log("[Pixeldokulogs] Progress saved:", progressString);
     } catch (error) {
-      console.error("[PixelDokuLogs] Error saving progress:", error);
+      console.error("[Pixeldokulogs] Error saving progress:", error);
     }
   };
 
@@ -66,11 +66,11 @@ export const GameProvider = ({ children }) => {
         setHints(progress.hints);
         setSelectedCell(null);
         setErrorCell(progress.errorCell);
-        console.log("[PixelDokuLogs] Progress loaded:", stringProgress);
+        console.log("[Pixeldokulogs] Progress loaded:", stringProgress);
       }
       return progress;
     } catch (error) {
-      console.error("[PixelDokuLogs] Error loading progress:", error);
+      console.error("[Pixeldokulogs] Error loading progress:", error);
     }
   };
 
@@ -82,21 +82,21 @@ export const GameProvider = ({ children }) => {
         setDifficulty(difficulty);
         if (!sameBoard) {
           // reset progress with new board
-          console.log("[PixelDokuLogs] Preparing new board...");
+          console.log("[Pixeldokulogs] Preparing new board...");
           const { puzzle, solution } = generateSudoku(difficulty);
           setBoard(puzzle);
           setInitialBoard(puzzle);
           setSolutionBoard(solution);
         } else {
           // reset progress with same board
-          console.log("[PixelDokuLogs] Resetting board...");
+          console.log("[Pixeldokulogs] Resetting board...");
           setBoard(initialBoard);
           setInitialBoard(initialBoard);
           setSolutionBoard(solutionBoard);
         }
       } else {
         // reset progress with no board
-        console.log("[PixelDokuLogs] Clearing board...");
+        console.log("[Pixeldokulogs] Clearing board...");
         setTheme("birds");
         setDifficulty(null);
         setBoard([]);
@@ -111,7 +111,7 @@ export const GameProvider = ({ children }) => {
       setSelectedCell(null);
       setErrorCell([]);
     } catch (error) {
-      console.error("[PixelDokuLogs] Error starting new game:", error);
+      console.error("[Pixeldokulogs] Error starting new game:", error);
     }
   };
 
@@ -136,7 +136,7 @@ export const GameProvider = ({ children }) => {
         col >= board[0].length ||
         typeof newValue !== "number"
       ) {
-        console.error("[PixelDokuLogs] Invalid input for updateBoard:", {
+        console.error("[Pixeldokulogs] Invalid input for updateBoard:", {
           row,
           col,
           newValue,
@@ -174,7 +174,7 @@ export const GameProvider = ({ children }) => {
         setSelectedCell([null, null, newValue]);
       }
     } catch (error) {
-      console.error("[PixelDokuLogs] Error updating board:", error);
+      console.error("[Pixeldokulogs] Error updating board:", error);
     }
   };
 

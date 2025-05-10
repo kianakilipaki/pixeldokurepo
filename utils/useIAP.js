@@ -65,7 +65,7 @@ const useIAP = (onPurchaseSuccess) => {
             isConsumable: true,
           });
           if (result) {
-            console.log("[PixelDokuLogs] Completing transaction: ", result);
+            console.log("[Pixeldokulogs] Completing transaction: ", result);
             onPurchaseSuccess(purchase.productId);
             setErrorMsg(null);
           } else {
@@ -98,7 +98,7 @@ const useIAP = (onPurchaseSuccess) => {
       setErrorMsg(null);
       setIsLoading(false);
     } catch (err) {
-      console.log("[PixelDokuLogs] Error fetching products:", err);
+      console.log("[Pixeldokulogs] Error fetching products:", err);
       if (!__DEV__) {
         setErrorMsg("Failed to load products");
       }
@@ -127,7 +127,7 @@ const useIAP = (onPurchaseSuccess) => {
         setErrorMsg(null);
       }
     } catch (err) {
-      console.log("[PixelDokuLogs] Error initializing IAP:", err);
+      console.log("[Pixeldokulogs] Error initializing IAP:", err);
       if (!__DEV__) {
         setErrorMsg(
           "You must be connected to the internet to access coin shop"
@@ -201,9 +201,9 @@ const useIAP = (onPurchaseSuccess) => {
       await requestPurchase(params);
     } catch (err) {
       if (err.code === "E_USER_CANCELLED") {
-        console.log("[PixelDokuLogs] Purchase cancelled by user");
+        console.log("[Pixeldokulogs] Purchase cancelled by user");
       } else {
-        console.error("[PixelDokuLogs] Purchase request failed:", err);
+        console.error("[Pixeldokulogs] Purchase request failed:", err);
         setErrorMsg("Purchase failed. Please try again.");
       }
       setIsPurchasing(false);

@@ -24,7 +24,7 @@ export const useHintRewardedAd = () => {
     rewardedAd.addAdEventListener(
       RewardedAdEventType.EARNED_REWARD,
       (reward) => {
-        console.log("[PixelDokuLogs] User earned hint reward");
+        console.log("[Pixeldokulogs] User earned hint reward");
         setRewardAmount(reward.amount);
       }
     );

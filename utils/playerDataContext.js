@@ -1,7 +1,13 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { loadFromLocal, saveToLocal } from "./playerDataService";
+import { createContext, useContext, useState, useEffect } from "react";
+import {
+  loadFromLocal,
+  migrateLocalGameData,
+  saveToLocal,
+  syncFromCloud,
+} from "./playerDataService";
 import { defaultThemes } from "./assetsMap";
-import { useGoogleAuth } from "./auth";
+import { useGoogleAuth } from "./authContext";
+import isEqual from "lodash.isequal";
 
 const PlayerDataContext = createContext();
 
@@ -13,6 +19,28 @@ export const PlayerDataProvider = ({ children }) => {
   const [showTutorial, setShowTutorial] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
 
+  useEffect(() => {
+    const initializePlayerData = async () => {
+      if (user) {
+        try {
+          console.log(
+            "[Pixeldokulogs] User found. Initializing player data..."
+          );
+          await migrateLocalGameData(user.uid);
+          await syncFromCloud(user.uid);
+          await loadPlayerData();
+        } catch (error) {
+          console.error(
+            "[Pixeldokulogs] Error syncing game data:",
+            error.message
+          );
+        }
+      }
+    };
+
+    initializePlayerData();
+  }, [user]);
+
   // Centralized save helper to avoid overwrites
   const savePlayerData = async (partial) => {
     await saveToLocal((prev) => ({ ...prev, ...partial }), user?.uid);
@@ -21,16 +49,16 @@ export const PlayerDataProvider = ({ children }) => {
   // Load everything from AsyncStorage once
   const loadPlayerData = async () => {
     try {
-      console.log("[PixelDokuLogs] Loading player data...");
+      console.log("[Pixeldokulogs] Loading player data...");
       const data = await loadFromLocal();
 
       setCoins(data?.coins || 0);
       setHighscores(data?.highscores || {});
       setThemes((await mergeThemes(data?.themes)) || defaultThemes);
       setShowTutorial(!data?.tutorialSeen || false);
-      setSoundOn(data?.soundOn !== false || true);
+      setSoundOn(data?.soundOn);
     } catch (error) {
-      console.error("[PixelDokuLogs] Error loading player data:", error);
+      console.error("[Pixeldokulogs] Error loading player data:", error);
     }
   };
 
@@ -44,7 +72,9 @@ export const PlayerDataProvider = ({ children }) => {
       return acc;
     }, {});
 
-    if (JSON.stringify(storedThemes) !== JSON.stringify(merged)) {
+    if (!isEqual(storedThemes, merged)) {
+      console.log("[Pixeldokulogs] Merging themes...");
+
       await savePlayerData({ themes: merged });
     }
 

@@ -15,6 +15,7 @@ import { withIAPContext } from "react-native-iap";
 import { PlayerDataProvider } from "./utils/playerDataContext";
 import { GameProvider } from "./utils/gameContext";
 import { MusicProvider } from "./utils/musicContext";
+import { AuthProvider } from "./utils/authContext";
 
 const Stack = createStackNavigator();
 
@@ -31,7 +32,7 @@ const App = () => {
         });
         setFontsLoaded(true);
       } catch (error) {
-        console.error("[PixelDokuLogs] Error loading fonts:", error);
+        console.error("[Pixeldokulogs] Error loading fonts:", error);
       }
     }
 
@@ -51,50 +52,52 @@ const App = () => {
   }
 
   return (
-    <PlayerDataProvider>
-      <GameProvider>
-        <MusicProvider>
-          <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login">
-              <Stack.Screen
-                name="Login"
-                component={LoginScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Home"
-                component={HomeScreen}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Sudoku"
-                component={SudokuScreen}
-                options={({ route, navigation }) => ({
-                  header: () => (
-                    <Header
-                      title={route.params?.theme?.title || "Sudoku"}
-                      onBackPress={() => navigation.goBack()}
-                    />
-                  ),
-                })}
-              />
-              <Stack.Screen
-                name="NotFound"
-                component={NotFoundScreen}
-                options={{
-                  header: ({ navigation }) => (
-                    <Header
-                      title="Page Not Found"
-                      onBackPress={() => navigation.goBack()}
-                    />
-                  ),
-                }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </MusicProvider>
-      </GameProvider>
-    </PlayerDataProvider>
+    <AuthProvider>
+      <PlayerDataProvider>
+        <GameProvider>
+          <MusicProvider>
+            <NavigationContainer>
+              <Stack.Navigator initialRouteName="Login">
+                <Stack.Screen
+                  name="Login"
+                  component={LoginScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Home"
+                  component={HomeScreen}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Sudoku"
+                  component={SudokuScreen}
+                  options={({ route, navigation }) => ({
+                    header: () => (
+                      <Header
+                        title={route.params?.theme?.title || "Sudoku"}
+                        onBackPress={() => navigation.goBack()}
+                      />
+                    ),
+                  })}
+                />
+                <Stack.Screen
+                  name="NotFound"
+                  component={NotFoundScreen}
+                  options={{
+                    header: ({ navigation }) => (
+                      <Header
+                        title="Page Not Found"
+                        onBackPress={() => navigation.goBack()}
+                      />
+                    ),
+                  }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </MusicProvider>
+        </GameProvider>
+      </PlayerDataProvider>
+    </AuthProvider>
   );
 };
 
