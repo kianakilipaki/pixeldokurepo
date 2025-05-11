@@ -13,14 +13,14 @@ import themeStyles from "../utils/themeStyles";
 import useIAP from "../utils/useIAP";
 import { usePlayerData } from "../utils/playerDataContext";
 import { AntDesign } from "@expo/vector-icons";
-import * as Analytics from "expo-firebase-analytics";
+import analytics from "@react-native-firebase/analytics";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins, handleFacebookFollow, facebookFollowed } = usePlayerData();
   const { watchAd, rewardAmount, setRewardAmount, loaded, adCount } =
     useCoinShopRewardedAd();
   useEffect(() => {
-    Analytics.logEvent("test_event", {
+    analytics().logEvent("test_event", {
       screen: "CoinShop",
     });
   }, []);
@@ -29,7 +29,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
       console.log("[Pixeldokulogs] Reward received:", rewardAmount);
       addCoins(rewardAmount);
       setIsCoinShopVisible(false);
-      Analytics.logEvent("rewarded_ad_watched", {
+      analytics().logEvent("rewarded_ad_watched", {
         coins: rewardAmount,
       });
       setRewardAmount(0);
@@ -42,7 +42,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
     if (coinsToAdd > 0) {
       addCoins(coinsToAdd);
       setIsCoinShopVisible(false);
-      Analytics.logEvent("iap_purchase", {
+      analytics().logEvent("iap_purchase", {
         productId,
         coins: coinsToAdd,
       });
@@ -50,7 +50,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   };
 
   const handleFacebookFollowLogged = async () => {
-    Analytics.logEvent("facebook_follow_clicked");
+    analytics().logEvent("facebook_follow_clicked");
     handleFacebookFollow();
   };
 

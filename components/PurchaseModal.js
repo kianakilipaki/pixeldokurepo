@@ -6,7 +6,7 @@ import themeStyles from "../utils/themeStyles";
 import { Dimensions } from "react-native";
 import ModalTemplate from "./ModalTemplate";
 import { usePlayerData } from "../utils/playerDataContext";
-import * as Analytics from "expo-firebase-analytics";
+import analytics from "@react-native-firebase/analytics";
 
 const { width } = Dimensions.get("window");
 
@@ -25,7 +25,7 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
       await removeCoins(500);
       await unlockTheme(theme.themeKey);
       setIsModalVisible(false);
-      await Analytics.logEvent("theme_unlocked", {
+      await analytics().logEvent("theme_unlocked", {
         theme: theme.themeKey,
       });
     }
