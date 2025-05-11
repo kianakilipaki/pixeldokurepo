@@ -12,10 +12,11 @@ import { useCoinShopRewardedAd } from "./CoinShopAd";
 import themeStyles from "../utils/themeStyles";
 import useIAP from "../utils/useIAP";
 import { usePlayerData } from "../utils/playerDataContext";
+import { AntDesign } from "@expo/vector-icons";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
-  const { addCoins } = usePlayerData();
-  const { watchAd, rewardAmount, setRewardAmount, loaded } =
+  const { addCoins, handleFacebookFollow, facebookFollowed } = usePlayerData();
+  const { watchAd, rewardAmount, setRewardAmount, loaded, adCount } =
     useCoinShopRewardedAd();
 
   useEffect(() => {
@@ -50,11 +51,31 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
           style={themeStyles.icons.iconSizeMedium}
         />
         <Text style={styles.coinText}>100 Coins</Text>
-        <Text style={styles.costText}>AD</Text>
+        <Text style={styles.costText}>
+          <AntDesign name="facebook-square" size={28} color="#1877F2" />
+        </Text>
+        <TouchableOpacity
+          onPress={handleFacebookFollow}
+          style={[styles.buyButton, facebookFollowed && styles.disabledButton]}
+          disabled={facebookFollowed}
+        >
+          <Text style={styles.followButtonText}>Follow</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.coinContainer}>
+        <Image
+          source={require("../assets/icons/coin.png")}
+          style={themeStyles.icons.iconSizeMedium}
+        />
+        <Text style={styles.coinText}>100 Coins</Text>
+        <Text style={styles.costText}>AD {adCount}/5</Text>
         <TouchableOpacity
           onPress={watchAd}
-          style={[styles.buyButton, !loaded && styles.disabledButton]}
-          disabled={!loaded}
+          style={[
+            styles.buyButton,
+            !loaded || (adCount >= 5 && styles.disabledButton),
+          ]}
+          disabled={!loaded || adCount >= 5}
         >
           {loaded ? (
             <Text style={styles.buyButtonText}>Free</Text>
@@ -135,6 +156,12 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 5,
+  },
+  followButtonText: {
+    color: "white",
+    fontSize: themeStyles.fonts.regularFontSize - 3,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   buyButtonText: {
     color: "white",

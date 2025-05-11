@@ -8,6 +8,7 @@ import {
 import { defaultThemes } from "./assetsMap";
 import { useGoogleAuth } from "./authContext";
 import isEqual from "lodash.isequal";
+import { Linking } from "react-native";
 
 const PlayerDataContext = createContext();
 
@@ -18,6 +19,7 @@ export const PlayerDataProvider = ({ children }) => {
   const [themes, setThemes] = useState({});
   const [showTutorial, setShowTutorial] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
+  const [facebookFollowed, setFacebookFollowed] = useState(false);
 
   useEffect(() => {
     const initializePlayerData = async () => {
@@ -57,6 +59,7 @@ export const PlayerDataProvider = ({ children }) => {
       setThemes((await mergeThemes(data?.themes)) || defaultThemes);
       setShowTutorial(!data?.tutorialSeen || false);
       setSoundOn(data?.soundOn);
+      setFacebookFollowed(data?.facebookFollowed || false);
     } catch (error) {
       console.error("[Pixeldokulogs] Error loading player data:", error);
     }
@@ -79,6 +82,28 @@ export const PlayerDataProvider = ({ children }) => {
     }
 
     return merged;
+  };
+
+  const handleFacebookFollow = async () => {
+    try {
+      if (facebookFollowed) {
+        Alert.alert("Already rewarded", "You've already claimed this reward.");
+        return;
+      }
+
+      // Open the Facebook page (update URL if needed)
+      Linking.openURL("https://www.facebook.com/profile.php?id=61575665674946");
+
+      setTimeout(async () => {
+        await savePlayerData({ facebookFollowed: true });
+        setFacebookFollowed(true);
+        await addCoins(100);
+        Alert.alert("Thank you!", "You've earned 100 coins for following us!");
+      }, 1000);
+    } catch (error) {
+      console.error("[Pixeldokulogs] Error handling Facebook follow:", error);
+      Alert.alert("Error", "Something went wrong. Try again later.");
+    }
   };
 
   // --- COIN METHODS ---
@@ -150,6 +175,8 @@ export const PlayerDataProvider = ({ children }) => {
         completeTutorial,
         soundOn,
         toggleSound,
+        handleFacebookFollow,
+        facebookFollowed,
       }}
     >
       {children}

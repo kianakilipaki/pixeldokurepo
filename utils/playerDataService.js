@@ -252,6 +252,7 @@ export async function migrateLocalGameData(uid) {
       highscores: highscores ? JSON.parse(highscores) : {},
       tutorialSeen: tutorialSeen ? true : false,
       soundOn: true,
+      facebookFollowed: false,
       lastUpdated: new Date().toISOString(),
     };
 
