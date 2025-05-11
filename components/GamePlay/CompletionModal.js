@@ -14,6 +14,7 @@ import { Dimensions } from "react-native";
 import { formatTime } from "../../utils/generatePuzzle";
 import { useMusic } from "../../utils/musicContext";
 import { usePlayerData } from "../../utils/playerDataContext";
+import * as Analytics from "expo-firebase-analytics";
 
 const { width } = Dimensions.get("window");
 
@@ -83,6 +84,11 @@ const CompletionModal = ({
       setNewHighScore(true);
       await saveHighScore(theme.themeKey, difficulty, timer);
     }
+    await Analytics.logEvent("puzzle_completed", {
+      theme: theme.themeKey,
+      difficulty: difficulty,
+      time: timer,
+    });
   };
 
   useEffect(() => {
@@ -91,6 +97,11 @@ const CompletionModal = ({
     if (mistakeCounter === 0) {
       setModalType("failure");
       setCoinsAwarded(null);
+      Analytics.logEvent("puzzle_failed", {
+        theme: theme.themeKey,
+        difficulty: difficulty,
+        time: timer,
+      });
     } else {
       // Check if all cells are filled and are single numbers (not arrays)
       const isComplete = board

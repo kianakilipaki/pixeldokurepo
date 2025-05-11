@@ -8,6 +8,7 @@ import React, {
 import { Audio } from "expo-av";
 import { AppState } from "react-native";
 import { usePlayerData } from "./playerDataContext";
+import * as Analytics from "expo-firebase-analytics";
 
 const soundEffects = {
   error: require("../assets/sounds/error-8-206492.mp3"),
@@ -135,6 +136,9 @@ export const MusicProvider = ({ children }) => {
         muteMusic: async () => {
           if (sound.current) await sound.current.setVolumeAsync(0);
           setIsMuted(true);
+          Analytics.logEvent("music_muted", {
+            music: sound.current?._key,
+          });
           console.log(`[Pixeldokulogs] Mute music`);
         },
         unmuteMusic: async () => {

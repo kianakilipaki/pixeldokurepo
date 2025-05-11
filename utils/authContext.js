@@ -17,6 +17,7 @@ const firebaseConfig = {
   authDomain: "pixeldoku-cloud-458622.firebaseapp.com",
   projectId: "pixeldoku-cloud-458622",
   storageBucket: "pixeldoku-cloud-458622.firebasestorage.app",
+  messagingSenderId: "692361959163",
   appId: "1:692361959163:android:1ea5e7f131ce4c2006825e",
 };
 
