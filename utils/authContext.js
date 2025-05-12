@@ -87,8 +87,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const deleteAccountData = async () => {
+    try {
+      await auth.currentUser.delete();
+      setUser(null);
+      console.log("[Pixeldokulogs] Account deleted.");
+    } catch (err) {
+      console.error("[Pixeldokulogs] Account deletion error:", err.message);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ request, user, signIn, signOut, isLoading }}>
+    <AuthContext.Provider
+      value={{ request, user, signIn, signOut, deleteAccountData, isLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );

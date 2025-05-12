@@ -7,7 +7,7 @@ import themeStyles from "../utils/themeStyles";
 
 const SettingsModal = ({ visible, onClose, navigation }) => {
   const { soundOn, toggleSound } = usePlayerData();
-  const { user, signOut, signIn } = useGoogleAuth();
+  const { user, signOut, signIn, deleteAccountData } = useGoogleAuth();
 
   const login = async () => {
     try {
@@ -26,6 +26,16 @@ const SettingsModal = ({ visible, onClose, navigation }) => {
       onClose();
     } catch (error) {
       console.error("[Pixeldokulogs] Logout error:", error);
+    }
+  };
+
+  const deleteAccount = async () => {
+    try {
+      await deleteAccountData();
+      navigation.navigate("Login");
+      onClose();
+    } catch (error) {
+      console.error("[Pixeldokulogs] Delete account error:", error);
     }
   };
 
@@ -50,9 +60,14 @@ const SettingsModal = ({ visible, onClose, navigation }) => {
       </Text>
       <View style={styles.row}>
         {user ? (
-          <TouchableOpacity onPress={logout} style={styles.button}>
-            <Text style={styles.logout}>Logout</Text>
-          </TouchableOpacity>
+          <>
+            <TouchableOpacity onPress={logout} style={styles.button}>
+              <Text style={styles.logout}>Logout</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={deleteAccount} style={styles.button}>
+              <Text style={styles.logout}>Delete Account</Text>
+            </TouchableOpacity>
+          </>
         ) : (
           <TouchableOpacity style={styles.button} onPress={login}>
             <AntDesign
@@ -117,6 +132,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 5,
+  },
+  deleteButton: {
+    backgroundColor: "none",
   },
   logout: {
     color: themeStyles.colors.white,
