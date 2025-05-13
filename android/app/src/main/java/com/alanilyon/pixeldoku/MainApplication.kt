@@ -1,6 +1,5 @@
 package com.alanilyon.pixeldoku
 
-import com.dooboolab.rniap.RNIapPackage
 import android.app.Application
 import android.content.res.Configuration
 
@@ -26,7 +25,6 @@ class MainApplication : Application(), ReactApplication {
             val packages = PackageList(this).packages
             // Packages that cannot be autolinked yet can be added manually here, for example:
             // packages.add(new MyReactNativePackage());
-            new RNIapPackage()
             return packages
           }
 

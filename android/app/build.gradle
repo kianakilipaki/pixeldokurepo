@@ -88,12 +88,12 @@ android {
 
     namespace 'com.alanilyon.pixeldoku'
     defaultConfig {
-        missingDimensionStrategy "store", "play"
+missingDimensionStrategy "store", "play"
         applicationId 'com.alanilyon.pixeldoku'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "3.6.0"
+        versionName "5.5.0"
     }
     signingConfigs {
         debug {
@@ -150,8 +150,7 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation project(':react-native-iap')
-    
+
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";
@@ -176,3 +175,5 @@ dependencies {
         implementation jscFlavor
     }
 }
+
+apply plugin: 'com.google.gms.google-services'
