@@ -21,7 +21,7 @@ import { useEffect } from "react";
 import analytics from "@react-native-firebase/analytics";
 
 const LoginScreen = ({ navigation }) => {
-  const { isLoading, signIn, user } = useGoogleAuth();
+  const { user, loading, login } = useGoogleAuth();
   const { loadPlayerData } = usePlayerData();
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const LoginScreen = ({ navigation }) => {
     );
   };
 
-  if (isLoading) {
+  if (loading) {
     return (
       <ImageBackground
         source={require("../assets/themes/MntForest-bg.png")}
@@ -88,7 +88,7 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.header}>Welcome to</Text>
         <Text style={styles.title}>PixelDoku</Text>
 
-        <TouchableOpacity style={styles.googleButton} onPress={signIn}>
+        <TouchableOpacity style={styles.googleButton} onPress={login}>
           <AntDesign name="google" size={20} color="#fff" style={styles.icon} />
           <Text style={styles.googleText}>Sign in with Google</Text>
         </TouchableOpacity>

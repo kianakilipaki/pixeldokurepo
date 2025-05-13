@@ -1,4 +1,11 @@
-import { View, Text, Switch, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Switch,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { useGoogleAuth } from "../utils/authContext";
 import { usePlayerData } from "../utils/playerDataContext";
 import ModalTemplate from "./ModalTemplate";
@@ -7,21 +14,21 @@ import themeStyles from "../utils/themeStyles";
 
 const SettingsModal = ({ visible, onClose, navigation }) => {
   const { soundOn, toggleSound } = usePlayerData();
-  const { user, signOut, signIn, deleteAccountData } = useGoogleAuth();
+  const { user, login, logout, removeUser } = useGoogleAuth();
 
-  const login = async () => {
+  const handleLogin = async () => {
     try {
       console.log("[Pixeldokulogs] Sign-in with Google.");
-      await signIn();
+      await login();
       onClose();
     } catch (error) {
       console.error("[Pixeldokulogs] Sign-in error:", error.message);
     }
   };
 
-  const logout = async () => {
+  const handleLogout = async () => {
     try {
-      await signOut();
+      await logout();
       navigation.navigate("Login");
       onClose();
     } catch (error) {
@@ -30,13 +37,23 @@ const SettingsModal = ({ visible, onClose, navigation }) => {
   };
 
   const deleteAccount = async () => {
-    try {
-      await deleteAccountData();
-      navigation.navigate("Login");
-      onClose();
-    } catch (error) {
-      console.error("[Pixeldokulogs] Delete account error:", error);
-    }
+    Alert.alert(
+      "Delete Account",
+      "Are you sure you want to delete your account? This action cannot be undone.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            console.log("[Pixeldokulogs] Deleting account...");
+            await removeUser();
+            navigation.navigate("Login");
+            onClose();
+          },
+        },
+      ]
+    );
   };
 
   const modalBody = (
@@ -61,15 +78,15 @@ const SettingsModal = ({ visible, onClose, navigation }) => {
       <View style={styles.row}>
         {user ? (
           <>
-            <TouchableOpacity onPress={logout} style={styles.button}>
+            <TouchableOpacity onPress={handleLogout} style={styles.button}>
               <Text style={styles.logout}>Logout</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={deleteAccount} style={styles.button}>
-              <Text style={styles.logout}>Delete Account</Text>
+            <TouchableOpacity onPress={deleteAccount}>
+              <Text style={styles.deleteButton}>Delete Account</Text>
             </TouchableOpacity>
           </>
         ) : (
-          <TouchableOpacity style={styles.button} onPress={login}>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <AntDesign
               name="google"
               size={20}
@@ -134,7 +151,12 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   deleteButton: {
-    backgroundColor: "none",
+    marginTop: 20,
+    fontSize: 14,
+    color: themeStyles.colors.black1,
+    textDecorationLine: "underline",
+    paddingVertical: 6,
+    paddingHorizontal: 12,
   },
   logout: {
     color: themeStyles.colors.white,

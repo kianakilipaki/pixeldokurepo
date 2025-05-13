@@ -45,6 +45,7 @@ export default ({ config }) => {
           },
         ],
         "react-native-iap",
+        "@react-native-firebase/app",
       ],
       extra: {
         eas: {
