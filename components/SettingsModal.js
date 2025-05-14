@@ -13,7 +13,7 @@ import { AntDesign } from "@expo/vector-icons";
 import themeStyles from "../utils/themeStyles";
 
 const SettingsModal = ({ visible, onClose, navigation }) => {
-  const { soundOn, toggleSound } = usePlayerData();
+  const { soundOn, toggleSound, deletePlayerData } = usePlayerData();
   const { user, login, logout, removeUser } = useGoogleAuth();
 
   const handleLogin = async () => {
@@ -48,6 +48,7 @@ const SettingsModal = ({ visible, onClose, navigation }) => {
           onPress: async () => {
             console.log("[Pixeldokulogs] Deleting account...");
             await removeUser();
+            await deletePlayerData();
             navigation.navigate("Login");
             onClose();
           },

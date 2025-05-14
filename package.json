@@ -9,6 +9,7 @@
     "android": "npx expo run:android",
     "ios": "npx expo run:ios",
     "web": "npx expo start --web",
+    "prebuild": "npx expo prebuild",
     "build:android": "eas build --platform android",
     "dev:build:ios": "eas build --profile development --platform ios",
     "dev:build:android": "eas build --profile development --platform android",

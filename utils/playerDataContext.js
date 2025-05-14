@@ -65,6 +65,28 @@ export const PlayerDataProvider = ({ children }) => {
     }
   };
 
+  // Delete all player data revert to defaults
+  const deletePlayerData = async () => {
+    try {
+      console.log("[Pixeldokulogs] Deleting player local data...");
+      await saveToLocal(
+        {
+          coins: 0,
+          themes: defaultThemes,
+          highscores: {},
+          tutorialSeen: false,
+          soundOn: true,
+          facebookFollowed: false,
+          lastUpdated: new Date().toISOString(),
+        },
+        user?.uid
+      );
+      
+    } catch (error) {
+      console.error("[Pixeldokulogs] Error deleting player data:", error);
+    }
+  };
+
   // Merge stored themes with defaults
   const mergeThemes = async (storedThemes) => {
     const merged = Object.keys(defaultThemes).reduce((acc, key) => {
@@ -84,6 +106,7 @@ export const PlayerDataProvider = ({ children }) => {
     return merged;
   };
 
+  // --- FACEBOOK FOLLOW METHODS ---
   const handleFacebookFollow = async () => {
     try {
       if (facebookFollowed) {
@@ -160,10 +183,12 @@ export const PlayerDataProvider = ({ children }) => {
     await savePlayerData({ soundOn: updatedSound });
   };
 
+
   return (
     <PlayerDataContext.Provider
       value={{
         loadPlayerData,
+        deletePlayerData,
         coins,
         addCoins,
         removeCoins,

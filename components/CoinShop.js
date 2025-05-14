@@ -71,14 +71,14 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
           style={themeStyles.icons.iconSizeMedium}
         />
         <Text style={styles.coinText}>100 Coins</Text>
-        <Text style={styles.costText}>AD {adCount}/5</Text>
+        <Text style={styles.costText}>AD {adCount}/3</Text>
         <TouchableOpacity
           onPress={watchAd}
           style={[
             styles.buyButton,
-            !loaded || (adCount >= 5 && styles.disabledButton),
+            !loaded || (adCount >= 3 && styles.disabledButton),
           ]}
-          disabled={!loaded || adCount >= 5}
+          disabled={!loaded || adCount >= 3}
         >
           {loaded ? (
             <Text style={styles.buyButtonText}>Free</Text>
