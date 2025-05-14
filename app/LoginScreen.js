@@ -18,7 +18,6 @@ import LoadingIndicator from "../components/loadingIcon";
 import { AntDesign } from "@expo/vector-icons";
 import { usePlayerData } from "../utils/playerDataContext";
 import { useEffect } from "react";
-import analytics from "@react-native-firebase/analytics";
 
 const LoginScreen = ({ navigation }) => {
   const { user, loading, login } = useGoogleAuth();
@@ -27,9 +26,6 @@ const LoginScreen = ({ navigation }) => {
   useEffect(() => {
     if (user) {
       navigation.replace("Home");
-      analytics().logEvent("user_loggedIn", {
-        userId: user.uid,
-      });
     }
   }, [user]);
 
@@ -48,9 +44,6 @@ const LoginScreen = ({ navigation }) => {
             await migrateLocalGameData();
             await loadPlayerData();
             navigation.replace("Home");
-            analytics().logEvent("guest_loggedIn", {
-              userId: "guest",
-            });
           },
         },
       ]

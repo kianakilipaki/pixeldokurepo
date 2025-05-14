@@ -8,7 +8,7 @@ export default ({ config }) => {
     runtimeVersion: isDev ? "1.0.0" : { policy: "appVersion" },
     expo: {
       ...config.expo,
-      platforms: ["android"],
+      platforms: ["ios", "android"],
       name: "pixeldoku",
       slug: "pixeldoku",
       version: "5.5.0",
@@ -32,6 +32,17 @@ export default ({ config }) => {
       },
       ios: {
         bundleIdentifier: "com.alanilyon.pixeldoku",
+        buildNumber: "1.0.0", // Match your versioning scheme
+        supportsTablet: true,
+        googleServicesFile: "./GoogleService-Info.plist",
+        infoPlist: {
+          NSAppTransportSecurity: {
+            NSAllowsArbitraryLoads: true
+          },
+        },
+        config: {
+          usesNonExemptEncryption: false
+        },
       },
       assetBundlePatterns: ["**/*"],
       plugins: [
@@ -41,11 +52,10 @@ export default ({ config }) => {
           "react-native-google-mobile-ads",
           {
             androidAppId: "ca-app-pub-6358927901907597~4329186260",
-            iosAppId: "ca-app-pub-6358927901907597~5088797888",
+            iosAppId: "ca-app-pub-6358927901907597~5583801458",
           },
         ],
         "react-native-iap",
-        "@react-native-firebase/app",
       ],
       extra: {
         eas: {

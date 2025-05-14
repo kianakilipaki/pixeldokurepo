@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   RewardedAd,
   RewardedAdEventType,
 } from "react-native-google-mobile-ads";
 
-const adUnitId = "ca-app-pub-6358927901907597/7024526588";
+const iosAdUnitId = "ca-app-pub-6358927901907597/3374480639";
+const androidAdUnitId = "ca-app-pub-6358927901907597/7024526588";
+
+const adUnitId = Platform.OS === "android" ? androidAdUnitId : iosAdUnitId;
 const MAX_ADS_PER_DAY = 5;
 const STORAGE_KEY = "rewardedAdData";
 

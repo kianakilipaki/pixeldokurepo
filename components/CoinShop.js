@@ -13,25 +13,16 @@ import themeStyles from "../utils/themeStyles";
 import useIAP from "../utils/useIAP";
 import { usePlayerData } from "../utils/playerDataContext";
 import { AntDesign } from "@expo/vector-icons";
-import analytics from "@react-native-firebase/analytics";
 
 const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
   const { addCoins, handleFacebookFollow, facebookFollowed } = usePlayerData();
   const { watchAd, rewardAmount, setRewardAmount, loaded, adCount } =
     useCoinShopRewardedAd();
   useEffect(() => {
-    analytics().logEvent("test_event", {
-      screen: "CoinShop",
-    });
-  }, []);
-  useEffect(() => {
     if (rewardAmount > 0) {
       console.log("[Pixeldokulogs] Reward received:", rewardAmount);
       addCoins(rewardAmount);
       setIsCoinShopVisible(false);
-      analytics().logEvent("rewarded_ad_watched", {
-        coins: rewardAmount,
-      });
       setRewardAmount(0);
     }
   }, [rewardAmount]);
@@ -42,15 +33,10 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
     if (coinsToAdd > 0) {
       addCoins(coinsToAdd);
       setIsCoinShopVisible(false);
-      analytics().logEvent("iap_purchase", {
-        productId,
-        coins: coinsToAdd,
-      });
     }
   };
 
   const handleFacebookFollowLogged = async () => {
-    analytics().logEvent("facebook_follow_clicked");
     handleFacebookFollow();
   };
 

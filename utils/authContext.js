@@ -46,6 +46,7 @@ export const AuthProvider = ({ children }) => {
       "692361959163-lv80ktosr455kecjrepgh3pektun4q0t.apps.googleusercontent.com",
     androidClientId:
       "692361959163-sgf0uesiaaqjgmss0oovr104j6ulk60b.apps.googleusercontent.com",
+    iosClientId: "692361959163-kkrurhne0igqfghph1idlog9bq0f0fhv.apps.googleusercontent.com"
   });
 
   // Handle login response
