@@ -69,19 +69,15 @@ export const PlayerDataProvider = ({ children }) => {
   const deletePlayerData = async () => {
     try {
       console.log("[Pixeldokulogs] Deleting player local data...");
-      await saveToLocal(
-        {
-          coins: 0,
-          themes: defaultThemes,
-          highscores: {},
-          tutorialSeen: false,
-          soundOn: true,
-          facebookFollowed: false,
-          lastUpdated: new Date().toISOString(),
-        },
-        user?.uid
-      );
-      
+      await saveToLocal({
+        coins: 0,
+        themes: defaultThemes,
+        highscores: {},
+        tutorialSeen: false,
+        soundOn: true,
+        facebookFollowed: false,
+        lastUpdated: new Date().toISOString(),
+      });
     } catch (error) {
       console.error("[Pixeldokulogs] Error deleting player data:", error);
     }
@@ -182,7 +178,6 @@ export const PlayerDataProvider = ({ children }) => {
     setSoundOn(updatedSound);
     await savePlayerData({ soundOn: updatedSound });
   };
-
 
   return (
     <PlayerDataContext.Provider

@@ -4,46 +4,52 @@ import Coins from "./Coins";
 import themeStyles from "../utils/themeStyles";
 import MusicToggleButton from "./muteButton";
 import { useMusic } from "../utils/musicContext";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Header = ({ title, onBackPress }) => {
   const { stopMusic } = useMusic();
 
   return (
-    <View style={styles.headerContainer}>
-      <View style={styles.group}>
-        {/* Back Arrow */}
-        {onBackPress && (
-          <TouchableOpacity
-            accessibilityLabel={`Go Back`}
-            accessibilityRole="button"
-            onPress={() => {
-              onBackPress();
-              stopMusic();
-            }}
-            style={styles.backArrow}
-          >
-            <Image
-              source={require("../assets/icons/backArrow.png")}
-              style={themeStyles.icons.iconSizeMedium}
-            />
-          </TouchableOpacity>
-        )}
+    <SafeAreaView edges={["top"]} style={styles.safeArea}>
+      <View style={styles.headerContainer}>
+        <View style={styles.group}>
+          {/* Back Arrow */}
+          {onBackPress && (
+            <TouchableOpacity
+              accessibilityLabel={`Go Back`}
+              accessibilityRole="button"
+              onPress={() => {
+                onBackPress();
+                stopMusic();
+              }}
+              style={styles.backArrow}
+            >
+              <Image
+                source={require("../assets/icons/backArrow.png")}
+                style={themeStyles.icons.iconSizeMedium}
+              />
+            </TouchableOpacity>
+          )}
 
-        {/* Title */}
-        {title && <Text style={styles.titleText}>{title}</Text>}
-      </View>
-      <View style={styles.group}>
-        {/* Mute button */}
-        <MusicToggleButton />
+          {/* Title */}
+          {title && <Text style={styles.titleText}>{title}</Text>}
+        </View>
+        <View style={styles.group}>
+          {/* Mute button */}
+          <MusicToggleButton />
 
-        {/* Coins */}
-        <Coins />
+          {/* Coins */}
+          <Coins />
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    backgroundColor: themeStyles.colors.blue, // or match your app theme
+  },
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",

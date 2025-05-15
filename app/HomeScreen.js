@@ -20,6 +20,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { usePlayerData } from "../utils/playerDataContext";
 import { Ionicons } from "@expo/vector-icons";
 import SettingsModal from "../components/SettingsModal";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = ({ navigation }) => {
   const { loadProgress } = useGame();
@@ -75,83 +76,90 @@ const HomeScreen = ({ navigation }) => {
   }
 
   return (
-    <ImageBackground
-      source={require("../assets/themes/MntForest-bg.png")}
-      style={styles.background}
-      resizeMode="cover"
-    >
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={themeStyles.colors.blue}
-        translucent={false}
-      />
-
-      {/* Settings Gear Icon */}
-      <TouchableOpacity
-        onPress={() => setSettingsVisible(true)}
-        style={styles.gearButton}
+    <SafeAreaView edges={["top"]} style={styles.safeArea}>
+      <ImageBackground
+        source={require("../assets/themes/MntForest-bg.png")}
+        style={styles.background}
+        resizeMode="cover"
       >
-        <Ionicons name="settings-outline" size={30} color="black" />
-      </TouchableOpacity>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor={themeStyles.colors.blue}
+          translucent={false}
+        />
 
-      {/* Coins */}
-      <View style={styles.coinContainer}>
-        {/* Coins */}
-        <Coins />
-      </View>
-
-      {/* Title Page */}
-      <Animated.View
-        style={[styles.centerContainer, { opacity: fadeAnimation }]}
-      >
-        <Image source={require("../assets/icon-bg.png")} style={styles.icon} />
-        <Text style={styles.header}>Welcome to</Text>
-        <Text style={styles.title}>PixelDoku</Text>
-        {savedGame && (
-          <TouchableOpacity
-            style={[styles.button, styles.continueButton]}
-            accessibilityLabel={`Continue Previous Game`}
-            accessibilityRole="button"
-            onPress={handleContinue}
-          >
-            <Text style={styles.buttonText}>Continue</Text>
-          </TouchableOpacity>
-        )}
+        {/* Settings Gear Icon */}
         <TouchableOpacity
-          style={[styles.button, styles.newGameButton]}
-          accessibilityLabel={`Start New Game`}
-          accessibilityRole="button"
-          onPress={toggleExpansion}
+          onPress={() => setSettingsVisible(true)}
+          style={styles.gearButton}
         >
-          <Text style={styles.buttonText}>New Game</Text>
+          <Ionicons name="settings-outline" size={30} color="black" />
         </TouchableOpacity>
-      </Animated.View>
 
-      {/* Themes list */}
-      <ThemeListContainer
-        slideAnimation={slideAnimation}
-        toggle={toggleExpansion}
-        navigation={navigation}
-      />
+        {/* Coins */}
+        <View style={styles.coinContainer}>
+          {/* Coins */}
+          <Coins />
+        </View>
 
-      {/* Tutorial */}
-      <TutorialModal visible={showTutorial} onClose={completeTutorial} />
+        {/* Title Page */}
+        <Animated.View
+          style={[styles.centerContainer, { opacity: fadeAnimation }]}
+        >
+          <Image
+            source={require("../assets/icon-bg.png")}
+            style={styles.icon}
+          />
+          <Text style={styles.header}>Welcome to</Text>
+          <Text style={styles.title}>PixelDoku</Text>
+          {savedGame && (
+            <TouchableOpacity
+              style={[styles.button, styles.continueButton]}
+              accessibilityLabel={`Continue Previous Game`}
+              accessibilityRole="button"
+              onPress={handleContinue}
+            >
+              <Text style={styles.buttonText}>Continue</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            style={[styles.button, styles.newGameButton]}
+            accessibilityLabel={`Start New Game`}
+            accessibilityRole="button"
+            onPress={toggleExpansion}
+          >
+            <Text style={styles.buttonText}>New Game</Text>
+          </TouchableOpacity>
+        </Animated.View>
 
-      {/* Settings Modal */}
-      <SettingsModal
-        navigation={navigation}
-        visible={settingsVisible}
-        onClose={() => setSettingsVisible(false)}
-      />
-    </ImageBackground>
+        {/* Themes list */}
+        <ThemeListContainer
+          slideAnimation={slideAnimation}
+          toggle={toggleExpansion}
+          navigation={navigation}
+        />
+
+        {/* Tutorial */}
+        <TutorialModal visible={showTutorial} onClose={completeTutorial} />
+
+        {/* Settings Modal */}
+        <SettingsModal
+          navigation={navigation}
+          visible={settingsVisible}
+          onClose={() => setSettingsVisible(false)}
+        />
+      </ImageBackground>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: themeStyles.colors.blue, // or match your app theme
+  },
   background: {
-    position: "absolute",
-    overflow: "hidden",
-    top: 0,
+    flex: 1,
     width: "100%",
     height: "100%",
   },
