@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   },
   followButtonText: {
     color: "white",
-    fontSize: themeStyles.fonts.regularFontSize - 3,
+    fontSize: themeStyles.fonts.regularFontSize - 4,
     fontWeight: "bold",
     textAlign: "center",
   },

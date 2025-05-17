@@ -190,13 +190,7 @@ const useIAP = (onPurchaseSuccess) => {
         await initializeIAP();
       }
 
-      const params =
-        Platform.OS === "android"
-          ? { skus: [sku] }
-          : {
-              sku,
-              andDangerouslyFinishTransactionAutomaticallyIOS: false,
-            };
+      const params = Platform.OS === "android" ? { skus: [sku] } : { sku };
 
       await requestPurchase(params);
     } catch (err) {
