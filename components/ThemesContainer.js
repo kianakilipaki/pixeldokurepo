@@ -12,8 +12,7 @@ import themeStyles from "../utils/themeStyles";
 import LoadingIndicator from "./loadingIcon";
 import { usePlayerData } from "../utils/playerDataContext";
 
-const ThemeListContainer = ({ slideAnimation, navigation, toggle }) => {
-  const screenHeight = Dimensions.get("window").height;
+const ThemeListContainer = ({ heightAnimation, navigation, toggle }) => {
   const { themes } = usePlayerData();
   const [expandedTheme, setExpandedTheme] = useState(null); // Track the expanded theme key
   const scrollToRef = useRef(null);
@@ -40,14 +39,8 @@ const ThemeListContainer = ({ slideAnimation, navigation, toggle }) => {
       style={[
         styles.themeContainer,
         {
-          transform: [
-            {
-              translateY: slideAnimation.interpolate({
-                inputRange: [0, 1],
-                outputRange: [screenHeight, 0],
-              }),
-            },
-          ],
+          height: heightAnimation,
+          overflow: "hidden", // important!
         },
       ]}
     >

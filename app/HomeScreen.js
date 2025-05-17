@@ -27,7 +27,7 @@ const HomeScreen = ({ navigation }) => {
   const { themes, showTutorial, completeTutorial } = usePlayerData();
   const [savedGame, setSavedGame] = useState(null);
   const [settingsVisible, setSettingsVisible] = useState(false);
-  const { slideAnimation, fadeAnimation, toggleExpansion } =
+  const { heightAnimation, fadeAnimation, toggleExpansion } =
     useThemeAnimation();
 
   useFocusEffect(
@@ -134,7 +134,7 @@ const HomeScreen = ({ navigation }) => {
 
         {/* Themes list */}
         <ThemeListContainer
-          slideAnimation={slideAnimation}
+          heightAnimation={heightAnimation}
           toggle={toggleExpansion}
           navigation={navigation}
         />

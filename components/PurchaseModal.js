@@ -60,7 +60,10 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
               accessibilityLabel={`Go to Coin Shop`}
               accessibilityRole="button"
               style={styles.warningButton}
-              onPress={() => setIsCoinShopVisible(true)}
+              onPress={() => {
+                setIsModalVisible(false); // Hide purchase modal first
+                setTimeout(() => setIsCoinShopVisible(true), 300); // Then show coin shop
+              }}
             >
               <Text style={styles.buyButtonText}>Buy Coins</Text>
             </TouchableOpacity>
