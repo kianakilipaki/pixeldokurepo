@@ -2,8 +2,8 @@ import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import Timer from "./Timer";
 import { useGame } from "../../utils/gameContext";
-import themeStyles from "../../utils/themeStyles";
-import { isTablet } from "../../utils/assetsMap";
+import gameStyles from "../../utils/gameStyles";
+import { isTablet } from "../../utils/gameStyles";
 
 const TopBar = ({ isPaused }) => {
   const { difficulty, mistakeCounter } = useGame();
@@ -16,7 +16,7 @@ const TopBar = ({ isPaused }) => {
           <Image
             source={require("../../assets/icons/heart.png")}
             key={i}
-            style={[themeStyles.icons.iconSizeMedium, { marginRight: 4 }]}
+            style={[gameStyles.icons.iconSizeMedium, { marginRight: 4 }]}
           />
         ))}
       </View>
@@ -31,16 +31,15 @@ const TopBar = ({ isPaused }) => {
 
 const styles = StyleSheet.create({
   topBar: {
-    width: "100%",
+    width: gameStyles.cellSize * 1.3 * 9,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    margin: isTablet ? 10 : 0,
-    backgroundColor: themeStyles.colors.gray1,
+    backgroundColor: gameStyles.colors.gray1,
     padding: 5,
-    borderWidth: 3,
-    borderColor: themeStyles.colors.black1,
-    marginBottom: 10,
+    borderWidth: 2,
+    borderBottomWidth: 0,
+    borderColor: gameStyles.colors.black1,
   },
   retryContainer: {
     flexDirection: "row",
@@ -49,9 +48,9 @@ const styles = StyleSheet.create({
     width: 80, // Set a fixed width to avoid movement
   },
   difficultyText: {
-    fontFamily: themeStyles.fonts.fontFamily,
-    fontSize: themeStyles.fonts.largeFontSize,
-    color: themeStyles.colors.black1,
+    fontFamily: gameStyles.fonts.fontFamily,
+    fontSize: gameStyles.fonts.largeFontSize,
+    color: gameStyles.colors.black1,
     textAlign: "center",
     flexShrink: 0, // Prevent resizing
     width: 100, // Set a fixed width so it doesn't move

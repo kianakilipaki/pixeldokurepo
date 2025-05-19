@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Image } from "react-native";
-import themeStyles from "../utils/themeStyles";
+import gameStyles from "../utils/gameStyles";
 
 export default function LoadingIndicator() {
   return (
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: themeStyles.colors.white,
+    backgroundColor: gameStyles.colors.white,
   },
   gif: {
     width: 192, // Adjust size as needed

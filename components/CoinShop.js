@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import ModalTemplate from "./ModalTemplate";
 import { useCoinShopRewardedAd } from "./CoinShopAd";
-import themeStyles from "../utils/themeStyles";
-import useIAP from "../utils/useIAP";
+import gameStyles from "../utils/gameStyles";
+import useIAP from "../utils/IAPContext";
 import { usePlayerData } from "../utils/playerDataContext";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -51,7 +51,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
       <View style={styles.coinContainer}>
         <Image
           source={require("../assets/icons/coin.png")}
-          style={themeStyles.icons.iconSizeMedium}
+          style={gameStyles.icons.iconSizeMedium}
         />
         <Text style={styles.coinText}>100 Coins</Text>
         <Text style={styles.costText}>
@@ -68,7 +68,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
       <View style={styles.coinContainer}>
         <Image
           source={require("../assets/icons/coin.png")}
-          style={themeStyles.icons.iconSizeMedium}
+          style={gameStyles.icons.iconSizeMedium}
         />
         <Text style={styles.coinText}>100 Coins</Text>
         <Text style={styles.costText}>AD {adCount}/3</Text>
@@ -91,7 +91,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
         <View style={styles.coinContainer} key={product.productId}>
           <Image
             source={require("../assets/icons/coin.png")}
-            style={themeStyles.icons.iconSizeMedium}
+            style={gameStyles.icons.iconSizeMedium}
           />
           <Text style={styles.coinText}>
             {product.title.replace("(PixelDoku)", "")}
@@ -135,14 +135,14 @@ const styles = StyleSheet.create({
   },
   coinText: {
     marginLeft: 10,
-    fontSize: themeStyles.fonts.regularFontSize,
+    fontSize: gameStyles.fonts.regularFontSize,
     fontWeight: "bold",
     flex: 1,
     textAlign: "left",
     color: "#333",
   },
   costText: {
-    fontSize: themeStyles.fonts.regularFontSize,
+    fontSize: gameStyles.fonts.regularFontSize,
     color: "#555",
     marginHorizontal: 10,
     textAlign: "center",
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     minHeight: 48,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: themeStyles.colors.blue,
+    backgroundColor: gameStyles.colors.blue,
     width: 80,
     paddingVertical: 8,
     paddingHorizontal: 20,
@@ -162,19 +162,19 @@ const styles = StyleSheet.create({
   },
   followButtonText: {
     color: "white",
-    fontSize: themeStyles.fonts.regularFontSize - 4,
+    fontSize: gameStyles.fonts.regularFontSize - 4,
     fontWeight: "bold",
     textAlign: "center",
   },
   buyButtonText: {
     color: "white",
-    fontSize: themeStyles.fonts.regularFontSize,
+    fontSize: gameStyles.fonts.regularFontSize,
     fontWeight: "bold",
     textAlign: "center",
   },
   errorText: {
     fontSize: 12,
-    color: themeStyles.colors.red,
+    color: gameStyles.colors.red,
     marginHorizontal: 10,
     textAlign: "center",
   },

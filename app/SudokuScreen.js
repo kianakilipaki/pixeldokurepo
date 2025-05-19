@@ -11,7 +11,7 @@ import TopBar from "../components/GamePlay/TopBar";
 import { useGame } from "../utils/gameContext";
 import PlayOverlay from "../components/GamePlay/PlayOverlay";
 import { Dimensions } from "react-native";
-import { isTablet } from "../utils/assetsMap";
+import { isTablet } from "../utils/gameStyles";
 import Board from "../components/GamePlay/Board";
 import ActionButtons from "../components/GamePlay/ActionButtons";
 import InputButtons from "../components/GamePlay/InputButtons";

@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { Animated } from "react-native";
-import themeStyles from "./themeStyles";
+import gameStyles from "./gameStyles";
 import { useMusic } from "./musicContext";
 
 const useMistakeAnimation = (isErrorCell) => {
@@ -34,7 +34,7 @@ const useMistakeAnimation = (isErrorCell) => {
   return {
     backgroundColor: backgroundAnim.interpolate({
       inputRange: [0, 1],
-      outputRange: [themeStyles.colors.gray1, themeStyles.colors.red2],
+      outputRange: [gameStyles.colors.gray1, gameStyles.colors.red2],
     }),
   };
 };

@@ -10,7 +10,7 @@ import { useGoogleAuth } from "../utils/authContext";
 import { usePlayerData } from "../utils/playerDataContext";
 import ModalTemplate from "./ModalTemplate";
 import { AntDesign } from "@expo/vector-icons";
-import themeStyles from "../utils/themeStyles";
+import gameStyles from "../utils/gameStyles";
 
 const SettingsModal = ({ visible, onClose, navigation }) => {
   const { soundOn, toggleSound, deletePlayerData } = usePlayerData();
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   googleText: {
     color: "#fff",
     fontSize: 16,
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontFamily: gameStyles.fonts.fontFamily,
   },
   button: {
     flex: 1,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: themeStyles.colors.red,
+    backgroundColor: gameStyles.colors.red,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -154,14 +154,14 @@ const styles = StyleSheet.create({
   deleteButton: {
     marginTop: 20,
     fontSize: 14,
-    color: themeStyles.colors.black1,
+    color: gameStyles.colors.black1,
     textDecorationLine: "underline",
     paddingVertical: 6,
     paddingHorizontal: 12,
   },
   logout: {
-    color: themeStyles.colors.white,
-    fontFamily: themeStyles.fonts.fontFamily,
+    color: gameStyles.colors.white,
+    fontFamily: gameStyles.fonts.fontFamily,
   },
 });
 

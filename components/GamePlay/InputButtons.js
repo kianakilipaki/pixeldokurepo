@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { spriteMapLG, cellSizeLG, isTablet } from "../../utils/assetsMap";
+import { isTablet } from "../../utils/gameStyles";
 import { useGame } from "../../utils/gameContext";
-import themeStyles from "../../utils/themeStyles";
+import gameStyles from "../../utils/gameStyles";
 
 const InputButtons = () => {
   const { theme, board, setSelectedCell, updateBoard } = useGame();
@@ -15,8 +15,7 @@ const InputButtons = () => {
     for (let row = 0; row < board.length; row++) {
       for (let col = 0; col < board[row].length; col++) {
         const value = board[row][col];
-        if (value !== 0) {
-          // Ignore empty cells (assumed to be 0)
+        if (typeof value === "number" && value !== 0) {
           countMap.set(value, (countMap.get(value) || 0) + 1);
         }
       }
@@ -30,30 +29,32 @@ const InputButtons = () => {
       }
     }
 
-    setClearedValues(newClearedValues); // Reset state directly
+    setClearedValues(newClearedValues);
   }, [board]);
 
   return (
     <View style={styles.birdButtons}>
-      {Object.entries(spriteMapLG).map(([value, position]) => {
-        const isCleared = clearedValues.includes(parseInt(value, 10));
+      {Array.from({ length: 9 }, (_, index) => {
+        const value = index + 1;
+        const isCleared = clearedValues.includes(value);
         return (
           <TouchableOpacity
+            key={value}
             accessibilityLabel={`${theme.themeKey}${value}`}
             accessibilityRole="button"
-            key={value}
             style={[styles.cellContainer, isCleared && styles.darken]}
-            onPress={() => updateBoard(parseInt(value, 10))}
+            onPress={() => updateBoard(value)}
           >
             <Image
-              source={theme.source}
-              style={[styles.spriteImage, position, isCleared && styles.darken]}
+              source={theme.icons[index]}
+              style={[styles.spriteImage, isCleared && styles.darken]}
+              resizeMode="contain"
             />
           </TouchableOpacity>
         );
       })}
       <TouchableOpacity
-        accessibilityLabel={`deselect cell`}
+        accessibilityLabel="deselect cell"
         accessibilityRole="button"
         style={styles.cellContainer}
         onPress={() => setSelectedCell(null)}
@@ -61,6 +62,7 @@ const InputButtons = () => {
         <Image
           source={require("../../assets/icons/clear.png")}
           style={styles.clearButton}
+          resizeMode="contain"
         />
       </TouchableOpacity>
     </View>
@@ -75,30 +77,31 @@ const styles = StyleSheet.create({
     marginVertical: isTablet ? 30 : 20,
   },
   cellContainer: {
-    width: cellSizeLG,
-    height: cellSizeLG,
+    width: gameStyles.cellSizeLG,
+    height: gameStyles.cellSizeLG,
     padding: 10,
-    margin: 5,
-    borderColor: themeStyles.colors.black1,
+    margin: 3,
+    borderColor: gameStyles.colors.black1,
     borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: themeStyles.colors.gray1,
+    backgroundColor: gameStyles.colors.gray1,
     overflow: "hidden",
     position: "relative",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
+    justifyContent: "center",
+    alignItems: "center",
   },
   darken: {
-    backgroundColor: themeStyles.colors.gray2,
+    backgroundColor: gameStyles.colors.gray2,
     opacity: 0.3,
   },
   spriteImage: {
-    position: "absolute",
-    width: cellSizeLG * 3,
-    height: cellSizeLG * 3,
-    opacity: 1, // Default opacity
+    aspectRatio: 1,
+    width: gameStyles.cellSizeLG,
+    height: gameStyles.cellSizeLG,
   },
   clearButton: {
     width: "100%",

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { isTablet } from "../utils/assetsMap";
+import { isTablet } from "../utils/gameStyles";
 import CoinShop from "./CoinShop";
-import themeStyles from "../utils/themeStyles";
+import gameStyles from "../utils/gameStyles";
 import { Dimensions } from "react-native";
 import ModalTemplate from "./ModalTemplate";
 import { usePlayerData } from "../utils/playerDataContext";
@@ -40,7 +40,7 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
           <View style={styles.coinContainer}>
             <Image
               source={require("../assets/icons/coin.png")}
-              style={themeStyles.icons.iconSizeSmall}
+              style={gameStyles.icons.iconSizeSmall}
             />
             <Text style={styles.coinText}>-500</Text>
           </View>
@@ -49,9 +49,9 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
           <>
             <Text
               style={{
-                color: themeStyles.colors.red,
+                color: gameStyles.colors.red,
                 marginBottom: 5,
-                fontSize: themeStyles.fonts.regularFontSize,
+                fontSize: gameStyles.fonts.regularFontSize,
               }}
             >
               Insufficent Funds
@@ -110,12 +110,12 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   modalText: {
-    fontSize: themeStyles.fonts.largeFontSize,
+    fontSize: gameStyles.fonts.largeFontSize,
     textAlign: "center",
     marginBottom: 10,
   },
   coinContainer: {
-    backgroundColor: themeStyles.colors.gray1,
+    backgroundColor: gameStyles.colors.gray1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -125,28 +125,28 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "gray",
-    shadowColor: themeStyles.colors.gray3,
+    shadowColor: gameStyles.colors.gray3,
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
   },
   coinText: {
     marginBottom: 2,
-    fontSize: themeStyles.fonts.regularFontSize,
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontSize: gameStyles.fonts.regularFontSize,
+    fontFamily: gameStyles.fonts.fontFamily,
     marginLeft: 5,
   },
   warningButton: {
     minHeight: 48,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: themeStyles.colors.gold,
-    fontSize: themeStyles.fonts.regularFontSize,
+    backgroundColor: gameStyles.colors.gold,
+    fontSize: gameStyles.fonts.regularFontSize,
     borderRadius: 10,
     paddingHorizontal: 20,
   },
   buyButtonText: {
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontFamily: gameStyles.fonts.fontFamily,
   },
 });
 

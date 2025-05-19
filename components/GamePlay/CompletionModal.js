@@ -9,7 +9,7 @@ import {
   Image,
 } from "react-native";
 import { useGame } from "../../utils/gameContext";
-import themeStyles from "../../utils/themeStyles";
+import gameStyles from "../../utils/gameStyles";
 import { Dimensions } from "react-native";
 import { formatTime } from "../../utils/generatePuzzle";
 import { useMusic } from "../../utils/musicContext";
@@ -167,7 +167,7 @@ const CompletionModal = ({
                 <Text style={styles.coinText}> +{coinsAwarded}</Text>
                 <Image
                   source={require("../../assets/icons/coin.png")}
-                  style={themeStyles.icons.iconSizeSmall}
+                  style={gameStyles.icons.iconSizeSmall}
                 />
               </View>
             )}
@@ -179,7 +179,7 @@ const CompletionModal = ({
               buttons.map((button, index) => (
                 <TouchableOpacity
                   key={index}
-                  style={themeStyles.buttons.button}
+                  style={gameStyles.buttons.button}
                   accessibilityLabel={`button.title`}
                   accessibilityRole="button"
                   onPress={() => {
@@ -187,7 +187,7 @@ const CompletionModal = ({
                     setIsModalVisible(false);
                   }}
                 >
-                  <Text style={themeStyles.buttons.buttonText}>
+                  <Text style={gameStyles.buttons.buttonText}>
                     {button.title}
                   </Text>
                 </TouchableOpacity>
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     maxWidth: "400px",
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: themeStyles.colors.black1,
+    borderColor: gameStyles.colors.black1,
     borderRadius: 10,
   },
   modalHeader: {
@@ -225,8 +225,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   modalHeaderText: {
-    fontFamily: themeStyles.fonts.fontFamily,
-    fontSize: themeStyles.fonts.headerFontSize,
+    fontFamily: gameStyles.fonts.fontFamily,
+    fontSize: gameStyles.fonts.headerFontSize,
     color: "white",
   },
   modalBody: {
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalText: {
-    fontSize: themeStyles.fonts.largeFontSize,
+    fontSize: gameStyles.fonts.largeFontSize,
     textAlign: "center",
   },
   buttonContainer: {
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonWrapper: {
-    fontSize: themeStyles.fonts.regularFontSize,
+    fontSize: gameStyles.fonts.regularFontSize,
     flex: 1,
     marginHorizontal: 5,
   },
@@ -277,13 +277,13 @@ const styles = StyleSheet.create({
   coinContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: themeStyles.colors.gray1,
+    backgroundColor: gameStyles.colors.gray1,
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "gray",
-    shadowColor: themeStyles.colors.gray3,
+    shadowColor: gameStyles.colors.gray3,
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
@@ -291,8 +291,8 @@ const styles = StyleSheet.create({
   },
   coinText: {
     marginBottom: 2,
-    fontSize: themeStyles.fonts.regularFontSize,
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontSize: gameStyles.fonts.regularFontSize,
+    fontFamily: gameStyles.fonts.fontFamily,
     marginRight: 5,
   },
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
-import themeStyles from "../utils/themeStyles";
+import gameStyles from "../utils/gameStyles";
 
 const LockOverlay = ({ onPress }) => {
   return (
@@ -12,7 +12,7 @@ const LockOverlay = ({ onPress }) => {
       >
         <Image
           source={require("../assets/icons/lock.png")}
-          style={themeStyles.icons.iconSizeMedium}
+          style={gameStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
     </View>

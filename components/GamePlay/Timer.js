@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { useGame } from "../../utils/gameContext";
-import themeStyles from "../../utils/themeStyles";
+import gameStyles from "../../utils/gameStyles";
 import { formatTime } from "../../utils/generatePuzzle";
 
 const Timer = ({ isPaused }) => {
@@ -36,9 +36,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   timerText: {
-    fontSize: themeStyles.fonts.largeFontSize,
-    fontFamily: themeStyles.fonts.fontFamily,
-    color: themeStyles.colors.black1,
+    fontSize: gameStyles.fonts.largeFontSize,
+    fontFamily: gameStyles.fonts.fontFamily,
+    color: gameStyles.colors.black1,
   },
 });
 

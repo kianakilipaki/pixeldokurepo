@@ -12,8 +12,7 @@ import {
 import ThemeListContainer from "../components/ThemesContainer";
 import useThemeAnimation from "../utils/themeAnimationHook";
 import { useGame } from "../utils/gameContext";
-import LoadingIndicator from "../components/loadingIcon";
-import themeStyles from "../utils/themeStyles";
+import gameStyles from "../utils/gameStyles";
 import TutorialModal from "../components/TutorialModal";
 import Coins from "../components/Coins";
 import { useFocusEffect } from "@react-navigation/native";
@@ -24,7 +23,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = ({ navigation }) => {
   const { loadProgress } = useGame();
-  const { themes, showTutorial, completeTutorial } = usePlayerData();
+  const { showTutorial, completeTutorial } = usePlayerData();
   const [savedGame, setSavedGame] = useState(null);
   const [settingsVisible, setSettingsVisible] = useState(false);
   const { heightAnimation, fadeAnimation, toggleExpansion } =
@@ -62,29 +61,16 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
-  if (!themes) {
-    return (
-      <>
-        <StatusBar
-          barStyle="light-content" // Choose 'dark-content' or 'light-content'
-          backgroundColor={themeStyles.colors.blue}
-          translucent={false}
-        />
-        <LoadingIndicator />
-      </>
-    );
-  }
-
   return (
     <SafeAreaView edges={["top"]} style={styles.safeArea}>
       <ImageBackground
-        source={require("../assets/themes/MntForest-bg.png")}
+        source={require("../assets/themes/birds/MntForest-bg.png")}
         style={styles.background}
         resizeMode="cover"
       >
         <StatusBar
           barStyle="light-content"
-          backgroundColor={themeStyles.colors.blue}
+          backgroundColor={gameStyles.colors.blue}
           translucent={false}
         />
 
@@ -156,7 +142,7 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: themeStyles.colors.blue, // or match your app theme
+    backgroundColor: gameStyles.colors.blue, // or match your app theme
   },
   background: {
     flex: 1,
@@ -173,16 +159,16 @@ const styles = StyleSheet.create({
     height: 200,
   },
   header: {
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontFamily: gameStyles.fonts.fontFamily,
     fontSize: 36,
     textAlign: "center",
-    color: themeStyles.colors.black1,
+    color: gameStyles.colors.black1,
   },
   title: {
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontFamily: gameStyles.fonts.fontFamily,
     fontSize: 48,
     marginBottom: 20,
-    color: themeStyles.colors.red,
+    color: gameStyles.colors.red,
     transform: [{ scaleY: 2 }],
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: 2, height: 2 },
@@ -202,15 +188,15 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   continueButton: {
-    backgroundColor: themeStyles.colors.black1,
+    backgroundColor: gameStyles.colors.black1,
   },
   newGameButton: {
-    backgroundColor: themeStyles.colors.blue,
+    backgroundColor: gameStyles.colors.blue,
   },
   buttonText: {
     color: "white",
-    fontFamily: themeStyles.fonts.fontFamily,
-    fontSize: themeStyles.fonts.headerFontSize,
+    fontFamily: gameStyles.fonts.fontFamily,
+    fontSize: gameStyles.fonts.headerFontSize,
   },
   coinContainer: {
     position: "absolute",

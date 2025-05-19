@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { Dimensions } from "react-native";
-import themeStyles from "../../utils/themeStyles";
+import gameStyles from "../../utils/gameStyles";
 import { useGame } from "../../utils/gameContext";
 import { formatTime } from "../../utils/generatePuzzle";
 
@@ -56,21 +56,21 @@ const styles = StyleSheet.create({
   },
   overlay: {
     padding: 20,
-    backgroundColor: themeStyles.colors.gray1,
+    backgroundColor: gameStyles.colors.gray1,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
   },
   title: {
-    fontFamily: themeStyles.fonts.fontFamily,
-    color: themeStyles.colors.red,
+    fontFamily: gameStyles.fonts.fontFamily,
+    color: gameStyles.colors.red,
     margin: 10,
-    fontSize: themeStyles.fonts.headerFontSize,
+    fontSize: gameStyles.fonts.headerFontSize,
   },
   text: {
-    fontFamily: themeStyles.fonts.fontFamily,
-    color: themeStyles.colors.black1,
-    fontSize: themeStyles.fonts.regularFontSize,
+    fontFamily: gameStyles.fonts.fontFamily,
+    color: gameStyles.colors.black1,
+    fontSize: gameStyles.fonts.regularFontSize,
   },
   playButton: {
     justifyContent: "center",
@@ -82,10 +82,10 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   playText: {
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontFamily: gameStyles.fonts.fontFamily,
     margin: 20,
-    color: themeStyles.colors.black1,
-    fontSize: themeStyles.fonts.headerFontSize,
+    color: gameStyles.colors.black1,
+    fontSize: gameStyles.fonts.headerFontSize,
   },
 });
 

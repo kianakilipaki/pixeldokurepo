@@ -5,10 +5,10 @@ import {
   saveToLocal,
   syncFromCloud,
 } from "./playerDataService";
-import { defaultThemes } from "./assetsMap";
 import { useGoogleAuth } from "./authContext";
 import isEqual from "lodash.isequal";
-import { Linking } from "react-native";
+import { Linking, Alert } from "react-native";
+import { themeAssets } from "./themeAssets";
 
 const PlayerDataContext = createContext();
 
@@ -16,7 +16,7 @@ export const PlayerDataProvider = ({ children }) => {
   const { user } = useGoogleAuth();
   const [coins, setCoins] = useState(0);
   const [highscores, setHighscores] = useState({});
-  const [themes, setThemes] = useState({});
+  const [unlockedThemes, setUnlockedThemes] = useState({});
   const [showTutorial, setShowTutorial] = useState(false);
   const [soundOn, setSoundOn] = useState(true);
   const [facebookFollowed, setFacebookFollowed] = useState(false);
@@ -56,7 +56,11 @@ export const PlayerDataProvider = ({ children }) => {
 
       setCoins(data?.coins || 0);
       setHighscores(data?.highscores || {});
-      setThemes((await mergeThemes(data?.themes)) || defaultThemes);
+      setUnlockedThemes(
+        data?.unlockedThemes || {
+          birds: { locked: false },
+        }
+      );
       setShowTutorial(!data?.tutorialSeen || false);
       setSoundOn(data?.soundOn);
       setFacebookFollowed(data?.facebookFollowed || false);
@@ -71,7 +75,7 @@ export const PlayerDataProvider = ({ children }) => {
       console.log("[Pixeldokulogs] Deleting player local data...");
       await saveToLocal({
         coins: 0,
-        themes: defaultThemes,
+        unlockedThemes: { birds: { locked: false } },
         highscores: {},
         tutorialSeen: false,
         soundOn: true,
@@ -83,25 +87,6 @@ export const PlayerDataProvider = ({ children }) => {
     }
   };
 
-  // Merge stored themes with defaults
-  const mergeThemes = async (storedThemes) => {
-    const merged = Object.keys(defaultThemes).reduce((acc, key) => {
-      acc[key] = {
-        ...defaultThemes[key],
-        locked: storedThemes?.[key]?.locked ?? defaultThemes[key].locked,
-      };
-      return acc;
-    }, {});
-
-    if (!isEqual(storedThemes, merged)) {
-      console.log("[Pixeldokulogs] Merging themes...");
-
-      await savePlayerData({ themes: merged });
-    }
-
-    return merged;
-  };
-
   // --- FACEBOOK FOLLOW METHODS ---
   const handleFacebookFollow = async () => {
     try {
@@ -110,7 +95,6 @@ export const PlayerDataProvider = ({ children }) => {
         return;
       }
 
-      // Open the Facebook page (update URL if needed)
       Linking.openURL("https://www.facebook.com/profile.php?id=61575665674946");
 
       setTimeout(async () => {
@@ -156,13 +140,13 @@ export const PlayerDataProvider = ({ children }) => {
 
   // --- THEME METHODS ---
   const unlockTheme = async (themeKey) => {
-    const updatedThemes = { ...themes };
+    const updatedThemes = { ...unlockedThemes };
     const theme = updatedThemes[themeKey];
 
     if (theme && theme.locked) {
       theme.locked = false;
-      setThemes(updatedThemes);
-      await savePlayerData({ themes: updatedThemes });
+      setUnlockedThemes(updatedThemes);
+      await savePlayerData({ unlockedThemes: updatedThemes });
     }
   };
 
@@ -189,7 +173,7 @@ export const PlayerDataProvider = ({ children }) => {
         removeCoins,
         highscores,
         saveHighScore,
-        themes,
+        unlockedThemes,
         unlockTheme,
         showTutorial,
         completeTutorial,

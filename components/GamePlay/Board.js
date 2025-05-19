@@ -3,6 +3,8 @@ import { View, StyleSheet } from "react-native";
 import Cell from "./Cell";
 import { getCellBorderStyles } from "../../utils/generatePuzzle";
 import { useGame } from "../../utils/gameContext";
+import PopupCell from "./PopupCell";
+import gameStyles from "../../utils/gameStyles";
 
 const Board = () => {
   const { board, initialBoard, setSelectedCell } = useGame();
@@ -34,6 +36,16 @@ const Board = () => {
           })}
         </View>
       ))}
+      {/* RENDER POPUP ON TOP */}
+      {heldCell && Array.isArray(heldCell[2]) && (
+        <PopupCell
+          cell={heldCell}
+          offset={{
+            top: heldCell[0] * gameStyles.cellSize * 1.2,
+            left: heldCell[1] * gameStyles.cellSize * 1.2,
+          }}
+        />
+      )}
     </View>
   );
 };

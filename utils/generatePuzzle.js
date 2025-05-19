@@ -1,4 +1,5 @@
-import themeStyles from "./themeStyles";
+import { StyleSheet } from "react-native";
+import gameStyles from "./gameStyles";
 
 // Utility to check if a number can be placed at a given position
 const isValidPlacement = (board, row, col, num) => {
@@ -152,19 +153,13 @@ export const generateSudoku = (difficulty = "Easy") => {
 };
 
 // Create sudoku grid lines
-export const getCellBorderStyles = (rowIndex, colIndex) => {
-  const isThickTop = rowIndex % 3 === 0;
-  const isThickLeft = colIndex % 3 === 0;
-  const isThickBottom = rowIndex === 8;
-  const isThickRight = colIndex === 8;
-
+export const getCellBorderStyles = (row, col) => {
   return {
-    borderTopWidth: isThickTop ? 3 : 1,
-    borderLeftWidth: isThickLeft ? 3 : 1,
-    borderBottomWidth: isThickBottom ? 3 : 1,
-    borderRightWidth: isThickRight ? 3 : 1,
-    borderColor: themeStyles.colors.black1,
-    zIndex: 2,
+    borderTopWidth: row % 3 === 0 ? 2 : StyleSheet.hairlineWidth,
+    borderLeftWidth: col % 3 === 0 ? 2 : StyleSheet.hairlineWidth,
+    borderRightWidth: col === 8 ? 2 : 0,
+    borderBottomWidth: row === 8 ? 2 : 0,
+    borderColor: gameStyles.colors.black1,
   };
 };
 

@@ -4,17 +4,16 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  Dimensions,
   TouchableOpacity,
 } from "react-native";
 import ThemeList from "./ThemeList";
-import themeStyles from "../utils/themeStyles";
-import LoadingIndicator from "./loadingIcon";
+import gameStyles from "../utils/gameStyles";
 import { usePlayerData } from "../utils/playerDataContext";
+import { themeAssets } from "../utils/themeAssets";
 
 const ThemeListContainer = ({ heightAnimation, navigation, toggle }) => {
-  const { themes } = usePlayerData();
-  const [expandedTheme, setExpandedTheme] = useState(null); // Track the expanded theme key
+  const { unlockedThemes } = usePlayerData();
+  const [expandedTheme, setExpandedTheme] = useState(null);
   const scrollToRef = useRef(null);
 
   const toggleTheme = (key, index) => {
@@ -25,14 +24,14 @@ const ThemeListContainer = ({ heightAnimation, navigation, toggle }) => {
       scrollToRef.current.scrollToIndex({
         index,
         animated: true,
-        viewPosition: 0.5, // Center the expanded theme
+        viewPosition: 0.5,
       });
     }
   };
 
-  if (!themes) {
-    return <LoadingIndicator />;
-  }
+  const themeKeys = Object.keys(unlockedThemes).filter(
+    (key) => key in themeAssets
+  );
 
   return (
     <Animated.View
@@ -40,31 +39,30 @@ const ThemeListContainer = ({ heightAnimation, navigation, toggle }) => {
         styles.themeContainer,
         {
           height: heightAnimation,
-          overflow: "hidden", // important!
+          overflow: "hidden",
         },
       ]}
     >
-      {/* Header with Touchable */}
       <TouchableOpacity
-        accessibilityLabel={`Choose a Theme`}
+        accessibilityLabel="Choose a Theme"
         accessibilityRole="button"
         onPress={toggle}
       >
         <Text style={styles.header}>Choose a Theme</Text>
       </TouchableOpacity>
 
-      {Object.keys(themes).length > 0 ? (
+      {themeKeys.length > 0 ? (
         <FlatList
           ref={scrollToRef}
-          data={Object.keys(themes).map((key, index) => ({
+          data={themeKeys.map((key, index) => ({
             themeKey: key,
             index,
-            ...themes[key],
+            ...themeAssets[key],
+            locked: unlockedThemes[key]?.locked ?? true,
           }))}
           renderItem={({ item, index }) => (
             <ThemeList
-              item={item}
-              themeKey={item.themeKey}
+              theme={item}
               expandedTheme={expandedTheme}
               toggleTheme={() => toggleTheme(item.themeKey, index)}
               navigation={navigation}
@@ -72,7 +70,7 @@ const ThemeListContainer = ({ heightAnimation, navigation, toggle }) => {
           )}
           keyExtractor={(item) => item.themeKey}
           getItemLayout={(data, index) => ({
-            length: 150, // Approximate item height
+            length: 150,
             offset: 150 * index,
             index,
           })}
@@ -94,10 +92,10 @@ const styles = StyleSheet.create({
     height: "90%",
   },
   header: {
-    fontFamily: themeStyles.fonts.fontFamily,
-    fontSize: themeStyles.fonts.headerFontSize,
+    fontFamily: gameStyles.fonts.fontFamily,
+    fontSize: gameStyles.fonts.headerFontSize,
     textAlign: "center",
-    color: themeStyles.colors.black1,
+    color: gameStyles.colors.black1,
     marginBottom: 10,
   },
 });

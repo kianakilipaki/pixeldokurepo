@@ -8,7 +8,7 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import themeStyles from "../utils/themeStyles";
+import gameStyles from "../utils/gameStyles";
 
 const { width } = Dimensions.get("window");
 
@@ -36,7 +36,7 @@ export default function TutorialModal({ visible, onClose }) {
             accessibilityRole="button"
             onPress={onClose}
           >
-            <Text style={themeStyles.buttons.buttonText}>Got it!</Text>
+            <Text style={gameStyles.buttons.buttonText}>Got it!</Text>
           </TouchableOpacity>
         </View>
       </View>

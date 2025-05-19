@@ -10,9 +10,9 @@ import { AppState } from "react-native";
 import { usePlayerData } from "./playerDataContext";
 
 const soundEffects = {
-  error: require("../assets/sounds/error-8-206492.mp3"),
-  success: require("../assets/sounds/open-new-level-143027.mp3"),
-  hint: require("../assets/sounds/080245_sfx-magic-84935.mp3"),
+  error: require("../assets/sfx/error-8-206492.mp3"),
+  success: require("../assets/sfx/open-new-level-143027.mp3"),
+  hint: require("../assets/sfx/080245_sfx-magic-84935.mp3"),
 };
 
 const MusicContext = createContext();

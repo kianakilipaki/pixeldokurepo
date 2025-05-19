@@ -5,7 +5,7 @@ const { width } = Dimensions.get("window");
 const isTablet = width > 765;
 
 // theme.js
-const themeStyles = {
+const gameStyles = {
   colors: {
     black1: "#000",
     white: "#e5e5e5",
@@ -59,6 +59,9 @@ const themeStyles = {
       color: "#fff",
     },
   },
+  cellSize: isTablet ? 64 : 32,
+  miniCellSize: isTablet ? 32 : 16,
+  cellSizeLG: isTablet ? 128 : 64,
 };
 
-export default themeStyles;
+export default gameStyles;

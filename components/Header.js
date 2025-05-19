@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Coins from "./Coins";
-import themeStyles from "../utils/themeStyles";
+import gameStyles from "../utils/gameStyles";
 import MusicToggleButton from "./muteButton";
 import { useMusic } from "../utils/musicContext";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -26,7 +26,7 @@ const Header = ({ title, onBackPress }) => {
             >
               <Image
                 source={require("../assets/icons/backArrow.png")}
-                style={themeStyles.icons.iconSizeMedium}
+                style={gameStyles.icons.iconSizeMedium}
               />
             </TouchableOpacity>
           )}
@@ -48,7 +48,7 @@ const Header = ({ title, onBackPress }) => {
 
 const styles = StyleSheet.create({
   safeArea: {
-    backgroundColor: themeStyles.colors.blue, // or match your app theme
+    backgroundColor: gameStyles.colors.blue, // or match your app theme
   },
   headerContainer: {
     flexDirection: "row",
@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingBottom: 5,
     paddingHorizontal: 15,
-    backgroundColor: themeStyles.colors.blue,
-    borderBottomColor: themeStyles.colors.black1,
+    backgroundColor: gameStyles.colors.blue,
+    borderBottomColor: gameStyles.colors.black1,
     borderBottomWidth: 2,
   },
   group: {
@@ -68,9 +68,9 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   titleText: {
-    fontSize: themeStyles.fonts.largeFontSize,
-    color: themeStyles.colors.black1,
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontSize: gameStyles.fonts.largeFontSize,
+    color: gameStyles.colors.black1,
+    fontFamily: gameStyles.fonts.fontFamily,
   },
 });
 

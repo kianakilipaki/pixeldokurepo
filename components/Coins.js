@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { TouchableOpacity, StyleSheet, Image, Text } from "react-native";
-import themeStyles from "../utils/themeStyles";
+import gameStyles from "../utils/gameStyles";
 import CoinShop from "./CoinShop";
 import { usePlayerData } from "../utils/playerDataContext";
 
@@ -19,7 +19,7 @@ const Coins = () => {
     >
       <Image
         source={require("../assets/icons/coin.png")}
-        style={themeStyles.icons.iconSizeSmall}
+        style={gameStyles.icons.iconSizeSmall}
       />
       <Text style={styles.coinText}>{coins}</Text>
       <CoinShop
@@ -33,17 +33,17 @@ const Coins = () => {
 const styles = StyleSheet.create({
   coinContainer: {
     maxWidth: 100,
-    backgroundColor: themeStyles.colors.gray1,
+    backgroundColor: gameStyles.colors.gray1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     zIndex: 100,
     paddingVertical: 5,
     paddingHorizontal: 10,
-    borderRadius: 8,
+    borderColor: gameStyles.colors.black1,
     borderWidth: 1,
-    borderColor: themeStyles.colors.black1,
-    shadowColor: themeStyles.colors.gray3,
+    borderRadius: 10,
+    shadowColor: gameStyles.colors.gray3,
     shadowOpacity: 0.5,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
@@ -51,9 +51,9 @@ const styles = StyleSheet.create({
   coinText: {
     marginBottom: 2,
     marginLeft: 4,
-    fontSize: themeStyles.fonts.regularFontSize,
-    color: themeStyles.colors.black1,
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontSize: gameStyles.fonts.regularFontSize,
+    color: gameStyles.colors.black1,
+    fontFamily: gameStyles.fonts.fontFamily,
   },
 });
 

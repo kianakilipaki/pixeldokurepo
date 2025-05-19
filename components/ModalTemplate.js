@@ -8,7 +8,7 @@ import {
   ImageBackground,
   Dimensions,
 } from "react-native";
-import themeStyles from "../utils/themeStyles";
+import gameStyles from "../utils/gameStyles";
 
 const { width } = Dimensions.get("window");
 
@@ -44,21 +44,21 @@ const ModalTemplate = ({
           <View style={styles.buttons}>
             {confirmAction && (
               <TouchableOpacity
-                style={themeStyles.buttons.button}
+                style={gameStyles.buttons.button}
                 onPress={confirmAction}
                 accessibilityLabel="Confirm action"
                 accessibilityRole="button"
               >
-                <Text style={themeStyles.buttons.buttonText}>Confirm</Text>
+                <Text style={gameStyles.buttons.buttonText}>Confirm</Text>
               </TouchableOpacity>
             )}
             <TouchableOpacity
-              style={themeStyles.buttons.button}
+              style={gameStyles.buttons.button}
               onPress={toggleModal}
               accessibilityLabel="Close the modal"
               accessibilityRole="button"
             >
-              <Text style={themeStyles.buttons.buttonText}>Cancel</Text>
+              <Text style={gameStyles.buttons.buttonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     maxWidth: 400,
     backgroundColor: "white",
     borderWidth: 1,
-    borderColor: themeStyles.colors.black1,
+    borderColor: gameStyles.colors.black1,
     borderRadius: 11,
   },
   header: {
@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   headerText: {
-    fontFamily: themeStyles.fonts.fontFamily,
-    fontSize: themeStyles.fonts.largeFontSize,
+    fontFamily: gameStyles.fonts.fontFamily,
+    fontSize: gameStyles.fonts.largeFontSize,
     color: "white",
   },
   body: {

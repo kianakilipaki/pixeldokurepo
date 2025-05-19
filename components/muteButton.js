@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Image } from "react-native";
 import { useMusic } from "../utils/musicContext";
-import themeStyles from "../utils/themeStyles";
+import gameStyles from "../utils/gameStyles";
 import { usePlayerData } from "../utils/playerDataContext";
 
 const MusicToggleButton = () => {
@@ -29,7 +29,7 @@ const MusicToggleButton = () => {
       <Image
         source={isMuted ? mute : unmute}
         style={[
-          themeStyles.icons.iconSizeSmall,
+          gameStyles.icons.iconSizeSmall,
           { marginRight: 20, opacity: soundOn ? 1 : 0.3 },
         ]}
       />

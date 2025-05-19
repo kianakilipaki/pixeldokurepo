@@ -11,7 +11,7 @@ export default ({ config }) => {
       platforms: ["ios", "android"],
       name: "pixeldoku",
       slug: "pixeldoku",
-      version: "5.5.0",
+      version: "5.6.0",
       orientation: "portrait",
       icon: "./assets/icon.png",
       userInterfaceStyle: "light",
@@ -37,11 +37,11 @@ export default ({ config }) => {
         googleServicesFile: "./GoogleService-Info.plist",
         infoPlist: {
           NSAppTransportSecurity: {
-            NSAllowsArbitraryLoads: true
+            NSAllowsArbitraryLoads: true,
           },
         },
         config: {
-          usesNonExemptEncryption: false
+          usesNonExemptEncryption: false,
         },
       },
       assetBundlePatterns: ["**/*"],

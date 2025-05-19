@@ -1,9 +1,7 @@
-// playerDataService.js
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "./authContext";
-import { defaultThemes } from "./assetsMap";
+import { themeAssets } from "./themeAssets";
 
 const STORAGE_KEY = "gameData";
 
@@ -13,7 +11,7 @@ const validateGameData = (data) => {
     throw new Error("Game data must be a valid object.");
   }
 
-  const { coins, highscores, themes, tutorialSeen, lastUpdated } = data;
+  const { coins, highscores, unlockedThemes, tutorialSeen, lastUpdated } = data;
 
   if (!Number.isInteger(coins) || coins < 0) {
     throw new Error("Coins must be a positive integer.");
@@ -42,19 +40,15 @@ const validateGameData = (data) => {
     });
   });
 
-  if (typeof themes !== "object" || themes === null) {
-    throw new Error("Themes must be a valid object.");
+  if (typeof unlockedThemes !== "object" || unlockedThemes === null) {
+    throw new Error("UnlockedThemes must be a valid object.");
   }
 
-  Object.entries(themes).forEach(([themeKey, themeData]) => {
+  Object.entries(unlockedThemes).forEach(([themeKey, themeData]) => {
     if (typeof themeData !== "object" || themeData === null) {
       throw new Error(`Theme data for "${themeKey}" must be a valid object.`);
     }
-    const { locked, title } = themeData;
-
-    if (typeof title !== "string" || title.trim() === "") {
-      throw new Error(`Theme "${themeKey}" must have a valid title.`);
-    }
+    const { locked } = themeData;
     if (locked !== true && locked !== false) {
       throw new Error(
         `Theme "${themeKey}" must have a valid "locked" boolean.`
@@ -84,6 +78,8 @@ export async function saveToLocal(update, uid = null) {
         ? update(prevData)
         : { ...prevData, ...update };
 
+    delete newData.themes; // Remove themes from the newData object
+    // Validate the new data before saving
     validateGameData(newData);
 
     const timestamp = new Date().toISOString();
@@ -203,7 +199,7 @@ export async function resetAndSeedOldGameData() {
     // Seed old format keys
     await AsyncStorage.setItem("COINS", JSON.stringify(500));
 
-    await AsyncStorage.setItem("themesStatus", JSON.stringify(defaultThemes));
+    await AsyncStorage.setItem("themesStatus", JSON.stringify(themeAssets));
 
     await AsyncStorage.setItem(
       "HighScore",
@@ -222,20 +218,68 @@ export async function resetAndSeedOldGameData() {
   }
 }
 
+// Merge themes with default values
+export async function mergeThemes(themes) {
+  try {
+    // If themes is not an object, return all locked by default except 'birds'
+    if (!themes || typeof themes !== "object") {
+      return Object.keys(themeAssets).reduce((acc, key) => {
+        acc[key] = { locked: key === "birds" ? false : true };
+        return acc;
+      }, {});
+    }
+
+    // Only keep the locked value for each theme key, but 'birds' is always unlocked
+    const merged = Object.keys(themeAssets).reduce((acc, key) => {
+      acc[key] = {
+        locked:
+          key === "birds"
+            ? false
+            : !!(themes[key] && themes[key].locked === false ? false : true),
+      };
+      return acc;
+    }, {});
+
+    console.log("[Pixeldokulogs] Merged themes:", merged);
+    return merged;
+  } catch (error) {
+    console.error("[Pixeldokulogs] Error merging themes:", error.message);
+    return {};
+  }
+}
+
 // One-time migration to unified key
 export async function migrateLocalGameData(uid) {
   try {
     console.log("[Pixeldokulogs] Starting migration...");
     if (uid) {
       const cloudData = await loadFromCloud(uid);
-      if (cloudData) {
+      if (cloudData && !cloudData.themes) {
         console.log("[Pixeldokulogs] Cloud data found. Skipping migration.");
+        return;
+      } else if (cloudData && cloudData.themes) {
+        console.log(
+          "[Pixeldokulogs] Cloud data found but not in the correct format."
+        );
+        await mergeThemes(cloudData.themes).then(async (fixThemes) => {
+          delete cloudData.themes;
+          await saveToCloud({ ...cloudData, unlockedThemes: fixThemes });
+        });
         return;
       }
     }
     const localData = await loadFromLocal();
-    if (localData) {
+    if (localData && !localData.themes) {
       console.log("[Pixeldokulogs] Data already migrated. Skipping.");
+      return;
+    } else if (localData && localData.themes) {
+      console.log(
+        "[Pixeldokulogs] Local data found but not in the correct format."
+      );
+      await mergeThemes(localData.themes).then(async (fixThemes) => {
+        delete localData.themes;
+        await saveToLocal({ ...localData, unlockedThemes: fixThemes });
+      });
       return;
     }
 
@@ -246,9 +290,12 @@ export async function migrateLocalGameData(uid) {
       AsyncStorage.getItem("sudokuTutorialSeen"),
     ]);
 
+    const parsedThemes = themes ? JSON.parse(themes) : themeAssets;
+    const unlockedThemes = await mergeThemes(parsedThemes);
+
     const parsedData = {
       coins: coins ? parseInt(coins) : 0,
-      themes: themes ? JSON.parse(themes) : defaultThemes,
+      unlockedThemes,
       highscores: highscores ? JSON.parse(highscores) : {},
       tutorialSeen: tutorialSeen ? true : false,
       soundOn: true,

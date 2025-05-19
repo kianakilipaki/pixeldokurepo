@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useGame } from "../../utils/gameContext";
-import themeStyles from "../../utils/themeStyles";
+import gameStyles from "../../utils/gameStyles";
 import { useHintRewardedAd } from "./HintAd";
 import { useMusic } from "../../utils/musicContext";
 
@@ -84,7 +84,7 @@ const ActionButtons = ({ onPause }) => {
               ? require("../../assets/icons/pencilIn.png")
               : require("../../assets/icons/pencilOut.png")
           }
-          style={themeStyles.icons.iconSizeMedium}
+          style={gameStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
 
@@ -97,7 +97,7 @@ const ActionButtons = ({ onPause }) => {
       >
         <Image
           source={require("../../assets/icons/erase.png")}
-          style={themeStyles.icons.iconSizeMedium}
+          style={gameStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
 
@@ -114,7 +114,7 @@ const ActionButtons = ({ onPause }) => {
             loaded ? (
               <Image
                 source={require("../../assets/icons/ad.png")}
-                style={themeStyles.icons.iconSizeSmall}
+                style={gameStyles.icons.iconSizeSmall}
               />
             ) : (
               <ActivityIndicator size="small" color="white" />
@@ -123,7 +123,7 @@ const ActionButtons = ({ onPause }) => {
         </View>
         <Image
           source={require("../../assets/icons/hint.png")}
-          style={themeStyles.icons.iconSizeMedium}
+          style={gameStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
 
@@ -136,7 +136,7 @@ const ActionButtons = ({ onPause }) => {
       >
         <Image
           source={require("../../assets/icons/pause.png")}
-          style={themeStyles.icons.iconSizeMedium}
+          style={gameStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
     </View>
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 10,
-    backgroundColor: themeStyles.colors.blue,
+    backgroundColor: gameStyles.colors.blue,
     borderRadius: 100,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     right: -12,
     paddingHorizontal: 3,
     paddingVertical: 2,
-    backgroundColor: themeStyles.colors.gold,
+    backgroundColor: gameStyles.colors.gold,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderBottomLeftRadius: 0,
@@ -174,8 +174,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   hintText: {
-    fontSize: themeStyles.fonts.regularFontSize,
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontSize: gameStyles.fonts.regularFontSize,
+    fontFamily: gameStyles.fonts.fontFamily,
   },
 });
 

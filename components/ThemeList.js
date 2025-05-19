@@ -8,80 +8,67 @@ import {
   StyleSheet,
   Animated,
 } from "react-native";
-import { spriteMapLG, cellSizeLG } from "../utils/assetsMap";
 import LockOverlay from "./LockOverlay";
 import PurchaseModal from "./PurchaseModal";
-import themeStyles from "../utils/themeStyles";
+import gameStyles from "../utils/gameStyles";
 import { Dimensions } from "react-native";
 import { formatTime } from "../utils/generatePuzzle";
 import { usePlayerData } from "../utils/playerDataContext";
 
 const { width } = Dimensions.get("window");
 
-const ThemeList = ({
-  item,
-  themeKey,
-  expandedTheme,
-  toggleTheme,
-  navigation,
-}) => {
+const ThemeList = ({ theme, expandedTheme, toggleTheme, navigation }) => {
   const { highscores } = usePlayerData();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const Scores = highscores
-    ? highscores[themeKey] || { Easy: 0, Medium: 0, Hard: 0 }
+    ? highscores[theme.themeKey] || { Easy: 0, Medium: 0, Hard: 0 }
     : { Easy: 0, Medium: 0, Hard: 0 };
 
   const openModal = () => {
-    if (item.title === "Coming Soon") return;
+    if (theme.title === "Coming Soon") return;
     setIsModalVisible(true);
   };
 
   const navigateToSudoku = (difficulty) => {
     navigation.navigate("Sudoku", {
-      theme: item,
+      theme: theme,
       difficulty,
       isNewGame: true,
     });
   };
 
-  const isExpanded = expandedTheme === themeKey;
+  const isExpanded = expandedTheme === theme.themeKey;
 
   return (
     <View style={styles.themeContainer}>
       <ImageBackground
-        key={`bg-${themeKey}`}
-        source={item.bgSource}
+        key={`bg-${theme.themeKey}`}
+        source={theme.bgSource}
         style={styles.themeBackground}
         resizeMode="cover"
       >
-        {item.locked && <LockOverlay onPress={openModal} />}
+        {theme.locked && <LockOverlay onPress={openModal} />}
         <TouchableOpacity
-          accessibilityLabel={`Choose ${item.title} theme`}
+          accessibilityLabel={`Choose ${theme.title} theme`}
           accessibilityRole="button"
-          key={`header-${themeKey}`}
-          onPress={() => toggleTheme(themeKey)} // Call toggleTheme on press
+          key={`header-${theme.themeKey}`}
+          onPress={() => toggleTheme(theme.themeKey)} // Call toggleTheme on press
           style={styles.themeHeader}
         >
-          {item.source && (
+          {theme && (
             <View style={styles.thumbnail}>
-              <Image
-                source={item.source}
-                style={[styles.spriteImage, spriteMapLG[1]]}
-              />
+              <Image source={theme.icons[0]} style={[styles.spriteImage]} />
             </View>
           )}
-          <Text style={styles.themeTitle}>{item.title}</Text>
-          {item.source && (
+          <Text style={styles.themeTitle}>{theme.title}</Text>
+          {theme && (
             <View style={styles.thumbnail}>
-              <Image
-                source={item.source}
-                style={[styles.spriteImage, spriteMapLG[2]]}
-              />
+              <Image source={theme.icons[1]} style={[styles.spriteImage]} />
             </View>
           )}
         </TouchableOpacity>
 
-        {!item.locked && isExpanded && (
+        {!theme.locked && isExpanded && (
           <Animated.View style={styles.difficultyContainer}>
             {["Easy", "Medium", "Hard"].map((difficulty) => {
               const time = Scores[difficulty] || 0;
@@ -108,7 +95,7 @@ const ThemeList = ({
         )}
 
         <PurchaseModal
-          theme={item}
+          theme={theme}
           setIsModalVisible={setIsModalVisible}
           isModalVisible={isModalVisible}
         />
@@ -132,7 +119,7 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderTopWidth: 2,
     borderBottomWidth: 2,
-    borderColor: themeStyles.colors.black1,
+    borderColor: gameStyles.colors.black1,
   },
   themeBackground: {
     flex: 1,
@@ -148,11 +135,11 @@ const styles = StyleSheet.create({
     width: width * 0.8,
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: themeStyles.colors.gray1,
+    backgroundColor: gameStyles.colors.gray1,
   },
   thumbnail: {
-    width: cellSizeLG,
-    height: cellSizeLG,
+    width: gameStyles.cellSize * 1.5,
+    height: gameStyles.cellSize * 1.5,
     padding: 10,
     overflow: "hidden",
     position: "relative",
@@ -161,20 +148,20 @@ const styles = StyleSheet.create({
   },
   spriteImage: {
     position: "absolute",
-    width: cellSizeLG * 3,
-    height: cellSizeLG * 3,
+    width: gameStyles.cellSize * 1.5,
+    height: gameStyles.cellSize * 1.5,
     opacity: 1, // Default opacity
   },
   themeTitle: {
-    fontFamily: themeStyles.fonts.fontFamily,
-    fontSize: themeStyles.fonts.largeFontSize,
+    fontFamily: gameStyles.fonts.fontFamily,
+    fontSize: gameStyles.fonts.largeFontSize,
     color: "#000", // White text on buttons
   },
   difficultyContainer: {
     width: width * 0.8,
     paddingVertical: 10,
     paddingHorizontal: 15,
-    backgroundColor: themeStyles.colors.gray1,
+    backgroundColor: gameStyles.colors.gray1,
     overflow: "hidden", // Prevent overflow
   },
   difficultyButton: {
@@ -186,19 +173,19 @@ const styles = StyleSheet.create({
   },
   difficultyText: {
     textAlign: "left",
-    color: themeStyles.colors.black1,
-    fontFamily: themeStyles.fonts.fontFamily,
-    fontSize: themeStyles.fonts.regularFontSize,
+    color: gameStyles.colors.black1,
+    fontFamily: gameStyles.fonts.fontFamily,
+    fontSize: gameStyles.fonts.regularFontSize,
   },
   ScoresText: {
     textAlign: "right",
-    color: themeStyles.colors.black1,
-    fontSize: themeStyles.fonts.regularFontSize,
+    color: gameStyles.colors.black1,
+    fontSize: gameStyles.fonts.regularFontSize,
     fontWeight: "normal",
   },
   divider: {
     height: 1,
-    backgroundColor: themeStyles.colors.black1,
+    backgroundColor: gameStyles.colors.black1,
     marginVertical: 5,
   },
 });

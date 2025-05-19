@@ -13,7 +13,7 @@ import {
   migrateLocalGameData,
   resetAndSeedOldGameData,
 } from "../utils/playerDataService";
-import themeStyles from "../utils/themeStyles";
+import gameStyles from "../utils/gameStyles";
 import LoadingIndicator from "../components/loadingIcon";
 import { AntDesign } from "@expo/vector-icons";
 import { usePlayerData } from "../utils/playerDataContext";
@@ -53,13 +53,13 @@ const LoginScreen = ({ navigation }) => {
   if (loading) {
     return (
       <ImageBackground
-        source={require("../assets/themes/MntForest-bg.png")}
+        source={require("../assets/themes/birds/MntForest-bg.png")}
         style={styles.background}
         resizeMode="cover"
       >
         <StatusBar
           barStyle="light-content"
-          backgroundColor={themeStyles.colors.blue}
+          backgroundColor={gameStyles.colors.blue}
         />
         <LoadingIndicator />
       </ImageBackground>
@@ -68,13 +68,13 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={require("../assets/themes/MntForest-bg.png")}
+      source={require("../assets/themes/birds/MntForest-bg.png")}
       style={styles.background}
       resizeMode="cover"
     >
       <StatusBar
         barStyle="light-content"
-        backgroundColor={themeStyles.colors.blue}
+        backgroundColor={gameStyles.colors.blue}
       />
       <View style={styles.container}>
         <Image source={require("../assets/icon-bg.png")} style={styles.logo} />
@@ -109,16 +109,16 @@ const styles = StyleSheet.create({
     height: 200,
   },
   header: {
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontFamily: gameStyles.fonts.fontFamily,
     fontSize: 36,
     textAlign: "center",
-    color: themeStyles.colors.black1,
+    color: gameStyles.colors.black1,
   },
   title: {
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontFamily: gameStyles.fonts.fontFamily,
     fontSize: 48,
     marginBottom: 20,
-    color: themeStyles.colors.red,
+    color: gameStyles.colors.red,
     transform: [{ scaleY: 2 }],
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: 2, height: 2 },
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   googleButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: themeStyles.colors.blue,
+    backgroundColor: gameStyles.colors.blue,
     marginTop: 40,
     paddingVertical: 12,
     paddingHorizontal: 24,
@@ -144,14 +144,14 @@ const styles = StyleSheet.create({
   googleText: {
     color: "#fff",
     fontSize: 16,
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontFamily: gameStyles.fonts.fontFamily,
   },
   guestText: {
     marginTop: 20,
     fontSize: 14,
-    color: themeStyles.colors.white,
+    color: gameStyles.colors.white,
     textDecorationLine: "underline",
-    fontFamily: themeStyles.fonts.fontFamily,
+    fontFamily: gameStyles.fonts.fontFamily,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     paddingVertical: 6,
     paddingHorizontal: 12,
