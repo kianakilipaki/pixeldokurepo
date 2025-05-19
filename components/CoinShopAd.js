@@ -4,12 +4,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   RewardedAd,
   RewardedAdEventType,
+  AdEventType,
+  TestIds,
 } from "react-native-google-mobile-ads";
 
 const iosAdUnitId = "ca-app-pub-6358927901907597/3374480639";
 const androidAdUnitId = "ca-app-pub-6358927901907597/7024526588";
 
-const adUnitId = Platform.OS === "android" ? androidAdUnitId : iosAdUnitId;
+const adUnitId = __DEV__
+  ? TestIds.REWARDED
+  : Platform.OS === "android"
+  ? androidAdUnitId
+  : iosAdUnitId;
 const MAX_ADS_PER_DAY = 5;
 const STORAGE_KEY = "rewardedAdData";
 
@@ -25,29 +31,56 @@ export const useCoinShopRewardedAd = () => {
   );
 
   const setupListeners = (rewardedAd) => {
-    rewardedAd.addAdEventListener(RewardedAdEventType.LOADED, () =>
-      setLoaded(true)
-    );
+    try {
+      console.log("[Pixeldokulogs] Setting up ad listeners: ", AdEventType);
+      rewardedAd.addAdEventListener(RewardedAdEventType.LOADED, () => {
+        try {
+          setLoaded(true);
+        } catch (error) {
+          console.error(
+            "[Pixeldokulogs] Error in LOADED event listener:",
+            error
+          );
+        }
+      });
 
-    rewardedAd.addAdEventListener(
-      RewardedAdEventType.EARNED_REWARD,
-      async (reward) => {
-        console.log("[Pixeldokulogs] User earned reward of ", reward);
-        setRewardAmount(reward.amount);
-        await incrementAdCount();
-      }
-    );
+      rewardedAd.addAdEventListener(
+        RewardedAdEventType.EARNED_REWARD,
+        async (reward) => {
+          try {
+            console.log("[Pixeldokulogs] User earned reward of ", reward);
+            setRewardAmount(reward.amount);
+            await incrementAdCount();
+          } catch (error) {
+            console.error(
+              "[Pixeldokulogs] Error in EARNED_REWARD event listener:",
+              error
+            );
+          }
+        }
+      );
+
+      rewardedAd.addAdEventListener(AdEventType.ERROR, (error) => {
+        console.error("Rewarded ad failed to load:", error);
+      });
+    } catch (error) {
+      console.error("[Pixeldokulogs] Error setting up ad listeners:", error);
+    }
   };
 
   const loadAd = () => {
-    setLoaded(false);
-    const newRewarded = RewardedAd.createForAdRequest(adUnitId, {
-      keywords: ["gaming", "puzzle", "brain games"],
-      maxAdContentRating: "PG",
-    });
-    setRewarded(newRewarded);
-    setupListeners(newRewarded);
-    newRewarded.load();
+    try {
+      setLoaded(false);
+      const newRewarded = RewardedAd.createForAdRequest(adUnitId, {
+        keywords: ["gaming", "puzzle", "brain games"],
+        maxAdContentRating: "PG",
+      });
+      setRewarded(newRewarded);
+      setupListeners(newRewarded);
+      newRewarded.load();
+    } catch (error) {
+      console.error("[Pixeldokulogs] Error in loadAd:", error);
+    }
   };
 
   const incrementAdCount = async () => {

@@ -3,12 +3,17 @@ import { Alert, Platform } from "react-native";
 import {
   RewardedAd,
   RewardedAdEventType,
+  TestIds,
 } from "react-native-google-mobile-ads";
 
 const androidAdUnitId = "ca-app-pub-6358927901907597/4751686655";
 const iosAdUnitId = "ca-app-pub-6358927901907597/8062866382";
 
-const adUnitId = Platform.OS === "android" ? androidAdUnitId : iosAdUnitId;
+const adUnitId = __DEV__
+  ? TestIds.REWARDED
+  : Platform.OS === "android"
+  ? androidAdUnitId
+  : iosAdUnitId;
 export const useHintRewardedAd = () => {
   const [loaded, setLoaded] = useState(false);
   const [rewardAmount, setRewardAmount] = useState(0);
