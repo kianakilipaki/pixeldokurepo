@@ -56,13 +56,14 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
         <Text style={styles.coinText}>100 Coins</Text>
         <Text style={styles.costText}>
           <AntDesign name="facebook-square" size={28} color="#1877F2" />
+          &nbsp;Follow
         </Text>
         <TouchableOpacity
           onPress={handleFacebookFollowLogged}
           style={[styles.buyButton, facebookFollowed && styles.disabledButton]}
           disabled={facebookFollowed}
         >
-          <Text style={styles.followButtonText}>Follow</Text>
+          <Text style={styles.followButtonText}>Free</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.coinContainer}>
@@ -81,7 +82,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
           disabled={!loaded || adCount >= 3}
         >
           {loaded ? (
-            <Text style={styles.buyButtonText}>Free</Text>
+            <Text style={styles.followButtonText}>Free</Text>
           ) : (
             <ActivityIndicator size="small" color="white" />
           )}
