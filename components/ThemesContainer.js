@@ -29,9 +29,18 @@ const ThemeListContainer = ({ heightAnimation, navigation, toggle }) => {
     }
   };
 
-  const themeKeys = Object.keys(unlockedThemes).filter(
-    (key) => key in themeAssets
-  );
+  // Always include all keys from themeAssets
+  const themeKeys = Object.keys(themeAssets);
+
+  // Build full theme data using themeAssets + unlockedThemes
+  const themeData = themeKeys.map((key, index) => {
+    return {
+      themeKey: key,
+      index,
+      ...themeAssets[key],
+      locked: key === "birds" ? false : unlockedThemes[key]?.locked ?? true,
+    };
+  });
 
   return (
     <Animated.View
@@ -54,17 +63,12 @@ const ThemeListContainer = ({ heightAnimation, navigation, toggle }) => {
       {themeKeys.length > 0 ? (
         <FlatList
           ref={scrollToRef}
-          data={themeKeys.map((key, index) => ({
-            themeKey: key,
-            index,
-            ...themeAssets[key],
-            locked: unlockedThemes[key]?.locked ?? true,
-          }))}
-          renderItem={({ item, index }) => (
+          data={themeData}
+          renderItem={({ item }) => (
             <ThemeList
               theme={item}
               expandedTheme={expandedTheme}
-              toggleTheme={() => toggleTheme(item.themeKey, index)}
+              toggleTheme={() => toggleTheme(item.themeKey, item.index)}
               navigation={navigation}
             />
           )}

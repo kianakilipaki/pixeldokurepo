@@ -218,34 +218,16 @@ export async function resetAndSeedOldGameData() {
   }
 }
 
-// Merge themes with default values
-export async function mergeThemes(themes) {
-  try {
-    // If themes is not an object, return all locked by default except 'birds'
-    if (!themes || typeof themes !== "object") {
-      return Object.keys(themeAssets).reduce((acc, key) => {
-        acc[key] = { locked: key === "birds" ? false : true };
-        return acc;
-      }, {});
-    }
-
-    // Only keep the locked value for each theme key, but 'birds' is always unlocked
-    const merged = Object.keys(themeAssets).reduce((acc, key) => {
-      acc[key] = {
-        locked:
-          key === "birds"
-            ? false
-            : !!(themes[key] && themes[key].locked === false ? false : true),
+async function extractLockedThemes(themesObj) {
+  const result = {};
+  for (const key in themesObj) {
+    if (themesObj[key].hasOwnProperty("locked")) {
+      result[key] = {
+        locked: key === "birds" ? false : themesObj[key].locked,
       };
-      return acc;
-    }, {});
-
-    console.log("[Pixeldokulogs] Merged themes:", merged);
-    return merged;
-  } catch (error) {
-    console.error("[Pixeldokulogs] Error merging themes:", error.message);
-    return {};
+    }
   }
+  return result;
 }
 
 // One-time migration to unified key
@@ -261,9 +243,9 @@ export async function migrateLocalGameData(uid) {
         console.log(
           "[Pixeldokulogs] Cloud data found but not in the correct format."
         );
-        await mergeThemes(cloudData.themes).then(async (fixThemes) => {
+        await extractLockedThemes(cloudData.themes).then(async (fixThemes) => {
           delete cloudData.themes;
-          await saveToCloud({ ...cloudData, unlockedThemes: fixThemes });
+          await saveToCloud(uid, { ...cloudData, unlockedThemes: fixThemes });
         });
         return;
       }
@@ -276,7 +258,7 @@ export async function migrateLocalGameData(uid) {
       console.log(
         "[Pixeldokulogs] Local data found but not in the correct format."
       );
-      await mergeThemes(localData.themes).then(async (fixThemes) => {
+      await extractLockedThemes(localData.themes).then(async (fixThemes) => {
         delete localData.themes;
         await saveToLocal({ ...localData, unlockedThemes: fixThemes });
       });
@@ -291,7 +273,7 @@ export async function migrateLocalGameData(uid) {
     ]);
 
     const parsedThemes = themes ? JSON.parse(themes) : themeAssets;
-    const unlockedThemes = await mergeThemes(parsedThemes);
+    const unlockedThemes = await extractLockedThemes(parsedThemes);
 
     const parsedData = {
       coins: coins ? parseInt(coins) : 0,

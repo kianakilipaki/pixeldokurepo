@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     minHeight: 120,
     alignSelf: "center",
     marginVertical: 10,
-    backgroundColor: "white",
+    backgroundColor: "black",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.2,

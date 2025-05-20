@@ -141,13 +141,16 @@ export const PlayerDataProvider = ({ children }) => {
   // --- THEME METHODS ---
   const unlockTheme = async (themeKey) => {
     const updatedThemes = { ...unlockedThemes };
-    const theme = updatedThemes[themeKey];
 
-    if (theme && theme.locked) {
-      theme.locked = false;
-      setUnlockedThemes(updatedThemes);
-      await savePlayerData({ unlockedThemes: updatedThemes });
+    // If theme does not exist in unlockedThemes, initialize it
+    if (!updatedThemes[themeKey]) {
+      updatedThemes[themeKey] = { locked: false };
+    } else if (updatedThemes[themeKey].locked) {
+      updatedThemes[themeKey].locked = false;
     }
+
+    setUnlockedThemes(updatedThemes);
+    await savePlayerData({ unlockedThemes: updatedThemes });
   };
 
   // --- TUTORIAL ---
