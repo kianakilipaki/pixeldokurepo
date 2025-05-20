@@ -2,7 +2,9 @@ import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
 
-const isTablet = width > 765;
+export const isTablet = width > 740;
+
+const maxCellSize = Math.floor(width / 9) / 1.1;
 
 // theme.js
 const gameStyles = {
@@ -59,9 +61,10 @@ const gameStyles = {
       color: "#fff",
     },
   },
-  cellSize: isTablet ? 64 : 32,
+  cellSize: Math.min((isTablet ? 64 : 32) * 1.4, maxCellSize),
+  spriteSize: isTablet ? 64 : 32,
   miniCellSize: isTablet ? 32 : 16,
-  cellSizeLG: isTablet ? 128 : 64,
+  cellSizeLG: 64,
 };
 
 export default gameStyles;

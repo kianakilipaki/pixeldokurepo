@@ -27,12 +27,13 @@ const SudokuScreen = ({ route, navigation }) => {
     setDifficulty,
     resetProgress,
     setSelectedCell,
+    isPaused,
+    setIsPaused,
   } = useGame();
   const { playThemeMusic, stopMusic } = useMusic();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
 
   const startNewGame = useCallback(
     async (theme, difficulty) => {
@@ -84,7 +85,7 @@ const SudokuScreen = ({ route, navigation }) => {
           style={styles.image}
         >
           <View style={styles.container}>
-            <TopBar isPaused={isPaused || isModalVisible} />
+            <TopBar />
             {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} />}
             <Board />
             <ActionButtons onPause={() => setIsPaused(true)} />

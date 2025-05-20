@@ -3,15 +3,13 @@ import {
   View,
   StyleSheet,
   Image,
-  Dimensions,
   Text,
   Pressable,
   Animated,
 } from "react-native";
-import gameStyles from "../../utils/gameStyles";
+import gameStyles, { isTablet } from "../../utils/gameStyles";
 import { useGame } from "../../utils/gameContext";
 import useMistakeAnimation from "../../utils/mistakeAnimationHook";
-const { width } = Dimensions.get("window");
 
 const Cell = ({ currentCell, isEditable, onSelect, style, onHold }) => {
   const { theme, selectedCell, errorCell } = useGame();
@@ -77,19 +75,21 @@ const Cell = ({ currentCell, isEditable, onSelect, style, onHold }) => {
         onStartShouldSetResponder={onSelect}
       >
         {Array.isArray(cellValue) ? (
-          cellValue.slice(0, 4).map((arrayValue, index) => (
-            <View key={index} style={styles.miniInnerContainer}>
-              {cellValue.length > 4 && index === 3 ? (
-                <Text style={styles.plus}>+</Text>
-              ) : (
-                <Image
-                  source={theme.icons[arrayValue - 1]}
-                  style={styles.miniSpriteImage}
-                  resizeMode="contain"
-                />
-              )}
-            </View>
-          ))
+          <View style={styles.miniFlexContainer}>
+            {cellValue.slice(0, 4).map((arrayValue, index) => (
+              <View key={index} style={styles.miniInnerContainer}>
+                {cellValue.length > 4 && index === 3 ? (
+                  <Text style={styles.plus}>+</Text>
+                ) : (
+                  <Image
+                    source={theme.icons[arrayValue - 1]}
+                    style={styles.miniSpriteImage}
+                    resizeMode="contain"
+                  />
+                )}
+              </View>
+            ))}
+          </View>
         ) : cellValue !== 0 ? (
           <Image
             source={theme.icons[cellValue - 1]}
@@ -104,30 +104,34 @@ const Cell = ({ currentCell, isEditable, onSelect, style, onHold }) => {
 
 const styles = StyleSheet.create({
   cellContainer: {
-    width: gameStyles.cellSize * 1.3,
-    height: gameStyles.cellSize * 1.3,
+    width: gameStyles.cellSize,
+    height: gameStyles.cellSize,
     backgroundColor: gameStyles.colors.gray1,
-    justifyContent: "center",
-    alignItems: "center",
   },
   innerContainer: {
-    width: gameStyles.cellSize * 1.3,
-    height: gameStyles.cellSize * 1.3,
+    width: gameStyles.cellSize,
+    height: gameStyles.cellSize,
     borderTopWidth: 3,
     borderLeftWidth: 3,
     borderBottomWidth: 3,
     borderRightWidth: 3,
     borderColor: "transparent",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  spriteImage: {
+    width: gameStyles.spriteSize,
+    height: gameStyles.spriteSize,
+    aspectRatio: 1,
+  },
+  miniFlexContainer: {
+    width: gameStyles.spriteSize * 1.1,
+    height: gameStyles.spriteSize * 1.1,
+    display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
-    position: "relative",
-  },
-  spriteImage: {
-    aspectRatio: 1,
-    width: gameStyles.cellSize,
-    height: gameStyles.cellSize,
   },
   miniInnerContainer: {
     width: gameStyles.miniCellSize,
@@ -139,21 +143,10 @@ const styles = StyleSheet.create({
     height: gameStyles.miniCellSize,
   },
   plus: {
-    fontSize: gameStyles.fonts.regularFontSize,
-    position: "absolute",
-    top: -3,
-    right: 3,
-  },
-  enlargedCell: {
-    backgroundColor: gameStyles.colors.white,
-    position: "absolute",
-    width: gameStyles.cellSize * 2.4,
-    height: gameStyles.cellSize * 2.4,
-    top: -gameStyles.cellSize * 0.6,
-    left: -gameStyles.cellSize * 0.6,
-    zIndex: 10,
-    borderWidth: 2,
-    borderColor: gameStyles.colors.blue,
+    alignSelf: "center",
+    fontSize: isTablet
+      ? gameStyles.fonts.largeFontSize
+      : gameStyles.fonts.regularFontSize,
   },
   hintedCell: { backgroundColor: gameStyles.colors.highlight2 },
   hintedCell2: { backgroundColor: gameStyles.colors.highlight3 },

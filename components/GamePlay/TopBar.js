@@ -1,12 +1,10 @@
-import React from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
-import Timer from "./Timer";
 import { useGame } from "../../utils/gameContext";
 import gameStyles from "../../utils/gameStyles";
-import { isTablet } from "../../utils/gameStyles";
+import { formatTime } from "../../utils/generatePuzzle";
 
-const TopBar = ({ isPaused }) => {
-  const { difficulty, mistakeCounter } = useGame();
+const TopBar = () => {
+  const { difficulty, mistakeCounter, timer } = useGame();
 
   return (
     <View style={styles.topBar}>
@@ -23,7 +21,7 @@ const TopBar = ({ isPaused }) => {
       {difficulty && <Text style={styles.difficultyText}>{difficulty}</Text>}
       {/* Timer */}
       <View style={styles.timerContainer}>
-        <Timer isPaused={isPaused} />
+        <Text style={styles.timerText}>{formatTime(timer)}</Text>
       </View>
     </View>
   );
@@ -31,7 +29,7 @@ const TopBar = ({ isPaused }) => {
 
 const styles = StyleSheet.create({
   topBar: {
-    width: gameStyles.cellSize * 1.3 * 9,
+    width: gameStyles.cellSize * 9,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -45,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     flexShrink: 0, // Prevent shrinking when other elements change
-    width: 80, // Set a fixed width to avoid movement
+    minWidth: 100,
   },
   difficultyText: {
     fontFamily: gameStyles.fonts.fontFamily,
@@ -53,12 +51,16 @@ const styles = StyleSheet.create({
     color: gameStyles.colors.black1,
     textAlign: "center",
     flexShrink: 0, // Prevent resizing
-    width: 100, // Set a fixed width so it doesn't move
   },
   timerContainer: {
     alignItems: "flex-end",
     flexShrink: 0, // Prevent resizing
-    width: 80, // Set a fixed width
+    minWidth: 100,
+  },
+  timerText: {
+    fontSize: gameStyles.fonts.largeFontSize,
+    fontFamily: gameStyles.fonts.fontFamily,
+    color: gameStyles.colors.black1,
   },
 });
 

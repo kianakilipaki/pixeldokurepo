@@ -138,8 +138,8 @@ const styles = StyleSheet.create({
     backgroundColor: gameStyles.colors.gray1,
   },
   thumbnail: {
-    width: gameStyles.cellSize * 1.5,
-    height: gameStyles.cellSize * 1.5,
+    width: gameStyles.spriteSize * 1.5,
+    height: gameStyles.spriteSize * 1.5,
     padding: 10,
     overflow: "hidden",
     position: "relative",
@@ -148,8 +148,8 @@ const styles = StyleSheet.create({
   },
   spriteImage: {
     position: "absolute",
-    width: gameStyles.cellSize * 1.5,
-    height: gameStyles.cellSize * 1.5,
+    width: gameStyles.spriteSize * 1.5,
+    height: gameStyles.spriteSize * 1.5,
     opacity: 1, // Default opacity
   },
   themeTitle: {

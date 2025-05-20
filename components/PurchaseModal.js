@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { isTablet } from "../utils/gameStyles";
 import CoinShop from "./CoinShop";
-import gameStyles from "../utils/gameStyles";
+import gameStyles, { isTablet } from "../utils/gameStyles";
 import { Dimensions } from "react-native";
 import ModalTemplate from "./ModalTemplate";
 import { usePlayerData } from "../utils/playerDataContext";

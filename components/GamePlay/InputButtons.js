@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { isTablet } from "../../utils/gameStyles";
 import { useGame } from "../../utils/gameContext";
-import gameStyles from "../../utils/gameStyles";
+import gameStyles, { isTablet } from "../../utils/gameStyles";
 
 const InputButtons = () => {
   const { theme, board, setSelectedCell, updateBoard } = useGame();
@@ -71,14 +70,15 @@ const InputButtons = () => {
 
 const styles = StyleSheet.create({
   birdButtons: {
+    width: gameStyles.cellSize * 9,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
     marginVertical: isTablet ? 30 : 20,
   },
   cellContainer: {
-    width: gameStyles.cellSizeLG,
-    height: gameStyles.cellSizeLG,
+    width: gameStyles.cellSizeLG * 1.1,
+    height: gameStyles.cellSizeLG * 1.1,
     padding: 10,
     margin: 3,
     borderColor: gameStyles.colors.black1,

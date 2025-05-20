@@ -1,14 +1,19 @@
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
-import Cell from "./Cell";
+import React, { useEffect, useState } from "react";
+import { Pressable, View, StyleSheet } from "react-native";
 import { getCellBorderStyles } from "../../utils/generatePuzzle";
 import { useGame } from "../../utils/gameContext";
 import PopupCell from "./PopupCell";
-import gameStyles from "../../utils/gameStyles";
+import Cell from "./Cell";
 
 const Board = () => {
-  const { board, initialBoard, setSelectedCell } = useGame();
+  const { board, initialBoard, setSelectedCell, selectedCell } = useGame();
   const [heldCell, setHeldCell] = useState(null); // Track the currently held cell
+
+  useEffect(() => {
+    if (selectedCell === null) {
+      setHeldCell(null);
+    }
+  }, [selectedCell]);
 
   return (
     <View style={styles.board}>
@@ -22,15 +27,9 @@ const Board = () => {
                 key={`${rowIndex}-${colIndex}`}
                 currentCell={currentCell}
                 isEditable={initialBoard[rowIndex][colIndex] === 0}
-                onSelect={() => {
-                  setSelectedCell(currentCell);
-                  setHeldCell(null); // Reset held state when clicked
-                }}
+                onSelect={() => setSelectedCell(currentCell)}
                 style={getCellBorderStyles(rowIndex, colIndex)}
-                onHold={() => {
-                  setHeldCell(currentCell);
-                }}
-                heldCell={heldCell} // Track the held cell
+                onHold={() => setHeldCell(currentCell)}
               />
             );
           })}
@@ -38,13 +37,12 @@ const Board = () => {
       ))}
       {/* RENDER POPUP ON TOP */}
       {heldCell && Array.isArray(heldCell[2]) && (
-        <PopupCell
-          cell={heldCell}
-          offset={{
-            top: heldCell[0] * gameStyles.cellSize * 1.2,
-            left: heldCell[1] * gameStyles.cellSize * 1.2,
-          }}
-        />
+        <Pressable
+          style={StyleSheet.absoluteFill}
+          onPress={() => setHeldCell(null)}
+        >
+          <PopupCell cell={heldCell} />
+        </Pressable>
       )}
     </View>
   );

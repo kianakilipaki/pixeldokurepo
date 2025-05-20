@@ -32,15 +32,11 @@ export const useCoinShopRewardedAd = () => {
 
   const setupListeners = (rewardedAd) => {
     try {
-      console.log("[Pixeldokulogs] Setting up ad listeners: ", AdEventType);
       rewardedAd.addAdEventListener(RewardedAdEventType.LOADED, () => {
         try {
           setLoaded(true);
         } catch (error) {
-          console.error(
-            "[Pixeldokulogs] Error in LOADED event listener:",
-            error
-          );
+          console.log("[Pixeldokulogs] Error in LOADED event listener:", error);
         }
       });
 
@@ -49,10 +45,10 @@ export const useCoinShopRewardedAd = () => {
         async (reward) => {
           try {
             console.log("[Pixeldokulogs] User earned reward of ", reward);
-            setRewardAmount(reward.amount);
+            setRewardAmount(100);
             await incrementAdCount();
           } catch (error) {
-            console.error(
+            console.log(
               "[Pixeldokulogs] Error in EARNED_REWARD event listener:",
               error
             );
@@ -61,10 +57,10 @@ export const useCoinShopRewardedAd = () => {
       );
 
       rewardedAd.addAdEventListener(AdEventType.ERROR, (error) => {
-        console.error("Rewarded ad failed to load:", error);
+        console.log("Rewarded ad failed to load:", error);
       });
     } catch (error) {
-      console.error("[Pixeldokulogs] Error setting up ad listeners:", error);
+      console.log("[Pixeldokulogs] Error setting up ad listeners:", error);
     }
   };
 
@@ -79,7 +75,7 @@ export const useCoinShopRewardedAd = () => {
       setupListeners(newRewarded);
       newRewarded.load();
     } catch (error) {
-      console.error("[Pixeldokulogs] Error in loadAd:", error);
+      console.log("[Pixeldokulogs] Error in loadAd:", error);
     }
   };
 

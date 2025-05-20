@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useMemo,
+  useRef,
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
@@ -27,6 +28,8 @@ export const GameProvider = ({ children }) => {
   const [isPencilIn, setIsPencilIn] = useState(false);
   const [selectedCell, setSelectedCell] = useState([]);
   const [errorCell, setErrorCell] = useState([]);
+  const [isPaused, setIsPaused] = useState(false);
+  const intervalRef = useRef(null);
 
   // Save progress function
   const saveProgress = async (newBoard) => {
@@ -182,6 +185,21 @@ export const GameProvider = ({ children }) => {
     saveProgress(board);
   }, [board, mistakeCounter, errorCell]);
 
+  useEffect(() => {
+    if (!isPaused) {
+      // Start the timer
+      intervalRef.current = setInterval(() => {
+        setTimer((prev) => prev + 1);
+      }, 1000);
+    } else {
+      // Clear the timer when paused
+      clearInterval(intervalRef.current);
+    }
+
+    // Cleanup on component unmount or dependency change
+    return () => clearInterval(intervalRef.current);
+  }, [isPaused, setTimer]);
+
   const contextValue = useMemo(
     () => ({
       theme,
@@ -209,6 +227,8 @@ export const GameProvider = ({ children }) => {
       updateBoard,
       loadProgress,
       resetProgress,
+      isPaused,
+      setIsPaused,
     }),
     [
       theme,
@@ -222,6 +242,7 @@ export const GameProvider = ({ children }) => {
       hints,
       isPencilIn,
       errorCell,
+      isPaused,
     ]
   );
 

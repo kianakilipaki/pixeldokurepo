@@ -1,16 +1,32 @@
 import React from "react";
-import { View, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet, Dimensions } from "react-native";
 import gameStyles from "../../utils/gameStyles";
 import { useGame } from "../../utils/gameContext";
 
-const PopupCell = ({ cell, position }) => {
+const PopupCell = ({ cell }) => {
   const { theme } = useGame();
 
   const [row, col, value] = cell;
   const sprite = Array.isArray(value) ? value : [value];
 
-  const top = row * gameStyles.cellSize;
-  const left = col * gameStyles.cellSize;
+  // Board and popup dimensions
+  const boardSize = gameStyles.cellSize * 9;
+  const popupSize = gameStyles.cellSize * 3.4;
+
+  // Calculate initial position
+  let top = row * gameStyles.cellSize;
+  let left = col * gameStyles.cellSize;
+
+  // Adjust if popup would overflow the board
+  if (top + popupSize > boardSize) {
+    top = boardSize - popupSize;
+  }
+  if (left + popupSize > boardSize) {
+    left = boardSize - popupSize;
+  }
+  // Prevent negative positions
+  top = Math.max(0, top);
+  left = Math.max(0, left);
 
   return (
     <View style={[styles.popupCell, { top, left }]}>
