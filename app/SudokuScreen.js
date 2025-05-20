@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     padding: isTablet ? width * 0.1 : width * 0.04,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 20,
   },
 });
 

@@ -1,10 +1,14 @@
 import { Dimensions } from "react-native";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 export const isTablet = width > 740;
+const MAX_BOARD_HEIGHT = height * 0.5; // try 0.5 if needed
 
-const maxCellSize = Math.floor(width / 9) / 1.1;
+const maxCellSize = Math.min(
+  Math.floor(width / 9), // based on width
+  Math.floor(MAX_BOARD_HEIGHT / 9) // based on height
+);
 
 // theme.js
 const gameStyles = {

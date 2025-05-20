@@ -9,8 +9,10 @@
     "android": "npx expo run:android",
     "ios": "npx expo run:ios",
     "web": "npx expo start --web",
+    "clean": "rm -rf node_modules android/.gradle android/app/build android/build ios/build && rimraf package-lock.json && npm cache clean --force && npm install && cd android && ./gradlew clean && cd .. && npm run start --reset-cache",
     "prebuild": "npx expo prebuild",
     "build:android": "eas build --platform android",
+    "build:ios": "eas build --platform ios",
     "dev:build:ios": "eas build --profile development --platform ios",
     "dev:build:android": "eas build --profile development --platform android",
     "test": "jest-expo"

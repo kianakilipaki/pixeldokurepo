@@ -143,10 +143,13 @@ const styles = StyleSheet.create({
     height: gameStyles.miniCellSize,
   },
   plus: {
-    alignSelf: "center",
+    lineHeight: isTablet
+      ? gameStyles.fonts.largeFontSize
+      : gameStyles.fonts.regularFontSize,
     fontSize: isTablet
       ? gameStyles.fonts.largeFontSize
       : gameStyles.fonts.regularFontSize,
+    textAlign: "center",
   },
   hintedCell: { backgroundColor: gameStyles.colors.highlight2 },
   hintedCell2: { backgroundColor: gameStyles.colors.highlight3 },

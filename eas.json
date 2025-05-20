@@ -15,10 +15,20 @@
     },
     "production": {
       "autoIncrement": true,
-      "channel": "production"
+      "channel": "production",
+      "ios": {
+        "distribution": "store",
+        "autoIncrement": true,
+        "developmentClient": false,
+        "simulator": false
+      }
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "alaniklyon@gmail.com"
+      }
+    }
   }
 }

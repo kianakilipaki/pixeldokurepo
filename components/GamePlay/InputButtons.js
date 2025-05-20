@@ -55,7 +55,7 @@ const InputButtons = () => {
       <TouchableOpacity
         accessibilityLabel="deselect cell"
         accessibilityRole="button"
-        style={styles.cellContainer}
+        style={[styles.cellContainer, { padding: 8 }]}
         onPress={() => setSelectedCell(null)}
       >
         <Image
@@ -70,27 +70,19 @@ const InputButtons = () => {
 
 const styles = StyleSheet.create({
   birdButtons: {
-    width: gameStyles.cellSize * 9,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
     marginVertical: isTablet ? 30 : 20,
   },
   cellContainer: {
-    width: gameStyles.cellSizeLG * 1.1,
-    height: gameStyles.cellSizeLG * 1.1,
-    padding: 10,
+    flexBasis: `16%`,
+    aspectRatio: 1,
     margin: 3,
     borderColor: gameStyles.colors.black1,
     borderWidth: 1,
     borderRadius: 10,
     backgroundColor: gameStyles.colors.gray1,
-    overflow: "hidden",
-    position: "relative",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -100,8 +92,8 @@ const styles = StyleSheet.create({
   },
   spriteImage: {
     aspectRatio: 1,
-    width: gameStyles.cellSizeLG,
-    height: gameStyles.cellSizeLG,
+    width: "100%",
+    height: "100%",
   },
   clearButton: {
     width: "100%",
