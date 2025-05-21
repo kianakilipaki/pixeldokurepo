@@ -24,8 +24,15 @@ const CompletionModal = ({
   setIsModalVisible,
   isModalVisible,
 }) => {
-  const { theme, difficulty, board, solutionBoard, timer, mistakeCounter } =
-    useGame();
+  const {
+    theme,
+    difficulty,
+    board,
+    solutionBoard,
+    timer,
+    mistakeCounter,
+    setIsPaused,
+  } = useGame();
   const { saveHighScore, highscores, addCoins } = usePlayerData();
 
   const [modalType, setModalType] = useState(null);
@@ -66,6 +73,7 @@ const CompletionModal = ({
   };
 
   const handleComplete = async () => {
+    setIsPaused(true);
     const coinReward =
       {
         easy: 10,

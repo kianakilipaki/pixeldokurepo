@@ -108,6 +108,7 @@ export const GameProvider = ({ children }) => {
       }
       // Reset other game states
       setTimer(0);
+      setIsPaused(false);
       setMistakeCounter(3);
       setHints(3);
       setIsPencilIn(false);

@@ -57,21 +57,17 @@ const Cell = ({ currentCell, isEditable, onSelect, style, onHold }) => {
     <Pressable
       style={[
         styles.cellContainer,
-        style,
         !isEditable && styles.notEditable,
         isCellHinted(),
         isCellSelected && styles.selectedCell,
+        isCellSame && styles.highlightedCell,
       ]}
       onLongPress={onHold}
     >
       <Animated.View
         accessibilityLabel={`${theme.themeKey}${cellValue}`}
         accessibilityRole="button"
-        style={[
-          isErrorCell && mistakeAnimation,
-          styles.innerContainer,
-          isCellSame && styles.highlightedCell,
-        ]}
+        style={[isErrorCell && mistakeAnimation, styles.innerContainer, style]}
         onStartShouldSetResponder={onSelect}
       >
         {Array.isArray(cellValue) ? (
@@ -104,11 +100,7 @@ const Cell = ({ currentCell, isEditable, onSelect, style, onHold }) => {
 
 const styles = StyleSheet.create({
   cellContainer: {
-    width: gameStyles.cellSize,
-    height: gameStyles.cellSize,
     backgroundColor: gameStyles.colors.gray1,
-  },
-  innerContainer: {
     width: gameStyles.cellSize,
     height: gameStyles.cellSize,
     borderTopWidth: 3,
@@ -118,6 +110,14 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
     justifyContent: "center",
     alignItems: "center",
+    overflow: "hidden",
+  },
+  innerContainer: {
+    width: gameStyles.cellSize,
+    height: gameStyles.cellSize,
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
   },
   spriteImage: {
     width: gameStyles.spriteSize,

@@ -7,12 +7,9 @@ import {
   Text,
   View,
 } from "react-native";
-import { Dimensions } from "react-native";
 import gameStyles from "../../utils/gameStyles";
 import { useGame } from "../../utils/gameContext";
 import { formatTime } from "../../utils/generatePuzzle";
-
-const { width } = Dimensions.get("window");
 
 const PlayOverlay = ({ onPress }) => {
   const { theme, difficulty, timer } = useGame();

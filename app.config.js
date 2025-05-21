@@ -17,13 +17,13 @@ export default ({ config }) => {
       userInterfaceStyle: "light",
       newArchEnabled: true,
       splash: {
-        image: "./assets/icon.png",
+        image: "./assets/splash-icon.png",
         resizeMode: "contain",
         backgroundColor: "#1986e0",
       },
       android: {
         adaptiveIcon: {
-          foregroundImage: "./assets/icon.png",
+          foregroundImage: "./assets/splash-icon.png",
           backgroundColor: "#ffffff",
         },
         package: "com.alanilyon.pixeldoku",

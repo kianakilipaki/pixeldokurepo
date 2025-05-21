@@ -34,6 +34,7 @@ const SudokuScreen = ({ route, navigation }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [openPlayOverlay, setOpenPlayOverlay] = useState(false);
 
   const startNewGame = useCallback(
     async (theme, difficulty) => {
@@ -86,9 +87,21 @@ const SudokuScreen = ({ route, navigation }) => {
         >
           <View style={styles.container}>
             <TopBar />
-            {isPaused && <PlayOverlay onPress={() => setIsPaused(false)} />}
+            {openPlayOverlay && (
+              <PlayOverlay
+                onPress={() => {
+                  setIsPaused(false);
+                  setOpenPlayOverlay(false);
+                }}
+              />
+            )}
             <Board />
-            <ActionButtons onPause={() => setIsPaused(true)} />
+            <ActionButtons
+              onPause={() => {
+                setIsPaused(true);
+                setOpenPlayOverlay(true);
+              }}
+            />
             <InputButtons />
             <CompletionModal
               setIsModalVisible={setIsModalVisible}
