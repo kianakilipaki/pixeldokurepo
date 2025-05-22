@@ -13,7 +13,7 @@ import { getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Google from "expo-auth-session/providers/google";
 import * as AppleAuthentication from "expo-apple-authentication";
-import { AppleAuthProvider } from "firebase/auth";
+import { OAuthProvider } from "firebase/auth";
 import * as Crypto from "expo-crypto";
 
 // Replace with your own Firebase config from the console
@@ -91,25 +91,32 @@ export const AuthProvider = ({ children }) => {
   const appleLogin = async () => {
     try {
       const rawNonce = await generateNonce();
+      const hashedNonce = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.SHA256,
+        rawNonce
+      );
+
       const appleCredential = await AppleAuthentication.signInAsync({
         requestedScopes: [
           AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
           AppleAuthentication.AppleAuthenticationScope.EMAIL,
         ],
+        nonce: hashedNonce,
       });
 
       const { identityToken } = appleCredential;
 
       if (!identityToken) throw new Error("No identity token");
 
-      const firebaseCredential = AppleAuthProvider.credential(
-        identityToken,
-        rawNonce
-      );
+      const provider = new OAuthProvider("apple.com");
+      const firebaseCredential = provider.credential({
+        idToken: identityToken,
+        rawNonce,
+      });
 
       await signInWithCredential(auth, firebaseCredential);
     } catch (error) {
-      console.error("Apple Sign-In error", error);
+      console.error("[Pixeldokulogs] Apple Sign-In error", error);
     }
   };
 

@@ -11,7 +11,7 @@ export default ({ config }) => {
       platforms: ["ios", "android"],
       name: "pixeldoku",
       slug: "pixeldoku",
-      version: "5.7.0",
+      version: "5.8.0",
       orientation: "portrait",
       icon: "./assets/icon.png",
       userInterfaceStyle: "light",
@@ -35,6 +35,7 @@ export default ({ config }) => {
         buildNumber: "1.0.0", // Match your versioning scheme
         supportsTablet: true,
         googleServicesFile: "./GoogleService-Info.plist",
+        usesAppleSignIn: true,
         infoPlist: {
           NSAppTransportSecurity: {
             NSAllowsArbitraryLoads: true,
