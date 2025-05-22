@@ -17,11 +17,17 @@ import gameStyles from "../utils/gameStyles";
 import LoadingIndicator from "../components/loadingIcon";
 import { AntDesign } from "@expo/vector-icons";
 import { usePlayerData } from "../utils/playerDataContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import * as AppleAuthentication from "expo-apple-authentication";
 
 const LoginScreen = ({ navigation }) => {
-  const { user, loading, login } = useGoogleAuth();
+  const { user, loading, login, appleLogin } = useGoogleAuth();
   const { loadPlayerData } = usePlayerData();
+  const [isAppleAvailable, setIsAppleAvailable] = useState(false);
+
+  useEffect(() => {
+    AppleAuthentication.isAvailableAsync().then(setIsAppleAvailable);
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -86,6 +92,20 @@ const LoginScreen = ({ navigation }) => {
           <Text style={styles.googleText}>Sign in with Google</Text>
         </TouchableOpacity>
 
+        {isAppleAvailable && (
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={
+              AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN
+            }
+            buttonStyle={
+              AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
+            }
+            cornerRadius={5}
+            style={styles.appleButton}
+            onPress={appleLogin}
+          />
+        )}
+
         <TouchableOpacity onPress={handleGuestLogin}>
           <Text style={styles.guestText}>Continue as Guest</Text>
         </TouchableOpacity>
@@ -123,6 +143,16 @@ const styles = StyleSheet.create({
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 2,
+  },
+  appleButton: {
+    margin: 10,
+    width: 275,
+    height: 44,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 5,
   },
   googleButton: {
     flexDirection: "row",
