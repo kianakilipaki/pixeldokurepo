@@ -28,7 +28,7 @@ const Board = () => {
                 currentCell={currentCell}
                 isEditable={initialBoard[rowIndex][colIndex] === 0}
                 onSelect={() => setSelectedCell(currentCell)}
-                style={getCellBorderStyles(rowIndex, colIndex)}
+                gridLines={getCellBorderStyles(rowIndex, colIndex)}
                 onHold={() => setHeldCell(currentCell)}
               />
             );

@@ -11,7 +11,7 @@ import gameStyles, { isTablet } from "../../utils/gameStyles";
 import { useGame } from "../../utils/gameContext";
 import useMistakeAnimation from "../../utils/mistakeAnimationHook";
 
-const Cell = ({ currentCell, isEditable, onSelect, style, onHold }) => {
+const Cell = ({ currentCell, isEditable, onSelect, gridLines, onHold }) => {
   const { theme, selectedCell, errorCell } = useGame();
 
   const cellValue = currentCell[2];
@@ -60,14 +60,18 @@ const Cell = ({ currentCell, isEditable, onSelect, style, onHold }) => {
         !isEditable && styles.notEditable,
         isCellHinted(),
         isCellSelected && styles.selectedCell,
-        isCellSame && styles.highlightedCell,
+        gridLines,
       ]}
       onLongPress={onHold}
     >
       <Animated.View
         accessibilityLabel={`${theme.themeKey}${cellValue}`}
         accessibilityRole="button"
-        style={[isErrorCell && mistakeAnimation, styles.innerContainer, style]}
+        style={[
+          isErrorCell && mistakeAnimation,
+          styles.innerContainer,
+          isCellSame && styles.highlightedCell,
+        ]}
         onStartShouldSetResponder={onSelect}
       >
         {Array.isArray(cellValue) ? (
@@ -103,18 +107,18 @@ const styles = StyleSheet.create({
     backgroundColor: gameStyles.colors.gray1,
     width: gameStyles.cellSize,
     height: gameStyles.cellSize,
-    borderTopWidth: 3,
-    borderLeftWidth: 3,
-    borderBottomWidth: 3,
-    borderRightWidth: 3,
-    borderColor: "transparent",
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
   },
   innerContainer: {
-    width: gameStyles.cellSize,
-    height: gameStyles.cellSize,
+    borderTopWidth: 3,
+    borderLeftWidth: 3,
+    borderBottomWidth: 3,
+    borderRightWidth: 3,
+    borderColor: "transparent",
+    width: gameStyles.cellSize - 1,
+    height: gameStyles.cellSize - 1,
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
