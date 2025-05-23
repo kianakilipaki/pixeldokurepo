@@ -8,7 +8,6 @@ import HomeScreen from "./app/HomeScreen";
 import SudokuScreen from "./app/SudokuScreen";
 import NotFoundScreen from "./app/NotFoundScreen";
 import * as Font from "expo-font";
-import LoadingIndicator from "./components/loadingIcon";
 import Header from "./components/Header";
 import mobileAds from "react-native-google-mobile-ads";
 import { withIAPContext } from "react-native-iap";
@@ -17,6 +16,7 @@ import { GameProvider } from "./utils/gameContext";
 import { MusicProvider } from "./utils/musicContext";
 import { AuthProvider } from "./utils/authContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { ActivityIndicator } from "react-native";
 
 const Stack = createStackNavigator();
 
@@ -49,7 +49,7 @@ const App = () => {
   }, []);
 
   if (!fontsLoaded) {
-    return <LoadingIndicator />;
+    return <ActivityIndicator size="large" color="white" />;
   }
 
   return (

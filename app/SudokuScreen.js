@@ -4,9 +4,9 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
 import CompletionModal from "../components/GamePlay/CompletionModal";
-import LoadingIndicator from "../components/loadingIcon";
 import TopBar from "../components/GamePlay/TopBar";
 import { useGame } from "../utils/gameContext";
 import PlayOverlay from "../components/GamePlay/PlayOverlay";
@@ -72,13 +72,13 @@ const SudokuScreen = ({ route, navigation }) => {
   }, [route.params]);
 
   if (isLoading || !theme.bgSource) {
-    return <LoadingIndicator />;
+    return <ActivityIndicator size="large" color="white" />;
   }
 
   return (
     <TouchableWithoutFeedback onPress={() => setSelectedCell(null)}>
       {isLoading || !theme.bgSource ? (
-        <LoadingIndicator />
+        <ActivityIndicator size="large" color="white" />
       ) : (
         <ImageBackground
           source={theme?.bgSource}

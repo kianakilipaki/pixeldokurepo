@@ -7,6 +7,7 @@ import {
   Alert,
   StatusBar,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { useGoogleAuth } from "../utils/authContext";
 import {
@@ -14,7 +15,6 @@ import {
   resetAndSeedOldGameData,
 } from "../utils/playerDataService";
 import gameStyles from "../utils/gameStyles";
-import LoadingIndicator from "../components/loadingIcon";
 import { AntDesign } from "@expo/vector-icons";
 import { usePlayerData } from "../utils/playerDataContext";
 import { useEffect, useState } from "react";
@@ -67,7 +67,7 @@ const LoginScreen = ({ navigation }) => {
           barStyle="light-content"
           backgroundColor={gameStyles.colors.blue}
         />
-        <LoadingIndicator />
+        <ActivityIndicator size="large" color="white" />
       </ImageBackground>
     );
   }
