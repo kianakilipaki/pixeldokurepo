@@ -100,7 +100,7 @@ const LoginScreen = ({ navigation }) => {
             buttonStyle={
               AppleAuthentication.AppleAuthenticationButtonStyle.BLACK
             }
-            cornerRadius={5}
+            cornerRadius={10}
             style={styles.appleButton}
             onPress={appleLogin}
           />
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
     paddingVertical: 12,
     paddingHorizontal: 24,
-    borderRadius: 6,
+    borderRadius: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,

@@ -9,7 +9,7 @@ import {
   deleteUser,
   signOut,
 } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { deleteDoc, doc, getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Google from "expo-auth-session/providers/google";
 import * as AppleAuthentication from "expo-apple-authentication";
@@ -77,6 +77,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
+      console.log("Pixeldokulogs: User: ", user);
       setLoading(false);
     });
     return unsubscribe;
@@ -85,7 +86,26 @@ export const AuthProvider = ({ children }) => {
   // Exposed functions
   const login = () => promptAsync();
   const logout = () => signOut(auth);
-  const removeUser = () => deleteUser(auth.currentUser);
+  const removeUser = async () => {
+    try {
+      // Optional: delete Firestore user data
+      await deleteDoc(doc(db, "users", auth.currentUser.uid));
+
+      // Delete Firebase user
+      await deleteUser(auth.currentUser);
+
+      console.log("Account deleted successfully");
+    } catch (error) {
+      if (error.code === "auth/requires-recent-login") {
+        Alert.alert(
+          "Session Expired",
+          "Please log in again to delete your account."
+        );
+      } else {
+        console.error("Error deleting account:", error);
+      }
+    }
+  };
 
   // Apple login
   const appleLogin = async () => {
