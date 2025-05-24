@@ -129,8 +129,9 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
   },
   miniFlexContainer: {
-    width: gameStyles.spriteSize * 1.1,
-    height: gameStyles.spriteSize * 1.1,
+    width: gameStyles.spriteSize,
+    height: gameStyles.spriteSize,
+    padding: isTablet ? 2 : 0,
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
@@ -138,8 +139,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   miniInnerContainer: {
-    width: gameStyles.miniCellSize,
-    height: gameStyles.miniCellSize,
+    justifyContent: "center",
+    alignItems: "center",
+    width: isTablet ? gameStyles.miniCellSize - 3 : gameStyles.miniCellSize,
+    height: isTablet ? gameStyles.miniCellSize - 3 : gameStyles.miniCellSize,
   },
   miniSpriteImage: {
     aspectRatio: 1,

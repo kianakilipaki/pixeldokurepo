@@ -6,9 +6,7 @@ import {
   syncFromCloud,
 } from "./playerDataService";
 import { useGoogleAuth } from "./authContext";
-import isEqual from "lodash.isequal";
 import { Linking, Alert } from "react-native";
-import { themeAssets } from "./themeAssets";
 
 const PlayerDataContext = createContext();
 
@@ -112,6 +110,9 @@ export const PlayerDataProvider = ({ children }) => {
   // --- COIN METHODS ---
   const addCoins = async (amount) => {
     const newCoins = coins + amount;
+    console.log(
+      `[Pixeldokulogs] Previously ${coins} coins. New total: ${newCoins}`
+    );
     setCoins(newCoins);
     await savePlayerData({ coins: newCoins });
   };

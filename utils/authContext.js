@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }) => {
       // Delete Firebase user
       await deleteUser(auth.currentUser);
 
-      console.log("Account deleted successfully");
+      console.log("[Pixeldokulogs] Account deleted successfully");
     } catch (error) {
       if (error.code === "auth/requires-recent-login") {
         Alert.alert(
@@ -102,7 +102,7 @@ export const AuthProvider = ({ children }) => {
           "Please log in again to delete your account."
         );
       } else {
-        console.error("Error deleting account:", error);
+        console.error("[Pixeldokulogs] Error deleting account:", error);
       }
     }
   };
@@ -126,7 +126,7 @@ export const AuthProvider = ({ children }) => {
 
       const { identityToken } = appleCredential;
 
-      if (!identityToken) throw new Error("No identity token");
+      if (!identityToken) throw new Error("[Pixeldokulogs] No identity token");
 
       const provider = new OAuthProvider("apple.com");
       const firebaseCredential = provider.credential({
