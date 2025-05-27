@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   followButtonText: {
     color: "white",
-    fontSize: gameStyles.fonts.regularFontSize - 1,
+    fontSize: gameStyles.fonts.regularFontSize - 2,
     fontWeight: "bold",
     textAlign: "center",
   },
