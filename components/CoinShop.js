@@ -66,7 +66,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
           <Text style={styles.followButtonText}>Free</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.coinContainer}>
+      {/* <View style={styles.coinContainer}>
         <Image
           source={require("../assets/icons/coin.png")}
           style={gameStyles.icons.iconSizeMedium}
@@ -87,7 +87,7 @@ const CoinShop = ({ isCoinShopVisible, setIsCoinShopVisible }) => {
             <ActivityIndicator size="small" color="white" />
           )}
         </TouchableOpacity>
-      </View>
+      </View> */}
       {products?.map((product) => (
         <View style={styles.coinContainer} key={product.productId}>
           <Image
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   },
   followButtonText: {
     color: "white",
-    fontSize: gameStyles.fonts.regularFontSize - 4,
+    fontSize: gameStyles.fonts.regularFontSize - 1,
     fontWeight: "bold",
     textAlign: "center",
   },

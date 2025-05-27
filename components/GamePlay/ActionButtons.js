@@ -105,12 +105,13 @@ const ActionButtons = ({ onPause }) => {
       <TouchableOpacity
         accessibilityLabel={`Hint: Solve random cell`}
         accessibilityRole="button"
-        style={styles.button}
+        style={[styles.button, hints <= 0 && styles.disabled]}
         onPress={hints <= 0 ? watchAd : onHint}
+        disabled={hints <= 0}
       >
-        <View style={styles.hintIndicator}>
+        <View style={hints > 0 && styles.hintIndicator}>
           {hints > 0 && <Text style={styles.hintText}>{hints}</Text>}
-          {hints <= 0 ? (
+          {/* {hints <= 0 ? (
             loaded ? (
               <Image
                 source={require("../../assets/icons/ad.png")}
@@ -119,7 +120,7 @@ const ActionButtons = ({ onPause }) => {
             ) : (
               <ActivityIndicator size="small" color="white" />
             )
-          ) : null}
+          ) : null} */}
         </View>
         <Image
           source={require("../../assets/icons/hint.png")}
@@ -172,6 +173,10 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
     alignItems: "center",
     justifyContent: "center",
+  },
+  disabled: {
+    backgroundColor: "#aaa",
+    opacity: 0.5,
   },
   hintText: {
     fontSize: gameStyles.fonts.regularFontSize,
