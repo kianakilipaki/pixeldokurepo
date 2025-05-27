@@ -5,23 +5,24 @@ import gameStyles, { isTablet } from "../utils/gameStyles";
 import { Dimensions } from "react-native";
 import ModalTemplate from "./ModalTemplate";
 import { usePlayerData } from "../utils/playerDataContext";
+import { useGame } from "../utils/gameContext";
 
 const { width } = Dimensions.get("window");
 
-const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
-  const { coins, removeCoins, unlockTheme } = usePlayerData();
-
+const BuyHintsModal = ({ setIsModalVisible, isModalVisible }) => {
+  const { coins, removeCoins } = usePlayerData();
+  const { setHints } = useGame();
   const [isWarningVisible, setIsWarningVisible] = useState(false);
   const [isCoinShopVisible, setIsCoinShopVisible] = useState(false);
 
-  const purchaseTheme = async () => {
-    if (coins < 500) {
+  const purchaseHints = () => {
+    if (coins < 100) {
       setIsWarningVisible(true);
       return;
     } else {
       setIsWarningVisible(false);
-      await removeCoins(500);
-      await unlockTheme(theme.themeKey);
+      removeCoins(100);
+      setHints(3);
       setIsModalVisible(false);
     }
   };
@@ -29,11 +30,14 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
   const modalBody = () => {
     return (
       <>
-        <Text style={styles.modalText}>Purchase {theme.title} theme?</Text>
+        <Text style={styles.modalText}>Purchase Hints?</Text>
 
         <View style={styles.wrapper}>
-          <View style={styles.thumbnail}>
-            <Image source={theme.source} style={styles.spriteImage} />
+          <View style={styles.hintIcon}>
+            <Image
+              source={require("../assets/icons/hint.png")}
+              style={gameStyles.icons.iconSizeMedium}
+            />
           </View>
 
           <View style={styles.coinContainer}>
@@ -41,7 +45,7 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
               source={require("../assets/icons/coin.png")}
               style={gameStyles.icons.iconSizeSmall}
             />
-            <Text style={styles.coinText}>-500</Text>
+            <Text style={styles.coinText}>-100</Text>
           </View>
         </View>
         {isWarningVisible && (
@@ -61,8 +65,8 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
               style={styles.warningButton}
               onPress={() => {
                 setIsWarningVisible(false);
-                setIsModalVisible(false); // Hide purchase modal first
-                setTimeout(() => setIsCoinShopVisible(true), 300); // Then show coin shop
+                setIsModalVisible(false);
+                setTimeout(() => setIsCoinShopVisible(true), 300);
               }}
             >
               <Text style={styles.buyButtonText}>Buy Coins</Text>
@@ -78,7 +82,7 @@ const PurchaseModal = ({ theme, setIsModalVisible, isModalVisible }) => {
       <ModalTemplate
         modalTitle="Confirm Purchase"
         modalBody={modalBody()}
-        confirmAction={purchaseTheme}
+        confirmAction={purchaseHints}
         modalVisible={isModalVisible}
         setModalVisible={setIsModalVisible}
       />
@@ -97,17 +101,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginVertical: 10,
   },
-  thumbnail: {
-    width: isTablet ? width * 0.12 : width * 0.2,
-    height: isTablet ? width * 0.12 : width * 0.2,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 20, // Add spacing between the thumbnail and text
-  },
-  spriteImage: {
-    width: isTablet ? width * 0.12 : width * 0.2,
-    height: isTablet ? width * 0.12 : width * 0.2,
-    resizeMode: "contain",
+  hintIcon: {
+    marginRight: 30,
+    backgroundColor: gameStyles.colors.blue,
+    padding: 10,
+    borderRadius: 100,
   },
   modalText: {
     fontSize: gameStyles.fonts.largeFontSize,
@@ -150,4 +148,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PurchaseModal;
+export default BuyHintsModal;

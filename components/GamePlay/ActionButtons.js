@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   TouchableOpacity,
   StyleSheet,
   Image,
   Text,
-  ActivityIndicator,
+  Alert,
 } from "react-native";
 import { useGame } from "../../utils/gameContext";
 import gameStyles from "../../utils/gameStyles";
-import { useHintRewardedAd } from "./HintAd";
 import { useMusic } from "../../utils/musicContext";
+import BuyHintsModal from "../BuyHintsModal";
 
 const ActionButtons = ({ onPause }) => {
   const {
@@ -25,9 +25,8 @@ const ActionButtons = ({ onPause }) => {
     setIsPencilIn,
   } = useGame();
 
-  const { watchAd, rewardAmount, setRewardAmount, loaded } =
-    useHintRewardedAd();
   const { playSoundEffect } = useMusic();
+  const [isHintShopVisible, setIsHintShopVisible] = useState(false);
 
   const handlePencilIn = () => {
     setIsPencilIn(!isPencilIn);
@@ -40,6 +39,10 @@ const ActionButtons = ({ onPause }) => {
         updateBoard(0);
       }
     }
+  };
+
+  const openHintShop = () => {
+    setIsHintShopVisible(true);
   };
 
   const onHint = () => {
@@ -59,15 +62,6 @@ const ActionButtons = ({ onPause }) => {
       setHints((prevHints) => prevHints - 1); // Reduce hints count
     }
   };
-
-  useEffect(() => {
-    if (rewardAmount > 0) {
-      setTimeout(() => {
-        onHint();
-        setRewardAmount(0);
-      }, 1000); // Delay to allow ad to finish
-    }
-  }, [rewardAmount]);
 
   return (
     <View style={styles.buttonContainer}>
@@ -105,22 +99,25 @@ const ActionButtons = ({ onPause }) => {
       <TouchableOpacity
         accessibilityLabel={`Hint: Solve random cell`}
         accessibilityRole="button"
-        style={[styles.button, hints <= 0 && styles.disabled]}
-        onPress={hints <= 0 ? watchAd : onHint}
-        disabled={hints <= 0}
+        style={styles.button}
+        onPress={hints <= 0 ? openHintShop : onHint}
       >
-        <View style={hints > 0 && styles.hintIndicator}>
+        <View
+          style={[
+            styles.hintIndicator,
+            {
+              backgroundColor:
+                hints <= 0 ? gameStyles.colors.white : gameStyles.colors.gold,
+            },
+          ]}
+        >
           {hints > 0 && <Text style={styles.hintText}>{hints}</Text>}
-          {/* {hints <= 0 ? (
-            loaded ? (
-              <Image
-                source={require("../../assets/icons/ad.png")}
-                style={gameStyles.icons.iconSizeSmall}
-              />
-            ) : (
-              <ActivityIndicator size="small" color="white" />
-            )
-          ) : null} */}
+          {hints <= 0 && (
+            <Image
+              source={require("../../assets/icons/coin.png")}
+              style={gameStyles.icons.iconSizeSmall}
+            />
+          )}
         </View>
         <Image
           source={require("../../assets/icons/hint.png")}
@@ -140,6 +137,12 @@ const ActionButtons = ({ onPause }) => {
           style={gameStyles.icons.iconSizeMedium}
         />
       </TouchableOpacity>
+
+      {/* Buy Hints Modal */}
+      <BuyHintsModal
+        isModalVisible={isHintShopVisible}
+        setIsModalVisible={setIsHintShopVisible}
+      />
     </View>
   );
 };
@@ -173,10 +176,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 20,
     alignItems: "center",
     justifyContent: "center",
-  },
-  disabled: {
-    backgroundColor: "#aaa",
-    opacity: 0.5,
   },
   hintText: {
     fontSize: gameStyles.fonts.regularFontSize,
