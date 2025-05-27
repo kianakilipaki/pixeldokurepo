@@ -33,6 +33,7 @@ const BuyHintsModal = ({ setIsModalVisible, isModalVisible }) => {
         <Text style={styles.modalText}>Purchase Hints?</Text>
 
         <View style={styles.wrapper}>
+          <Text style={styles.coinText}>3 x &nbsp;</Text>
           <View style={styles.hintIcon}>
             <Image
               source={require("../assets/icons/hint.png")}
