@@ -77,7 +77,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
-      console.log("Pixeldokulogs: User: ", user);
       setLoading(false);
     });
     return unsubscribe;

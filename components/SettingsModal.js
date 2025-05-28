@@ -76,13 +76,7 @@ const SettingsModal = ({ visible, onClose, navigation }) => {
       </View>
       <View style={styles.row}>
         <Text style={styles.label}>Signed-in as</Text>
-        <Text style={styles.value}>
-          {user
-            ? user.displayName
-              ? user.displayName
-              : "Apple User"
-            : "Guest"}
-        </Text>
+        <Text style={styles.value}>{user ? user.email : "Guest"}</Text>
       </View>
       <Text style={styles.value}>
         {user

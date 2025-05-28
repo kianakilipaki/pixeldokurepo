@@ -38,6 +38,7 @@ const CompletionModal = ({
   const [modalType, setModalType] = useState(null);
   const [coinsAwarded, setCoinsAwarded] = useState(null);
   const [newHighScore, setNewHighScore] = useState(false);
+  const [hasShownModal, setHasShownModal] = useState(false);
 
   const { playSoundEffect } = useMusic();
 
@@ -94,37 +95,31 @@ const CompletionModal = ({
   };
 
   useEffect(() => {
-    if (!board || board.length === 0 || !solutionBoard) return;
+    if (!board || board.length === 0 || !solutionBoard || hasShownModal) return;
 
-    if (mistakeCounter === 0) {
+    const isComplete = board
+      .flat()
+      .every((cell) => typeof cell === "number" && cell !== 0);
+    if (!isComplete) return;
+
+    const isCorrect = board
+      .flat()
+      .every((num, idx) => num === solutionBoard.flat()[idx]);
+
+    if (isCorrect && mistakeCounter === 3) {
+      setModalType("success");
+      playSoundEffect("success");
+      handleComplete();
+    } else if (isCorrect && mistakeCounter < 3) {
+      setModalType("retry");
+      playSoundEffect("success");
+      handleComplete();
+    } else {
       setModalType("failure");
       setCoinsAwarded(null);
-    } else {
-      // Check if all cells are filled and are single numbers (not arrays)
-      const isComplete = board
-        .flat()
-        .every((cell) => typeof cell === "number" && cell !== 0);
-      if (!isComplete) return;
-
-      // Check if board matches the solution
-      const isCorrect = board
-        .flat()
-        .every((num, idx) => num === solutionBoard.flat()[idx]);
-
-      if (isCorrect && mistakeCounter === 3) {
-        setModalType("success");
-        playSoundEffect("success");
-        handleComplete();
-      } else if (isCorrect && mistakeCounter < 3) {
-        setModalType("retry");
-        playSoundEffect("success");
-        handleComplete();
-      } else {
-        setModalType("failure");
-        setCoinsAwarded(null);
-      }
     }
 
+    setHasShownModal(true); // prevents re-triggering
     setIsModalVisible(true);
   }, [board, mistakeCounter]);
 
@@ -137,7 +132,10 @@ const CompletionModal = ({
       animationType="slide"
       transparent={true}
       visible={isModalVisible}
-      onRequestClose={() => setIsModalVisible(false)}
+      onRequestClose={() => {
+        setHasShownModal(false);
+        setIsModalVisible(false);
+      }}
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
@@ -193,6 +191,7 @@ const CompletionModal = ({
                   onPress={() => {
                     button.onPress();
                     setIsModalVisible(false);
+                    setHasShownModal(false);
                   }}
                 >
                   <Text style={gameStyles.buttons.buttonText}>

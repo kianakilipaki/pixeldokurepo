@@ -24,8 +24,9 @@ export const PlayerDataProvider = ({ children }) => {
       if (user) {
         try {
           console.log(
-            "[Pixeldokulogs] User found. Initializing player data..."
+            "[Pixeldokulogs] User found. " + JSON.stringify(user.email, null, 2)
           );
+
           await migrateLocalGameData(user.uid);
           await syncFromCloud(user.uid);
           await loadPlayerData();
@@ -109,9 +110,10 @@ export const PlayerDataProvider = ({ children }) => {
 
   // --- COIN METHODS ---
   const addCoins = async (amount) => {
-    const newCoins = coins + amount;
+    const data = await loadFromLocal();
+    const newCoins = data.coins + amount;
     console.log(
-      `[Pixeldokulogs] Previously ${coins} coins. New total: ${newCoins}`
+      `[Pixeldokulogs] Previously ${data.coins} coins. New total: ${newCoins}`
     );
     setCoins(newCoins);
     await savePlayerData({ coins: newCoins });
